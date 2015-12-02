@@ -10,11 +10,11 @@
 		<module>service</module>
 		<module>web</module>
 	</modules>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<pluginManagement>
@@ -37,6 +37,11 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
+				<version>4.2.3.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
 				<version>4.2.3.RELEASE</version>
 			</dependency>
 			<dependency>
