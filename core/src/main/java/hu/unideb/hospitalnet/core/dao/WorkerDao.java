@@ -11,4 +11,6 @@ import hu.unideb.hospitalnet.core.entity.Worker;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface WorkerDao extends JpaRepository<Worker, Long> {
 
+	Worker findByUsername(String username);
+
 }

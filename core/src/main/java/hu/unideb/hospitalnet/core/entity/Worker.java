@@ -17,7 +17,7 @@ public class Worker extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "name")
+	@Column(name = "full_name")
 	private String name;
 
 	@Column(name = "ssn")
@@ -29,18 +29,27 @@ public class Worker extends BaseEntity {
 	@Column(name = "dob")
 	private Date dateOfBirth;
 
+	private String username;
+
 	@Column(name = "pass")
 	private String password;
 
 	@ManyToOne
-	@JoinTable(name = "worker_role", joinColumns = { @JoinColumn(name = "worker_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "role_id") })
+	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private Role role;
 
 	@OneToMany
 	@JoinTable(name = "worker_times", joinColumns = { @JoinColumn(name = "worker_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "timetable_id") })
 	private List<TimeTable> timeTables;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public String getName() {
 		return name;
