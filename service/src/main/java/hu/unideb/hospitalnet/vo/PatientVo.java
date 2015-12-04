@@ -19,21 +19,18 @@ public class PatientVo implements Serializable{
 
 	private String diagnostic;
 
+	private String status;
 	
-	public PatientVo() {
-	}	
 
-	public PatientVo(Long id, String name, String ssn, String idNumber,
-			Date dateOfBirth, String diagnostic) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.ssn = ssn;
-		this.idNumber = idNumber;
-		this.dateOfBirth = dateOfBirth;
-		this.diagnostic = diagnostic;
+
+	public String getStatus() {
+		return status;
 	}
 
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	public Long getId() {
 		return id;
 	}

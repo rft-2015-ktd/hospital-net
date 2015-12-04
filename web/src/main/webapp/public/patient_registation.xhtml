@@ -13,16 +13,11 @@
 	<ui:define name="content">
 
 		<p:panel header="Betegfelvétel">
-
-
-
-
 				<p:dataTable var="patient" value="#{patientreg.lazyModel}"
 					paginator="true" rows="10"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 					rowsPerPageTemplate="5,10,15" selectionMode="single" id="carTable"
 					lazy="true">
-
 
 					<p:column headerText="Name">
 						<h:outputText value="#{patient.name}" />
@@ -41,7 +36,8 @@
 					</p:column>
 
 					<p:column headerText="Diag">
-						<h:outputText value="#{patient.diagnostic}" />
+						<h:outputText value="#{patient.diagnostic}"
+						escape="false" />
 					</p:column>
 				</p:dataTable>
 
@@ -61,34 +57,26 @@
 								<p:inputText id="nameInput" required="true"
 									value="#{patientreg.name}" />
 
-
 								<h:outputText value="SSN" />
 								<p:inputText id="ssn" required="true" value="#{patientreg.ssn}" />
-
 
 								<h:outputText value="idNumber" />
 								<p:inputText id="idNumber" required="true"
 									value="#{patientreg.idNumber}" />
 
-
 								<h:outputText value="dateOfBorth" />
 								<p:calendar id="mask" value="#{patientreg.dateOfBirth}"
 									pattern="dd-MM-yyyy" mask="true" />
 
-
-
 								<h:outputText value="diag" />
-
 								<p:editor id="editor" widgetVar="editorWidget"
 									value="#{patientreg.diagnostic}" />
-
-
-
 
 							</p:panelGrid>
 							<div align="center" style="margin-top: 10px;">
 								<p:commandButton id="saveNewWarehouse" value="Mentés"
 									action="#{patientreg.save()}" icon="ui-icon-check"
+									update="CreatepatientDialog"
 									oncomplete="PF('create').hide();" />
 							</div>
 						</p:outputPanel>

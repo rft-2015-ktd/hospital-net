@@ -52,12 +52,14 @@ public class PatientRegistation implements Serializable {
 			patientVo.setDiagnostic(diagnostic);
 			patientVo.setIdNumber(idNumber);
 			patientVo.setSsn(ssn);
+			patientVo.setStatus("aktív");
 			service.savePatient(patientVo);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
 							"Save: " + patientVo.getName()));
 			name = "";
+			dateOfBirth = null;
 			ssn = "";
 			idNumber = "";
 			diagnostic = "";

@@ -26,19 +26,19 @@ public class Patient extends BaseEntity{
 
 	@Column(name = "diagnostic")
 	private String diagnostic;
+	
+	@Column(name = "status")
+	private String status;
 
 	
-	public Patient() {
-	}
 	
-	public Patient(String name, String ssn, String idNumber, Date dateOfBirth,
-			String diagnostic) {
-		super();
-		this.name = name;
-		this.ssn = ssn;
-		this.idNumber = idNumber;
-		this.dateOfBirth = dateOfBirth;
-		this.diagnostic = diagnostic;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getName() {
