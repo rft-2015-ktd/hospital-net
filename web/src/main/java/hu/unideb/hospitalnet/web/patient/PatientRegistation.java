@@ -4,8 +4,6 @@ import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +14,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
 
 
 @ManagedBean(name = "patientreg")
@@ -72,6 +69,11 @@ public class PatientRegistation implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	 public void onRowSelect(SelectEvent event) {
+	        FacesMessage msg = new FacesMessage("Car Selected", ((PatientVo) event.getObject()).getName());
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+	    }
 
 	public LazyDataModel<PatientVo> getLazyModel() {
 		return lazyModel;

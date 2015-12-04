@@ -8,4 +8,9 @@ public interface PatientManager {
 	public void savePatient(PatientVo patient);
 
 	public List<PatientVo> getAll();
+
+	public List<PatientVo> getPatients(int i, int pageSize, String sortField,
+			int dir, String filter, String filterColumnName);
+
+	public int getRowNumber();
 }

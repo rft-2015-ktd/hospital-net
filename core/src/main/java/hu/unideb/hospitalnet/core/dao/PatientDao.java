@@ -2,6 +2,8 @@ package hu.unideb.hospitalnet.core.dao;
 
 import hu.unideb.hospitalnet.core.entity.Patient;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
