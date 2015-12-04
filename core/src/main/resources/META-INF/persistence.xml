@@ -7,9 +7,10 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<non-jta-data-source>java:comp/env/jdbc/HospitalNETDB</non-jta-data-source>
 		<class>hu.unideb.hospitalnet.core.entity.BaseEntity</class>
-		<class>hu.unideb.hospitalnet.core.entity.Worker</class>
+		<class>hu.unideb.hospitalnet.core.entity.Patient</class>
 		<class>hu.unideb.hospitalnet.core.entity.Role</class>
 		<class>hu.unideb.hospitalnet.core.entity.TimeTable</class>
+		<class>hu.unideb.hospitalnet.core.entity.Worker</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.show_sql" value="false" />
