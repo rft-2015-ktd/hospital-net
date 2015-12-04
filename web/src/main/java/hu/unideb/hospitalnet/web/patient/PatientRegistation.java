@@ -1,21 +1,26 @@
-package hu.unideb.hospitalnet.web;
+package hu.unideb.hospitalnet.web.patient;
 
 import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.LazyDataModel;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
-@Component
+
 @ManagedBean(name = "patientreg")
 @ViewScoped
 public class PatientRegistation implements Serializable {
@@ -23,23 +28,27 @@ public class PatientRegistation implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	List<PatientVo> patients;
+	LazyDataModel<PatientVo> lazyModel;
 
 	private String name;
 	private String ssn;
 	private String idNumber;
-	private String dateOfBirth;
+	private Date dateOfBirth;
 	private String diagnostic;
 
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;
-	
 
+	@PostConstruct
+	public void init() {
+		setLazyModel(new LazyPatientDataModel(service));
+	}
 
 	public void save() {
 		try {
 			PatientVo patientVo = new PatientVo();
 			patientVo.setName(name);
-			patientVo.setDateOfBirth(new Date());
+			patientVo.setDateOfBirth(dateOfBirth);
 			patientVo.setDiagnostic(diagnostic);
 			patientVo.setIdNumber(idNumber);
 			patientVo.setSsn(ssn);
@@ -48,6 +57,10 @@ public class PatientRegistation implements Serializable {
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
 							"Save: " + patientVo.getName()));
+			name = "";
+			ssn = "";
+			idNumber = "";
+			diagnostic = "";
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -57,7 +70,14 @@ public class PatientRegistation implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public LazyDataModel<PatientVo> getLazyModel() {
+		return lazyModel;
+	}
+
+	public void setLazyModel(LazyDataModel<PatientVo> lazyModel) {
+		this.lazyModel = lazyModel;
+	}
 
 	public List<PatientVo> getPatients() {
 		return patients;
@@ -91,11 +111,11 @@ public class PatientRegistation implements Serializable {
 		this.idNumber = idNumber;
 	}
 
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -114,6 +134,5 @@ public class PatientRegistation implements Serializable {
 	public void setService(PatientManager service) {
 		this.service = service;
 	}
-	
-	
+
 }
