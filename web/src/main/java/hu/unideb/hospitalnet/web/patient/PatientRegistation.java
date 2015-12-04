@@ -17,7 +17,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 
-
 @ManagedBean(name = "patientreg")
 @ViewScoped
 public class PatientRegistation implements Serializable {
@@ -26,12 +25,21 @@ public class PatientRegistation implements Serializable {
 
 	List<PatientVo> patients;
 	LazyDataModel<PatientVo> lazyModel;
+	PatientVo selectedPatient;
 
 	private String name;
 	private String ssn;
 	private String idNumber;
 	private Date dateOfBirth;
 	private String diagnostic;
+	
+
+	private String upname;
+	private String upssn;
+	private String upidNumber;
+	private Date updateOfBirth;
+	private String updiagnostic;
+	private Long upId;
 
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;
@@ -69,11 +77,32 @@ public class PatientRegistation implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	 public void onRowSelect(SelectEvent event) {
-	        FacesMessage msg = new FacesMessage("Car Selected", ((PatientVo) event.getObject()).getName());
-	        FacesContext.getCurrentInstance().addMessage(null, msg);
-	    }
+
+	public void update() {
+		selectedPatient.setName(upname);
+		selectedPatient.setDateOfBirth(updateOfBirth);
+		selectedPatient.setDiagnostic(updiagnostic);
+		selectedPatient.setIdNumber(upidNumber);
+		selectedPatient.setSsn(upssn);
+		selectedPatient.setStatus("aktív");
+		selectedPatient.setId(upId);
+		service.savePatient(selectedPatient);
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
+						"Save: " + selectedPatient.getName()));
+	}
+
+	public void onRowSelect(SelectEvent event) {
+		selectedPatient = (PatientVo) event.getObject();
+		upname = selectedPatient.getName();
+		updateOfBirth = selectedPatient.getDateOfBirth();
+		upssn = selectedPatient.getSsn();
+		upidNumber = selectedPatient.getIdNumber();
+		updiagnostic = selectedPatient.getDiagnostic();
+		upId = selectedPatient.getId();
+
+	}
 
 	public LazyDataModel<PatientVo> getLazyModel() {
 		return lazyModel;
@@ -138,5 +167,55 @@ public class PatientRegistation implements Serializable {
 	public void setService(PatientManager service) {
 		this.service = service;
 	}
+
+	public PatientVo getSelectedPatient() {
+		return selectedPatient;
+	}
+
+	public void setSelectedPatient(PatientVo selectedPatient) {
+		this.selectedPatient = selectedPatient;
+	}
+
+	public String getUpname() {
+		return upname;
+	}
+
+	public void setUpname(String upname) {
+		this.upname = upname;
+	}
+
+	public String getUpssn() {
+		return upssn;
+	}
+
+	public void setUpssn(String upssn) {
+		this.upssn = upssn;
+	}
+
+	public String getUpidNumber() {
+		return upidNumber;
+	}
+
+	public void setUpidNumber(String upidNumber) {
+		this.upidNumber = upidNumber;
+	}
+
+	public Date getUpdateOfBirth() {
+		return updateOfBirth;
+	}
+
+	public void setUpdateOfBirth(Date updateOfBirth) {
+		this.updateOfBirth = updateOfBirth;
+	}
+
+	public String getUpdiagnostic() {
+		return updiagnostic;
+	}
+
+	public void setUpdiagnostic(String updiagnostic) {
+		this.updiagnostic = updiagnostic;
+	}
+	
+	
 
 }

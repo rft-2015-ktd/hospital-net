@@ -19,7 +19,8 @@
 				rowsPerPageTemplate="5,10,15" selectionMode="single"
 				id="patientTable" lazy="true">
 
-			
+					<p:ajax event="rowSelect" listener="#{patientreg.onRowSelect}"
+					 update="UpdatepatientDialog,update"/>			
 
 				<p:column headerText="Name">
 					<h:outputText value="#{patient.name}" />
@@ -44,6 +45,10 @@
 
 			<p:commandButton id="new" value="Új beteg" title="Save" type="button"
 				onclick="PF('create').show()">
+			</p:commandButton>
+			
+			<p:commandButton id="update" value="Beteg frissitése" title="Update" type="button"
+				onclick="PF('update').show()" disabled="#{patientreg.selectedPatient == null}">
 			</p:commandButton>
 
 
@@ -82,6 +87,44 @@
 					</p:outputPanel>
 				</h:form>
 			</p:dialog>
+			
+				<p:dialog id="UpdatepatientDialog" widgetVar="update" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="">
+				<h:form id="dialogFormUpdate">
+
+					<p:outputPanel id="whDetail" style="text-align:left;">
+						<p:panelGrid columns="2" columnClasses="label,value">
+
+							<h:outputText value="Név" />
+							<p:inputText id="nameInput" required="true"
+								value="#{patientreg.upname}" />
+
+							<h:outputText value="SSN" />
+							<p:inputText id="ssn" required="true" value="#{patientreg.upssn}" />
+
+							<h:outputText value="idNumber" />
+							<p:inputText id="idNumber" required="true"
+								value="#{patientreg.upidNumber}" />
+
+							<h:outputText value="dateOfBorth" />
+							<p:calendar id="mask" value="#{patientreg.updateOfBirth}"
+								pattern="dd-MM-yyyy" mask="true" />
+
+							<h:outputText value="diag" />
+							<p:editor id="editor" widgetVar="editorWidget"
+								value="#{patientreg.updiagnostic}" />
+
+						</p:panelGrid>
+						<div align="center" style="margin-top: 10px;">
+							<p:commandButton id="updatePatient" value="Frissités"
+								action="#{patientreg.update()}" icon="ui-icon-check"
+								update="UpdatepatientDialog" oncomplete="PF('update').hide();" />
+						</div>
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+			
+		
 		</p:panel>
 
 	</ui:define>
