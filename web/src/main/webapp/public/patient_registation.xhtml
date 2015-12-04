@@ -1,0 +1,69 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Betegfelvétel</ui:define>
+	<ui:define name="content">
+
+
+		<p:panel header="Betegfelvétel">
+
+			<p:commandButton id="new" value="Új beteg" title="Save" type="button"
+				onclick="PF('create').show()">
+			</p:commandButton>
+
+
+			<p:dialog id="CreatepatientDialog" widgetVar="create" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="">
+				<h:form id="dialogFormCreate">
+
+					<p:outputPanel id="whDetail" style="text-align:left;">
+						<p:panelGrid columns="2" columnClasses="label,value">
+
+							<h:outputText value="Név" />
+							<p:inputText id="nameInput" required="true"
+								value="#{patientreg.name}" />
+
+
+							<h:outputText value="SSN" />
+							<p:inputText id="ssn" required="true" value="#{patientreg.ssn}" />
+
+
+							<h:outputText value="idNumber" />
+							<p:inputText id="idNumber" required="true"
+								value="#{patientreg.idNumber}" />
+
+
+							<h:outputText value="dateOfBorth" />
+							<p:inputText id="dob" required="true"
+								value="#{patientreg.dateOfBirth}" />
+
+
+
+							<h:outputText value="diag" />
+							<p:inputText id="diag" required="true"
+								value="#{patientreg.diagnostic}" />
+
+
+						</p:panelGrid>
+						<div align="center" style="margin-top: 10px;">
+							<p:commandButton id="saveNewWarehouse" value="Mentés"
+								action="#{patientreg.save()}"
+								icon="ui-icon-check" oncomplete="PF('create').hide();"/>
+						</div>
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+
+
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

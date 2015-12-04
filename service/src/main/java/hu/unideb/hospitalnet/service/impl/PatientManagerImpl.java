@@ -1,12 +1,18 @@
 package hu.unideb.hospitalnet.service.impl;
 
+import java.util.List;
+
 import hu.unideb.hospitalnet.core.dao.PatientDao;
 import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.service.converter.impl.PatientConverter;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Service("patientManager")
+@Component
 public class PatientManagerImpl implements PatientManager {
 	
 	@Autowired
@@ -18,6 +24,11 @@ public class PatientManagerImpl implements PatientManager {
 	public void savePatient(PatientVo patient) {
 		patientDao.save(converter.toEntity(patient));
 		
+	}
+
+	@Override
+	public List<PatientVo> getAll() {
+		return converter.toVo(patientDao.findAll());
 	}
 
 }
