@@ -3,10 +3,6 @@ package hu.unideb.hospitalnet.web.patient;
 import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +10,10 @@ import javax.faces.bean.ManagedProperty;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class LazyPatientDataModel extends LazyDataModel<PatientVo> {
 
+	private static final long serialVersionUID = 1764477134673884411L;
 	private List<PatientVo> datasource;
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;

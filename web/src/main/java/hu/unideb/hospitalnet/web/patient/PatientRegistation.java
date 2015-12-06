@@ -47,6 +47,7 @@ public class PatientRegistation implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		diagnostic = " ";
 		setLazyModel(new LazyPatientDataModel(service));
 	}
 
@@ -122,6 +123,16 @@ public class PatientRegistation implements Serializable {
 		updiagnostic = selectedPatient.getDiagnostic();
 		upId = selectedPatient.getId();
 
+	}
+	
+	
+
+	public Long getUpId() {
+		return upId;
+	}
+
+	public void setUpId(Long upId) {
+		this.upId = upId;
 	}
 
 	public LazyDataModel<PatientVo> getLazyModel() {
