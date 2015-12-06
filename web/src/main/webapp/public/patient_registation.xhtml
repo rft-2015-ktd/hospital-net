@@ -12,15 +12,15 @@
 	<ui:define name="pageTitle">Betegfelvétel</ui:define>
 	<ui:define name="content">
 
-		<p:panel header="Betegfelvétel">
+		<p:panel header="Betegkezelés">
 			<p:dataTable var="patient" value="#{patientreg.lazyModel}"
 				paginator="true" rows="5"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" selectionMode="single"
 				id="patientTable" lazy="true">
 
-					<p:ajax event="rowSelect" listener="#{patientreg.onRowSelect}"
-					 update="UpdatepatientDialog,update"/>			
+				<p:ajax event="rowSelect" listener="#{patientreg.onRowSelect}"
+					update="UpdatepatientDialog,update,dismiss" />
 
 				<p:column headerText="Name">
 					<h:outputText value="#{patient.name}" />
@@ -41,15 +41,25 @@
 				<p:column headerText="Diag">
 					<h:outputText value="#{patient.diagnostic}" escape="false" />
 				</p:column>
+				
+					<p:column headerText="Status">
+					<h:outputText value="#{patient.status}" />
+				</p:column>
 			</p:dataTable>
 
 			<p:commandButton id="new" value="Új beteg" title="Save" type="button"
 				onclick="PF('create').show()">
 			</p:commandButton>
-			
-			<p:commandButton id="update" value="Beteg frissitése" title="Update" type="button"
-				onclick="PF('update').show()" disabled="#{patientreg.selectedPatient == null}">
+
+			<p:commandButton id="update" value="Beteg frissitése" title="Update"
+				type="button" onclick="PF('update').show()"
+				disabled="#{patientreg.selectedPatient == null}">
 			</p:commandButton>
+
+			<p:commandButton value="Beteg elbocsájtás" id="dismiss" update="growl"
+				actionListener="#{patientreg.dismiss}"
+				disabled="#{patientreg.selectedPatient == null}"
+				 />
 
 
 			<p:dialog id="CreatepatientDialog" widgetVar="create" modal="true"
@@ -87,8 +97,8 @@
 					</p:outputPanel>
 				</h:form>
 			</p:dialog>
-			
-				<p:dialog id="UpdatepatientDialog" widgetVar="update" modal="true"
+
+			<p:dialog id="UpdatepatientDialog" widgetVar="update" modal="true"
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
 				<h:form id="dialogFormUpdate">
 
@@ -123,8 +133,8 @@
 					</p:outputPanel>
 				</h:form>
 			</p:dialog>
-			
-		
+
+
 		</p:panel>
 
 	</ui:define>

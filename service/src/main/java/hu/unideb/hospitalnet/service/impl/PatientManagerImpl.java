@@ -6,6 +6,7 @@ import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.service.converter.impl.PatientConverter;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 @Service("patientManager")
 @Component
-public class PatientManagerImpl implements PatientManager {
+public class PatientManagerImpl implements PatientManager, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private PatientDao patientDao;
@@ -45,7 +48,11 @@ public class PatientManagerImpl implements PatientManager {
 				new org.springframework.data.domain.Sort.Order(dir, sortField)));
 		Page<Patient> entities;
 
-		entities = patientDao.findAll(pageRequest);
+		if (filter.length() != 0 && filterColumnName.equals("name")) {
+			entities = patientDao.findByNameStartsWith(filter, pageRequest);
+		} else {
+			entities = patientDao.findAll(pageRequest);
+		}
 		List<PatientVo> ret = converter.toVo(entities.getContent());
 
 		return ret;

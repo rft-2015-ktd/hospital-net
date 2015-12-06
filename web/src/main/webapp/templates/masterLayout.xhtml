@@ -9,7 +9,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:sec="http://www.springframework.org/security/tags">
 
-<f:view locale="#{localizationController.locale}">
+<f:view >
 
 	<h:head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -33,11 +33,8 @@
 				<p:submenu styleClass="warehouseManagementBubble"
 					label="Patient manager">
 
-					<p:menuitem style="!important;" value="Betegfelvétel"
+					<p:menuitem style="!important;" value="Betegkezelés"
 						url="/public/patient_registation.xhtml" />
-					<p:separator />
-					<p:menuitem style=" !important;"
-						value="Beteg elbocsájtás" url=""  />
 
 				</p:submenu>
 
