@@ -11,4 +11,6 @@ import hu.unideb.hospitalnet.core.entity.Role;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface RoleDao extends JpaRepository<Role, Long> {
 
+	Role findByName(String roleName);
+
 }

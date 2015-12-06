@@ -6,10 +6,10 @@
 	<security:http disable-url-rewriting="false">
 		<security:csrf disabled="true" />
 		<security:headers disabled="true" />
-		<security:intercept-url pattern="/secured/**"
-			access="hasRole('USER')" />
+		<security:intercept-url pattern="/secured/leader/**"
+			access="hasAnyRole('LEADER, ADMIN')" />
 		<security:form-login login-page="/public/login.xhtml"
-			login-processing-url="/login" default-target-url="/index.jsp"
+			login-processing-url="/login" default-target-url="/index.xhtml"
 			authentication-failure-url="/public/login.xhtml?error=1"
 			username-parameter="username" password-parameter="password" />
 		<security:logout logout-url="/logout"
