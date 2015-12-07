@@ -1,6 +1,6 @@
 package hu.unideb.hospitalnet.core.entity;
 
-import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +14,10 @@ public class TimeTable extends BaseEntity {
 	private int dayOfWeek;
 
 	@Column(name = "from_time")
-	private Time from;
+	private Date from;
 
 	@Column(name = "to_time")
-	private Time to;
+	private Date to;
 
 	public int getDayOfWeek() {
 		return dayOfWeek;
@@ -27,19 +27,19 @@ public class TimeTable extends BaseEntity {
 		this.dayOfWeek = dayOfWeek;
 	}
 
-	public Time getFrom() {
+	public Date getFrom() {
 		return from;
 	}
 
-	public void setFrom(Time from) {
+	public void setFrom(Date from) {
 		this.from = from;
 	}
 
-	public Time getTo() {
+	public Date getTo() {
 		return to;
 	}
 
-	public void setTo(Time to) {
+	public void setTo(Date to) {
 		this.to = to;
 	}
 
