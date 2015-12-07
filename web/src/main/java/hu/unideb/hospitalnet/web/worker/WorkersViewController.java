@@ -2,14 +2,12 @@ package hu.unideb.hospitalnet.web.worker;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.unideb.hospitalnet.service.RoleManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
@@ -28,17 +26,12 @@ public class WorkersViewController implements Serializable {
 	@ManagedProperty("#{roleManager}")
 	private RoleManager roleManager;
 
-	@Autowired
+	@ManagedProperty("#{lazyWorkerModel}")
 	private LazyDataModel<WorkerVo> lazyWorkerModel;
 
 	private WorkerVo selectedWorker;
 
-	@PostConstruct
-	public void init() {
-		;
-	}
-
-	public void onSelectRow(SelectEvent e) {
+	public void onRowSelect(SelectEvent e) {
 		selectedWorker = (WorkerVo) e.getObject();
 	}
 
