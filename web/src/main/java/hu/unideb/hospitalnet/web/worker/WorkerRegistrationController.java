@@ -1,4 +1,4 @@
-package hu.unideb.hospitalnet.web;
+package hu.unideb.hospitalnet.web.worker;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,11 +25,17 @@ import hu.unideb.hospitalnet.vo.WorkerVo;
 @Component
 @ViewScoped
 @ManagedBean(name = "registrationController")
-public class RegistrationController implements Serializable {
+public class WorkerRegistrationController implements Serializable {
 
-	private static Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+	private static Logger logger = LoggerFactory.getLogger(WorkerRegistrationController.class);
 
 	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	private WorkerManager workerManager;
+
+	@Autowired
+	private RoleManager roleManager;
 
 	private String userName = "";
 
@@ -40,12 +46,6 @@ public class RegistrationController implements Serializable {
 	private String ssn = "";
 
 	private String selectedRole = "";
-
-	@Autowired
-	private WorkerManager workerManager;
-
-	@Autowired
-	private RoleManager roleManager;
 
 	private String idNumber;
 
