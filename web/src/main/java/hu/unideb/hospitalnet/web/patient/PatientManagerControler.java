@@ -20,7 +20,7 @@ import org.primefaces.model.LazyDataModel;
 
 @ManagedBean(name = "patientreg")
 @ViewScoped
-public class PatientRegistation implements Serializable {
+public class PatientManagerControler implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

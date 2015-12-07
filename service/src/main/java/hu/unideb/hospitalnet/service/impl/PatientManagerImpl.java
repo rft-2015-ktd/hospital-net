@@ -7,6 +7,8 @@ import hu.unideb.hospitalnet.service.converter.impl.PatientConverter;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,15 @@ public class PatientManagerImpl implements PatientManager, Serializable {
 
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
 			entities = patientDao.findByNameStartsWith(filter, pageRequest);
-		} else {
+		} else if (filter.length() != 0 && filterColumnName.equals("ssn")) {
+			entities = patientDao.findBySsnStartsWith(filter, pageRequest);
+		} else if (filter.length() != 0 && filterColumnName.equals("idNumber")) {
+			entities = patientDao.findByIdNumberStartsWith(filter, pageRequest);
+		} else if (filter.length() != 0 && filterColumnName.equals("diagnostic")) {
+			entities = patientDao.findByDiagnosticContaining(filter, pageRequest);
+		} else if (filter.length() != 0 && filterColumnName.equals("status")) {
+			entities = patientDao.findByStatusStartsWith(filter, pageRequest);
+		}else {
 			entities = patientDao.findAll(pageRequest);
 		}
 		List<PatientVo> ret = converter.toVo(entities.getContent());
@@ -62,5 +72,4 @@ public class PatientManagerImpl implements PatientManager, Serializable {
 	public int getRowNumber() {
 		return (int) patientDao.count();
 	}
-
 }

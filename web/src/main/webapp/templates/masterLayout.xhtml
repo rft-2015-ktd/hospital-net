@@ -53,14 +53,12 @@
 				<sec:authorize
 					ifAnyGranted="ROLE_ADMIN, ROLE_DOCTOR, ROLE_RECEPTIONIST">
 					<p:submenu styleClass="warehouseManagementBubble"
-						label="Patient manager">
+						label="Betegek kezelése">
 
 						<sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_RECEPTIONIST">
-							<p:menuitem style="!important;" value="Betegfelvétel"
+							<p:menuitem style="!important;" value="Betegkezelés"
 								url="/secured/doctor/patient_registation.xhtml" />
-							<p:separator />
 						</sec:authorize>
-						<p:menuitem style=" !important;" value="Beteg elbocsájtás" url="" />
 
 					</p:submenu>
 				</sec:authorize>

@@ -14,5 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PatientDao extends JpaRepository<Patient, Long>  {
 
 	Page<Patient>findByNameStartsWith(String filter,Pageable pageable);
+	
+	Page<Patient>findBySsnStartsWith(String filter,Pageable pageable);
+		
+	Page<Patient>findByIdNumberStartsWith(String filter,Pageable pageable);
+	
+	Page<Patient>findByDateOfBirthContaining(String filter,Pageable pageable);
+	
+	Page<Patient>findByDiagnosticContaining(String filter,Pageable pageable);
+	
+	Page<Patient>findByStatusStartsWith(String filter,Pageable pageable);
 
 }

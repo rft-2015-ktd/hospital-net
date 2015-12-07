@@ -24,7 +24,7 @@
 					selectionMode="single" selection="#{patientreg.selectedPatient}">
 
 					<f:facet name="header">
-						<h:outputText value="Betgek" />
+						<h:outputText value="Betegek" />
 					</f:facet>
 
 					<p:ajax event="rowSelect" listener="#{patientreg.onRowSelect}"
@@ -35,23 +35,27 @@
 						<h:outputText value="#{patient.name}" />
 					</p:column>
 
-					<p:column headerText="Ssn">
+					<p:column headerText="TAJ" sortBy="#{patient.ssn}"
+						filterBy="#{patient.ssn}">
 						<h:outputText value="#{patient.ssn}" />
 					</p:column>
 
-					<p:column headerText="IdNumber">
+					<p:column headerText="Személyi szám" sortBy="#{patient.idNumber}"
+						filterBy="#{patient.idNumber}">
 						<h:outputText value="#{patient.idNumber}" />
 					</p:column>
 
-					<p:column headerText="DOB">
+					<p:column headerText="Születési dátum ">
 						<h:outputText value="#{patient.dateOfBirth}" />
 					</p:column>
 
-					<p:column headerText="Diag">
+					<p:column headerText="Kórlap" sortBy="#{patient.diagnostic}"
+						filterBy="#{patient.diagnostic}">
 						<h:outputText value="#{patient.diagnostic}" escape="false" />
 					</p:column>
 
-					<p:column headerText="Status">
+					<p:column headerText="Státusz" sortBy="#{patient.status}"
+						filterBy="#{patient.status}">
 						<h:outputText value="#{patient.status}" />
 					</p:column>
 
@@ -71,6 +75,8 @@
 					update="growl,patientTable" actionListener="#{patientreg.dismiss}"
 					disabled="#{patientreg.selectedPatient == null}" />
 
+
+
 			</h:form>
 
 			<p:dialog id="CreatepatientDialog" widgetVar="create" modal="true"
@@ -84,26 +90,29 @@
 							<p:inputText id="nameInput" required="true"
 								value="#{patientreg.name}" />
 
-							<h:outputText value="SSN" />
+							<h:outputText value="TAJ" />
 							<p:inputText id="ssn" required="true" value="#{patientreg.ssn}" />
 
-							<h:outputText value="idNumber" />
+							<h:outputText value="Személyi szám" />
 							<p:inputText id="idNumber" required="true"
 								value="#{patientreg.idNumber}" />
 
-							<h:outputText value="dateOfBorth" />
-							<p:calendar id="mask" value="#{patientreg.dateOfBirth}"
-								pattern="dd-MM-yyyy" mask="true" />
+							<h:outputText value="Születési dátum" />
+							<p:calendar id="calendar" value="#{patientreg.dateOfBirth}"
+								showOn="button" pattern="yyyy.MM.dd" mask="true">
+								<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+							</p:calendar>
 
-							<h:outputText value="diag" />
-							<p:editor id="editor" widgetVar="editorWidget"
+							<h:outputText value="Kórlap" />
+							<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
 								value="#{patientreg.diagnostic}" />
 
 						</p:panelGrid>
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="savePatient" value="Mentés"
 								action="#{patientreg.save()}" icon="ui-icon-check"
-								update="CreatepatientDialog,form:patientTable" oncomplete="PF('create').hide();" />
+								update="CreatepatientDialog,form:patientTable"
+								oncomplete="PF('create').hide();" />
 						</div>
 					</p:outputPanel>
 				</h:form>
@@ -120,26 +129,29 @@
 							<p:inputText id="nameInput" required="true"
 								value="#{patientreg.upname}" />
 
-							<h:outputText value="SSN" />
+							<h:outputText value="TAJ" />
 							<p:inputText id="ssn" required="true" value="#{patientreg.upssn}" />
 
-							<h:outputText value="idNumber" />
+							<h:outputText value="Személyi szám" />
 							<p:inputText id="idNumber" required="true"
 								value="#{patientreg.upidNumber}" />
 
-							<h:outputText value="dateOfBorth" />
-							<p:calendar id="mask" value="#{patientreg.updateOfBirth}"
-								pattern="dd-MM-yyyy" mask="true" />
+							<h:outputText value="Születési dátum" />
+							<p:calendar id="calendar" value="#{patientreg.dateOfBirth}"
+								showOn="button" pattern="yyyy.MM.dd" mask="true">
+								<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+							</p:calendar>
 
-							<h:outputText value="diag" />
-							<p:editor id="editor" widgetVar="editorWidget"
-								value="#{patientreg.updiagnostic}" />
+							<h:outputText value="Kórlap" />
+							<p:editor id="ueditor" widgetVar="ueditorWidget"
+								showEffect="fade" value="#{patientreg.updiagnostic}" />
 
 						</p:panelGrid>
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="updatePatient" value="Frissités"
 								action="#{patientreg.update()}" icon="ui-icon-check"
-								update="UpdatepatientDialog,form:patientTable" oncomplete="PF('update').hide();" />
+								update="UpdatepatientDialog,form:patientTable"
+								oncomplete="PF('update').hide();" />
 						</div>
 					</p:outputPanel>
 				</h:form>
