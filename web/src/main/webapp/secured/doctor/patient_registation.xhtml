@@ -9,48 +9,69 @@
 	<ui:define name="head-extra">
 		<!-- custom css -->
 	</ui:define>
-	<ui:define name="pageTitle">Betegfelvétel</ui:define>
+	<ui:define name="pageTitle">Patient Managment</ui:define>
 	<ui:define name="content">
 
-		<p:panel header="Betegfelvétel">
-			<p:dataTable var="patient" value="#{patientreg.lazyModel}"
-				paginator="true" rows="5"
-				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="5,10,15" selectionMode="single"
-				id="patientTable" lazy="true">
+
+		<p:panel header="Betegkezelés">
+			<h:form id="form">
+
+				<!-- Ez itt a tabla -->
+				<p:dataTable id="patientTable" var="patient"
+					value="#{patientreg.lazyModel}" emptyMessage="Nincs beteg"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="5"
+					selectionMode="single" selection="#{patientreg.selectedPatient}">
+
+					<f:facet name="header">
+						<h:outputText value="Betgek" />
+					</f:facet>
 
 					<p:ajax event="rowSelect" listener="#{patientreg.onRowSelect}"
-					 update="UpdatepatientDialog,update"/>			
+						update="UpdatepatientDialog,form:update,form:dismiss" />
 
-				<p:column headerText="Name">
-					<h:outputText value="#{patient.name}" />
-				</p:column>
+					<p:column headerText="Név" sortBy="#{patient.name}"
+						filterBy="#{patient.name}">
+						<h:outputText value="#{patient.name}" />
+					</p:column>
 
-				<p:column headerText="Ssn">
-					<h:outputText value="#{patient.ssn}" />
-				</p:column>
+					<p:column headerText="Ssn">
+						<h:outputText value="#{patient.ssn}" />
+					</p:column>
 
-				<p:column headerText="IdNumber">
-					<h:outputText value="#{patient.idNumber}" />
-				</p:column>
+					<p:column headerText="IdNumber">
+						<h:outputText value="#{patient.idNumber}" />
+					</p:column>
 
-				<p:column headerText="DOB">
-					<h:outputText value="#{patient.dateOfBirth}" />
-				</p:column>
+					<p:column headerText="DOB">
+						<h:outputText value="#{patient.dateOfBirth}" />
+					</p:column>
 
-				<p:column headerText="Diag">
-					<h:outputText value="#{patient.diagnostic}" escape="false" />
-				</p:column>
-			</p:dataTable>
+					<p:column headerText="Diag">
+						<h:outputText value="#{patient.diagnostic}" escape="false" />
+					</p:column>
 
-			<p:commandButton id="new" value="Új beteg" title="Save" type="button"
-				onclick="PF('create').show()">
-			</p:commandButton>
-			
-			<p:commandButton id="update" value="Beteg frissitése" title="Update" type="button"
-				onclick="PF('update').show()" disabled="#{patientreg.selectedPatient == null}">
-			</p:commandButton>
+					<p:column headerText="Status">
+						<h:outputText value="#{patient.status}" />
+					</p:column>
 
+
+				</p:dataTable>
+
+				<p:commandButton id="new" value="Új beteg" title="Save"
+					type="button" onclick="PF('create').show()">
+				</p:commandButton>
+
+				<p:commandButton id="update" value="Beteg frissitése" title="Update"
+					type="button" onclick="PF('update').show()"
+					disabled="#{patientreg.selectedPatient == null}">
+				</p:commandButton>
+
+				<p:commandButton value="Beteg elbocsájtás" id="dismiss"
+					update="growl,patientTable" actionListener="#{patientreg.dismiss}"
+					disabled="#{patientreg.selectedPatient == null}" />
+
+			</h:form>
 
 			<p:dialog id="CreatepatientDialog" widgetVar="create" modal="true"
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
@@ -82,13 +103,13 @@
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="savePatient" value="Mentés"
 								action="#{patientreg.save()}" icon="ui-icon-check"
-								update="CreatepatientDialog" oncomplete="PF('create').hide();" />
+								update="CreatepatientDialog,form:patientTable" oncomplete="PF('create').hide();" />
 						</div>
 					</p:outputPanel>
 				</h:form>
 			</p:dialog>
-			
-				<p:dialog id="UpdatepatientDialog" widgetVar="update" modal="true"
+
+			<p:dialog id="UpdatepatientDialog" widgetVar="update" modal="true"
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
 				<h:form id="dialogFormUpdate">
 
@@ -118,14 +139,11 @@
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="updatePatient" value="Frissités"
 								action="#{patientreg.update()}" icon="ui-icon-check"
-								update="UpdatepatientDialog" oncomplete="PF('update').hide();" />
+								update="UpdatepatientDialog,form:patientTable" oncomplete="PF('update').hide();" />
 						</div>
 					</p:outputPanel>
 				</h:form>
 			</p:dialog>
-			
-		
 		</p:panel>
-
 	</ui:define>
 </ui:composition>

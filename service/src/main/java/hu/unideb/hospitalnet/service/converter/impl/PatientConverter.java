@@ -4,14 +4,19 @@ import hu.unideb.hospitalnet.core.entity.Patient;
 import hu.unideb.hospitalnet.service.converter.Converter;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
-public class PatientConverter implements Converter<Patient, PatientVo> {
+public class PatientConverter implements Converter<Patient, PatientVo>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Mapper mapper = new DozerBeanMapper();
 
 	@Override
