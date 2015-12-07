@@ -9,5 +9,12 @@ public interface WorkerManager {
 
 	public List<WorkerVo> getWorkers();
 
+	public List<WorkerVo> getWorkers(int page, int pageSize, String sortField, int sortOrder, String filter,
+			String filterColumnName);
+
 	public WorkerVo getWorkerByUsername(String username);
+
+	public int getWorkersCount();
+
+	public WorkerVo getWorkerById(Long id);
 }

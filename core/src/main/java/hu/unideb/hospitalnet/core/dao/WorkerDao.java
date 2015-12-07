@@ -1,5 +1,7 @@
 package hu.unideb.hospitalnet.core.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,5 +14,7 @@ import hu.unideb.hospitalnet.core.entity.Worker;
 public interface WorkerDao extends JpaRepository<Worker, Long> {
 
 	Worker findByUsername(String username);
+
+	Page<Worker> findByNameContaining(String name, Pageable pageable);
 
 }

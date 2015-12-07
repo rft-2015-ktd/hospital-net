@@ -5,14 +5,13 @@ import java.util.Date;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import hu.unideb.hospitalnet.service.RoleManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
@@ -22,7 +21,7 @@ import hu.unideb.hospitalnet.vo.WorkerVo;
 /**
  * Controller for the login site.
  */
-@Component
+
 @ViewScoped
 @ManagedBean(name = "registrationController")
 public class WorkerRegistrationController implements Serializable {
@@ -31,10 +30,10 @@ public class WorkerRegistrationController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
+	@ManagedProperty("#{workerManager}")
 	private WorkerManager workerManager;
 
-	@Autowired
+	@ManagedProperty("#{roleManager}")
 	private RoleManager roleManager;
 
 	private String userName = "";
@@ -213,6 +212,22 @@ public class WorkerRegistrationController implements Serializable {
 
 	public void setDob(Date dob) {
 		this.dob = dob;
+	}
+
+	public WorkerManager getWorkerManager() {
+		return workerManager;
+	}
+
+	public void setWorkerManager(WorkerManager workerManager) {
+		this.workerManager = workerManager;
+	}
+
+	public RoleManager getRoleManager() {
+		return roleManager;
+	}
+
+	public void setRoleManager(RoleManager roleManager) {
+		this.roleManager = roleManager;
 	}
 
 }
