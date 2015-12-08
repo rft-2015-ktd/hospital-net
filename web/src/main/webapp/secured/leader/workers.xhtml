@@ -23,7 +23,7 @@
 				selection="#{workersView.selectedWorker}" id="workerTable"
 				lazy="true">
 				<p:ajax event="rowSelect" listener="#{workersView.onRowSelect}"
-					update="updateWorkerForm:workerDetail" oncomplete="PF('workerDialog').show()" />
+					update="updateWorkerForm:workerDetail,form:updateWorkerButton,form:assignWorkerButton" />
 				<p:column headerText="ID" sortBy="#{worker.id}">
 					<h:outputText value="#{worker.id}" />
 				</p:column>
@@ -31,30 +31,66 @@
 					filterBy="#{worker.name}">
 					<h:outputText value="#{worker.name}" />
 				</p:column>
-				<p:column headerText="Beosztás"
-					sortBy="#{worker.role}">
+				<p:column headerText="Beosztás" sortBy="#{worker.role}">
 					<h:outputText value="#{workersView.roleView(worker.role)}" />
 				</p:column>
 			</p:dataTable>
+
+			<p:commandButton id="updateWorkerButton" value="Módosítás"
+				type="button" onclick="PF('workerDialog').show();"
+				disabled="#{workersView.selectedWorker == null}" />
+
+			<p:commandButton id="assignWorkerButton" value="Beosztás"
+				type="button" disabled="true" />
 		</h:form>
 
-		<p:dialog header="Dolgozó adatai" widgetVar="workerDialog" id="workerDialog"
-			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		<p:dialog header="Dolgozó adatai" widgetVar="workerDialog"
+			id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
+			resizable="false">
+
 			<h:form id="updateWorkerForm">
+				<p:messages id="updateMsgs" showDetail="true" closable="true" />
 				<p:outputPanel id="workerDetail" style="text-align:center;">
 					<p:panelGrid columns="2"
 						rendered="#{not empty workersView.selectedWorker}"
 						columnClasses="label,value">
 
-						<h:outputText value="Név" />
-						<p:inputText value="#{workersView.selectedWorker.name}" />
+						<h:outputLabel id="outTxtUserNameId" value="Felhasználónév"
+							name="outTxtUserNameNm"></h:outputLabel>
+						<p:inputText id="userName" readonly="true"
+							value="#{workersView.selectedWorker.username}" />
+
+						<h:outputLabel for="pwd1" value="Új jelszó" />
+						<p:password id="pwd1" value="#{workersView.newPassword}"
+							label="Password 1" />
+
+						<h:outputLabel for="pwd2" value="Új jelszó ismét" />
+						<p:password id="pwd2" value="#{workersView.newPassword2}"
+							label="Password 2" />
+
+						<h:outputLabel for="fullName" value="Teljes név" />
+						<p:inputText id="fullName"
+							value="#{workersView.selectedWorker.name}" />
+
+						<h:outputLabel for="ssn" value="TAJ" />
+						<p:inputText id="ssn" value="#{workersView.selectedWorker.ssn}" />
+
+						<h:outputLabel for="idnum" value="Személyi szám" />
+						<p:inputText id="idnum"
+							value="#{workersView.selectedWorker.idNumber}" />
+
+						<p:outputLabel for="calendar" value="Születési dátum" />
+						<p:calendar id="calendar"
+							value="#{workersView.selectedWorker.dateOfBirth}" showOn="button"
+							pattern="yyyy.MM.dd" mask="true">
+							<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+						</p:calendar>
 
 					</p:panelGrid>
 					<div align="center" style="margin-top: 10px;">
 						<p:commandButton id="saveWorker" value="Mentés"
 							action="#{workersView.save()}" icon="ui-icon-check"
-							update="workerDialog,form:workerTable"
-							oncomplete="PF('create').hide();" />
+							update="updateMsgs" />
 					</div>
 				</p:outputPanel>
 			</h:form>

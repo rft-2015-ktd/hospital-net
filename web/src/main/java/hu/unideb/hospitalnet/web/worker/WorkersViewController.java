@@ -1,13 +1,18 @@
 package hu.unideb.hospitalnet.web.worker;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import hu.unideb.hospitalnet.service.RoleManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
@@ -31,6 +36,9 @@ public class WorkersViewController implements Serializable {
 
 	private WorkerVo selectedWorker;
 
+	private String newPassword;
+	private String newPassword2;
+
 	public void onRowSelect(SelectEvent e) {
 		selectedWorker = (WorkerVo) e.getObject();
 	}
@@ -40,6 +48,66 @@ public class WorkersViewController implements Serializable {
 	}
 
 	public void save() {
+		if (validateUpdate()) {
+
+			if (!newPassword.equals("")) {
+				BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+				String encPassword = bCryptPasswordEncoder.encode(newPassword);
+
+				selectedWorker.setPassword(encPassword);
+			}
+
+			workerManager.saveWorker(selectedWorker);
+
+			RequestContext requestContext = RequestContext.getCurrentInstance();
+			requestContext.update("workerDialog");
+			requestContext.update("form:workerTable");
+		}
+	}
+
+	private boolean validateUpdate() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Boolean valid = true;
+		if (!validateDate()) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Hibás dátum"));
+			valid = false;
+		}
+		if (!newPassword.equals(newPassword2)) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A megadott jelszó nem egyezik!"));
+			valid = false;
+		}
+		if (selectedWorker.getRole() == null) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Munkakör kiválasztása kötelező!"));
+			valid = false;
+		}
+		if (selectedWorker.getSsn().equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "TAJ szám megadása kötelező!"));
+			valid = false;
+		}
+		if (selectedWorker.getIdNumber().equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Személyi szám megadása kötelező!"));
+			valid = false;
+		}
+		if (selectedWorker.getName().equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A dolgozó nevének megadása kötelező!"));
+			valid = false;
+		}
+		return valid;
+	}
+
+	private Boolean validateDate() {
+		Date now = new Date();
+
+		if (now.before(selectedWorker.getDateOfBirth())) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public WorkerManager getWorkerManager() {
@@ -72,6 +140,22 @@ public class WorkersViewController implements Serializable {
 
 	public void setSelectedWorker(WorkerVo selectedWorker) {
 		this.selectedWorker = selectedWorker;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getNewPassword2() {
+		return newPassword2;
+	}
+
+	public void setNewPassword2(String newPassword2) {
+		this.newPassword2 = newPassword2;
 	}
 
 }
