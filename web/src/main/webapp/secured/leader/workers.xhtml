@@ -23,7 +23,7 @@
 				selection="#{workersView.selectedWorker}" id="workerTable"
 				lazy="true">
 				<p:ajax event="rowSelect" listener="#{workersView.onRowSelect}"
-					update="updateWorkerForm:workerDetail,form:updateWorkerButton,form:assignWorkerButton" />
+					update="addTimeTableForm:ttDetail,updateWorkerForm:workerDetail,form:updateWorkerButton,form:assignWorkerButton" />
 				<p:column headerText="ID" sortBy="#{worker.id}">
 					<h:outputText value="#{worker.id}" />
 				</p:column>
@@ -100,10 +100,10 @@
 		<p:dialog header="Dolgozó beosztása" widgetVar="timetableDialog"
 			id="timetableDialog" modal="true" showEffect="fade" hideEffect="fade"
 			resizable="false">
-			<h:form>
+			<h:form id="addTimeTableForm">
 				<p:messages id="ttMessages" showDetail="true" closable="true" />
 				<p:outputPanel id="ttDetail" style="text-align:center;">
-					<p:panelGrid columns="2">
+					<p:panelGrid>
 						<p:row>
 							<p:column colspan="2">
 								<h:outputText value="#{workersView.selectedWorker.name}" />
@@ -131,7 +131,8 @@
 									actionListener="#{workersView.saveTimeTable}" />
 							</p:column>
 							<p:column>
-								<p:commandButton value="Mégsem" />
+								<p:commandButton value="Mégsem"
+									onclick="PF('timetableDialog').hide();" />
 							</p:column>
 						</p:row>
 					</p:panelGrid>
