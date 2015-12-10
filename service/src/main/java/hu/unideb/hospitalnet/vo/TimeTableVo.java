@@ -1,7 +1,7 @@
 package hu.unideb.hospitalnet.vo;
 
 import java.io.Serializable;
-import java.sql.Time;
+import java.util.Date;
 
 public class TimeTableVo implements Serializable {
 
@@ -9,9 +9,9 @@ public class TimeTableVo implements Serializable {
 
 	private Long id;
 
-	private Time from;
+	private Date from;
 
-	private Time to;
+	private Date to;
 
 	public Long getId() {
 		return id;
@@ -21,19 +21,19 @@ public class TimeTableVo implements Serializable {
 		this.id = id;
 	}
 
-	public Time getFrom() {
+	public Date getFrom() {
 		return from;
 	}
 
-	public void setFrom(Time from) {
+	public void setFrom(Date from) {
 		this.from = from;
 	}
 
-	public Time getTo() {
+	public Date getTo() {
 		return to;
 	}
 
-	public void setTo(Time to) {
+	public void setTo(Date to) {
 		this.to = to;
 	}
 
