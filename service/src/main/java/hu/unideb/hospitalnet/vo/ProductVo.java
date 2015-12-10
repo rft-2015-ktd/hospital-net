@@ -18,6 +18,16 @@ public class ProductVo implements Serializable{
 	private String type;
 	
 	private List<ItemVo> items;
+	
+	private String unitName;
+
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
 
 	public Long getId() {
 		return id;

@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">Dolgozók</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+
+	<ui:define name="content">
+	
+	<p:panel header="Termékek kezelése">
+		<h:form id="form">
+			<p:dataTable var="product" value="#{productsView.lazyProductModel}"
+				paginator="true" rows="10" emptyMessage="Nincs dolgozó"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" selectionMode="single"
+				selection="#{productsView.selectedProduct}" id="productTable"
+				lazy="true">
+				<p:column headerText="ID" sortBy="#{product.id}">
+					<h:outputText value="#{product.id}" />
+				</p:column>
+				<p:column headerText="Név" sortBy="#{product.name}"
+					filterBy="#{product.name}">
+					<h:outputText value="#{product.name}" />
+				</p:column>
+				<p:column headerText="Gyártó" sortBy="#{product.producer}"
+					filterBy="#{product.producer}">
+					<h:outputText value="#{product.producer}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton id="newProduct" value="Új termék" title="Save"
+					type="button" onclick="PF('create').show()">
+			</p:commandButton>
+		</h:form>
+		
+		
+
+
+
+		</p:panel>
+	</ui:define>
+</ui:composition>

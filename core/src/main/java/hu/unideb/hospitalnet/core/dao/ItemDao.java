@@ -11,6 +11,5 @@ import hu.unideb.hospitalnet.core.entity.Item;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface ItemDao extends JpaRepository<Item, Long> {
 	
-	
 
 }

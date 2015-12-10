@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">Dolgozók</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+
+	<ui:define name="content">
+	
+	<p:panel header="Termékek kezelése">
+		<h:form id="form">
+			<p:dataTable var="product" value="#{productsView.lazyProductModel}"
+				paginator="true" rows="10" emptyMessage="Nincs dolgozó"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" selectionMode="single"
+				selection="#{productsView.selectedProduct}" id="productTable"
+				lazy="true">
+				<p:ajax event="rowSelect" listener="#{productsView.onRowSelect}"
+				update="updateWorkerForm:workerDetail" oncomplete="PF('workerDialog').show()"/>
+				<p:column headerText="ID" sortBy="#{product.id}">
+					<h:outputText value="#{product.id}" />
+				</p:column>
+				<p:column headerText="Név" sortBy="#{product.name}"
+					filterBy="#{product.name}">
+					<h:outputText value="#{product.name}" />
+				</p:column>
+				<p:column headerText="Gyártó" sortBy="#{product.producer}"
+					filterBy="#{product.producer}">
+					<h:outputText value="#{product.producer}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton id="newProduct" value="Új termék" title="Save"
+					type="button" onclick="PF('create').show()">
+			</p:commandButton>
+		</h:form>
+		
+		<p:dialog id="createProduct" widgetVar="create" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="Termék hozzáadás">
+				<h:form id="dialogFormCreateProduct">
+
+					<p:outputPanel id="whDetail" style="text-align:left;">
+						<p:panelGrid columns="2" columnClasses="label,value">
+
+							<h:outputText value="Név" />
+							<p:inputText id="nameInput" required="true" value="#{productsView.name}" />
+
+							<h:outputText value="Gyártó" />
+							<p:inputText id="producerInput" required="true" value="#{productsView.producer}" />
+
+							<h:outputText value="Típus" />
+							<p:inputText id="typeInput" required="true"
+								value="#{productsView.type}" />
+
+							<h:outputText value="Leírás" />
+							<p:inputText id="descrInput" required="true"
+								value="#{productsView.description}" />
+
+						</p:panelGrid>
+						<!-- -->
+						<div align="center" style="margin-top: 10px;">
+							<p:commandButton id="saveProduct" value="Mentés"
+								action="#{productsView.save()}" icon="ui-icon-check"
+								update="createProduct,form:productTable"
+								oncomplete="PF('create').hide();" />
+						</div> 
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+		
+		<p:dialog header="Dolgozó adatai" widgetVar="workerDialog" id="workerDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<h:form id="updateWorkerForm">
+				<p:outputPanel id="workerDetail" style="text-align:center;">
+					<p:panelGrid columns="2"
+						rendered="#{not empty productsView.selectedProduct}"
+						columnClasses="label,label">
+
+						<h:outputText value="Név:" />
+						<h:outputText value="#{productsView.selectedProduct.name}" />
+						
+						<h:outputText value="Gyártó:" />
+						<h:outputText value="#{productsView.selectedProduct.producer}" />
+						
+						<h:outputText value="Típus:" />
+						<h:outputText value="#{productsView.selectedProduct.type}" />
+						
+						<h:outputText value="Leírás:" />
+						<h:outputText value="#{productsView.selectedProduct.description}" />
+
+					</p:panelGrid>
+
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+
+
+		</p:panel>
+	</ui:define>
+</ui:composition>
