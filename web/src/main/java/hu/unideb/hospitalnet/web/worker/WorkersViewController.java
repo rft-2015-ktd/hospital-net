@@ -1,7 +1,9 @@
 package hu.unideb.hospitalnet.web.worker;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import hu.unideb.hospitalnet.service.RoleManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
 import hu.unideb.hospitalnet.vo.RoleVo;
+import hu.unideb.hospitalnet.vo.TimeTableVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 @ViewScoped
@@ -38,6 +41,9 @@ public class WorkersViewController implements Serializable {
 
 	private String newPassword;
 	private String newPassword2;
+
+	private Date timeTableFrom;
+	private Date timeTableTo;
 
 	public void onRowSelect(SelectEvent e) {
 		selectedWorker = (WorkerVo) e.getObject();
@@ -63,6 +69,39 @@ public class WorkersViewController implements Serializable {
 			requestContext.update("workerDialog");
 			requestContext.update("form:workerTable");
 		}
+	}
+
+	public void saveTimeTable() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (selectedWorker == null) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nincs dolgozó kiválasztva!"));
+			return;
+		}
+
+		if (timeTableTo.before(timeTableFrom)) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!",
+					"A kezdés nem lehet később, mint a befejezés"));
+			return;
+		}
+
+		TimeTableVo newTimeTable = new TimeTableVo();
+		newTimeTable.setFrom(timeTableFrom);
+		newTimeTable.setTo(timeTableTo);
+
+		List<TimeTableVo> timeTables = selectedWorker.getTimeTables();
+		if (timeTables == null) {
+			timeTables = new ArrayList<>();
+			selectedWorker.setTimeTables(timeTables);
+		}
+
+		timeTables.add(newTimeTable);
+
+		workerManager.saveWorker(selectedWorker);
+
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("timetableDialog");
+		requestContext.update("form:workerTable");
 	}
 
 	private boolean validateUpdate() {
@@ -156,6 +195,22 @@ public class WorkersViewController implements Serializable {
 
 	public void setNewPassword2(String newPassword2) {
 		this.newPassword2 = newPassword2;
+	}
+
+	public Date getTimeTableFrom() {
+		return timeTableFrom;
+	}
+
+	public void setTimeTableFrom(Date timeTableFrom) {
+		this.timeTableFrom = timeTableFrom;
+	}
+
+	public Date getTimeTableTo() {
+		return timeTableTo;
+	}
+
+	public void setTimeTableTo(Date timeTableTo) {
+		this.timeTableTo = timeTableTo;
 	}
 
 }

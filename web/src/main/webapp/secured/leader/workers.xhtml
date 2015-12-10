@@ -41,7 +41,8 @@
 				disabled="#{workersView.selectedWorker == null}" />
 
 			<p:commandButton id="assignWorkerButton" value="Beosztás"
-				type="button" disabled="true" />
+				type="button" onclick="PF('timetableDialog').show();"
+				disabled="#{workersView.selectedWorker == null}" />
 		</h:form>
 
 		<p:dialog header="Dolgozó adatai" widgetVar="workerDialog"
@@ -96,5 +97,46 @@
 			</h:form>
 		</p:dialog>
 
+		<p:dialog header="Dolgozó beosztása" widgetVar="timetableDialog"
+			id="timetableDialog" modal="true" showEffect="fade" hideEffect="fade"
+			resizable="false">
+			<h:form>
+				<p:messages id="ttMessages" showDetail="true" closable="true" />
+				<p:outputPanel id="ttDetail" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:row>
+							<p:column colspan="2">
+								<h:outputText value="#{workersView.selectedWorker.name}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:calendar id="ttFrom" value="#{workersView.timeTableFrom}"
+									pattern="yyyy.MM.dd HH:mm:ss" mode="popup">
+									<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss"
+										timeZone="GMT+1" />
+								</p:calendar>
+							</p:column>
+							<p:column>
+								<p:calendar id="ttTo" value="#{workersView.timeTableTo}"
+									pattern="yyyy.MM.dd HH:mm:ss" mode="popup">
+									<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss"
+										timeZone="GMT+1" />
+								</p:calendar>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:commandButton value="Mentés" update="ttMessages"
+									actionListener="#{workersView.saveTimeTable}" />
+							</p:column>
+							<p:column>
+								<p:commandButton value="Mégsem" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>
