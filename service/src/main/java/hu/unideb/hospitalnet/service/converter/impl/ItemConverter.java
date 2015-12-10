@@ -10,7 +10,9 @@ import hu.unideb.hospitalnet.core.entity.Item;
 import hu.unideb.hospitalnet.service.converter.Converter;
 import hu.unideb.hospitalnet.vo.ItemVo;
 
-public class ItemConverter implements Converter<Item, ItemVo>{
+public class ItemConverter implements Converter<Item, ItemVo> {
+
+	private static final long serialVersionUID = 1L;
 
 	private static Mapper mapper = new DozerBeanMapper();
 
@@ -41,5 +43,5 @@ public class ItemConverter implements Converter<Item, ItemVo>{
 		}
 		return res;
 	}
-	
+
 }

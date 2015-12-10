@@ -12,6 +12,8 @@ import hu.unideb.hospitalnet.vo.WorkerVo;
 
 public class WorkerConverter implements Converter<Worker, WorkerVo> {
 
+	private static final long serialVersionUID = 1L;
+
 	private static Mapper mapper = new DozerBeanMapper();
 
 	@Override

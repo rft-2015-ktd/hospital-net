@@ -12,6 +12,8 @@ import hu.unideb.hospitalnet.vo.TimeTableVo;
 
 public class TimeTableConverter implements Converter<TimeTable, TimeTableVo> {
 
+	private static final long serialVersionUID = 1L;
+
 	private static Mapper mapper = new DozerBeanMapper();
 
 	@Override

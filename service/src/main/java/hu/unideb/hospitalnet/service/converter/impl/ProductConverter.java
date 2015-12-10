@@ -10,10 +10,12 @@ import hu.unideb.hospitalnet.core.entity.Product;
 import hu.unideb.hospitalnet.service.converter.Converter;
 import hu.unideb.hospitalnet.vo.ProductVo;
 
-public class ProductConverter implements Converter<Product, ProductVo>{
+public class ProductConverter implements Converter<Product, ProductVo> {
+
+	private static final long serialVersionUID = 1L;
 
 	private static Mapper mapper = new DozerBeanMapper();
-	
+
 	@Override
 	public Product toEntity(ProductVo vo) {
 		return vo == null ? null : mapper.map(vo, Product.class);
