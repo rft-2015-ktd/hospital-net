@@ -26,6 +26,7 @@ call create_admin;
 ---
 
 ### BNO load to database
+```sql
 LOAD DATA INFILE 'C:\Users\\skot9\\Desktop\\bno\\bno2.csv' 
 IGNORE INTO TABLE `bno` FIELDS TERMINATED BY ';' ENCLOSED BY '"' 
 LINES TERMINATED BY '\r\n' IGNORE 1 LINES (`KOD10`,`bno_name`)
