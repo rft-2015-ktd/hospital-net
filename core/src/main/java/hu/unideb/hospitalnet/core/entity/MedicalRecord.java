@@ -1,9 +1,11 @@
 package hu.unideb.hospitalnet.core.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,7 +27,6 @@ public class MedicalRecord extends BaseEntity{
 	
 	@Column(name = "mcr_name")
 	private String name;
-	
 	
 
 	public Date getDate() {

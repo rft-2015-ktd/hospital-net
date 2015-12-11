@@ -1,9 +1,11 @@
 package hu.unideb.hospitalnet.web.patient;
 
 import hu.unideb.hospitalnet.service.BnoManager;
+import hu.unideb.hospitalnet.service.MedicalRecordBnoTableManager;
 import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.vo.BnoVo;
+import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
@@ -62,6 +64,10 @@ public class PatieentManagerContrler implements Serializable  {
 	@ManagedProperty("#{bnoManager}")
 	private BnoManager bnoManager;
 
+	
+	@ManagedProperty("#{medicalRecordBnoTableManager}")
+	private MedicalRecordBnoTableManager medicalRecordBnoTableManager;
+	
 	@PostConstruct
 	public void init() {
 		diagnostic = " ";
@@ -77,16 +83,20 @@ public class PatieentManagerContrler implements Serializable  {
 	public void updateMcr(){
 		selectedMcr.setDiag(diagnostic);
 		mcrService.save(selectedMcr);
+		
+		MedicalRecordBnoTableVo mcbt = new MedicalRecordBnoTableVo();
+		for (BnoVo bno : selectedBnos) {
+			mcbt.setBno(bno);
+			mcbt.setMcr(selectedMcr);
+			medicalRecordBnoTableManager.save(mcbt);
+		}
+	
+		
 	}
 	
 
 	public void onRowSelect(SelectEvent event) {
 		selectedPatient = (PatientVo) event.getObject();
-		name = selectedPatient.getName();
-		dateOfBirth = selectedPatient.getDateOfBirth();
-		ssn = selectedPatient.getSsn();
-		idNumber = selectedPatient.getIdNumber();
-		id = selectedPatient.getId();
 		medicalRecords =  mcrService.findByPatientId(selectedPatient.getId());
 		medicalRecords.size();
 		
@@ -100,6 +110,15 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	
 	
+
+	public MedicalRecordBnoTableManager getMedicalRecordBnoTableManager() {
+		return medicalRecordBnoTableManager;
+	}
+
+	public void setMedicalRecordBnoTableManager(
+			MedicalRecordBnoTableManager medicalRecordBnoTableManager) {
+		this.medicalRecordBnoTableManager = medicalRecordBnoTableManager;
+	}
 
 	public List<BnoVo> getSelectedBnos() {
 		return selectedBnos;
