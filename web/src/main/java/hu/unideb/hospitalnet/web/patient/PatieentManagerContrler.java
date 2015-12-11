@@ -65,10 +65,6 @@ public class PatieentManagerContrler implements Serializable  {
 		mcrService.save(selectedMcr);
 	}
 	
-	public void openMcr(){
-		
-	}
-
 
 	public void onRowSelect(SelectEvent event) {
 		selectedPatient = (PatientVo) event.getObject();
