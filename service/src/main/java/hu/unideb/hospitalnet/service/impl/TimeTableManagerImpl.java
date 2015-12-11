@@ -1,5 +1,8 @@
 package hu.unideb.hospitalnet.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,8 +25,14 @@ public class TimeTableManagerImpl implements TimeTableManager {
 
 	@Override
 	public Boolean hasCoveringTimeTable(Long workerId, TimeTableVo tt) {
-		TimeTable tte = timeTableDao.findByWorkerAndDate(workerId, tt.getFrom(), tt.getTo());
-		return tte != null;
+		List<TimeTable> tte = timeTableDao.findByWorkerAndDate(workerId, tt.getFrom(), tt.getTo());
+		return !tte.isEmpty();
+	}
+
+	@Override
+	public List<TimeTableVo> getTimeTablesBetweenDates(Long workerId, Date startDate, Date endDate) {
+		List<TimeTable> entities = timeTableDao.findByWorkerAndDate(workerId, startDate, endDate);
+		return converter.toVo(entities);
 	}
 
 	@Override
@@ -39,6 +48,11 @@ public class TimeTableManagerImpl implements TimeTableManager {
 		}
 
 		return tt.getId();
+	}
+
+	@Override
+	public void saveTimeTable(TimeTableVo tt) {
+		timeTableDao.save(converter.toEntity(tt));
 	}
 
 }

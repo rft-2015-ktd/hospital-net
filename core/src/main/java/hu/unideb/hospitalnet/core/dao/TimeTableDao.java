@@ -1,6 +1,7 @@
 package hu.unideb.hospitalnet.core.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,10 +16,10 @@ import hu.unideb.hospitalnet.core.entity.TimeTable;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface TimeTableDao extends JpaRepository<TimeTable, Long> {
 
-	@Query("select t from Worker w join w.timeTables t where t.id=(?1)"
+	@Query("select t from Worker w join w.timeTables t where w.id=(?1)"
 			+ " and ((t.from between ?2 and ?3) or (t.to between ?2 and ?3)"
 			+ " or (?2 between t.from and t.to) or (?3 between t.from and t.to) " + " or (t.from=?2) or (t.to=?3))")
-	TimeTable findByWorkerAndDate(Long workerId, Date dateStart, Date dateEnd);
+	List<TimeTable> findByWorkerAndDate(Long workerId, Date dateStart, Date dateEnd);
 
 	@Modifying
 	@Query(value = "INSERT INTO worker_times (worker_id, timetable_id) VALUES (?1,?2)", nativeQuery = true)
