@@ -15,10 +15,8 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import hu.unideb.hospitalnet.service.RoleManager;
-import hu.unideb.hospitalnet.service.TimeTableManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
 import hu.unideb.hospitalnet.vo.RoleVo;
-import hu.unideb.hospitalnet.vo.TimeTableVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 @ViewScoped
@@ -33,9 +31,6 @@ public class WorkersViewController implements Serializable {
 	@ManagedProperty("#{roleManager}")
 	private RoleManager roleManager;
 
-	@ManagedProperty("#{timeTableManager}")
-	private TimeTableManager timeTableManager;
-
 	@ManagedProperty("#{lazyWorkerModel}")
 	private LazyDataModel<WorkerVo> lazyWorkerModel;
 
@@ -44,11 +39,31 @@ public class WorkersViewController implements Serializable {
 	private String newPassword;
 	private String newPassword2;
 
-	private Date timeTableFrom;
-	private Date timeTableTo;
+	private String newRole;
+
+	private Boolean newWorker = null;
 
 	public void onRowSelect(SelectEvent e) {
 		selectedWorker = (WorkerVo) e.getObject();
+
+		newRole = roleManager.nameOfRole(selectedWorker.getRole());
+		newPassword = "";
+		newPassword2 = "";
+		newWorker = false;
+	}
+
+	public void onAddButtonClick() {
+		selectedWorker = new WorkerVo();
+
+		newRole = "";
+		newPassword = "";
+		newPassword2 = "";
+		newWorker = true;
+
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("updateWorkerForm:workerDetail");
+		requestContext.update("form:updateWorkerButton");
+		requestContext.execute("PF('workerDialogWidget').show();");
 	}
 
 	public String roleView(RoleVo role) {
@@ -56,7 +71,7 @@ public class WorkersViewController implements Serializable {
 	}
 
 	public void save() {
-		if (validateUpdate()) {
+		if (validateInput()) {
 
 			if (!newPassword.equals("")) {
 				BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -64,6 +79,9 @@ public class WorkersViewController implements Serializable {
 
 				selectedWorker.setPassword(encPassword);
 			}
+
+			RoleVo role = roleManager.getRoleByName("ROLE_" + newRole);
+			selectedWorker.setRole(role);
 
 			workerManager.saveWorker(selectedWorker);
 
@@ -73,59 +91,21 @@ public class WorkersViewController implements Serializable {
 		}
 	}
 
-	public void saveTimeTable() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		if (selectedWorker == null) {
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nincs dolgozó kiválasztva!"));
-			return;
-		}
-
-		if (timeTableTo.before(timeTableFrom)) {
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!",
-					"A kezdés nem lehet később, mint a befejezés"));
-			return;
-		}
-
-		TimeTableVo newTimeTable = new TimeTableVo();
-		newTimeTable.setFrom(timeTableFrom);
-		newTimeTable.setTo(timeTableTo);
-
-		if (timeTableManager.hasCoveringTimeTable(selectedWorker.getId(), newTimeTable)) {
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!",
-					"Átfedésben van a kiválasztott időtartam egy meglévővel!"));
-			return;
-		}
-
-		Long newId = timeTableManager.addTimeTableToWorker(selectedWorker.getId(), newTimeTable);
-
-		if (newId == null) {
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nem sikerült a beosztás hozzáadása!"));
-			return;
-		}
-
-		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("timetableDialog");
-		requestContext.update("form:workerTable");
-
-	}
-
-	private boolean validateUpdate() {
+	private boolean validateInput() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Boolean valid = true;
 		if (!validateDate()) {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Hibás dátum"));
 			valid = false;
 		}
+		if (newRole.equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A munkakör megadása kötelező!"));
+			valid = false;
+		}
 		if (!newPassword.equals(newPassword2)) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A megadott jelszó nem egyezik!"));
-			valid = false;
-		}
-		if (selectedWorker.getRole() == null) {
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Munkakör kiválasztása kötelező!"));
 			valid = false;
 		}
 		if (selectedWorker.getSsn().equals("")) {
@@ -141,6 +121,11 @@ public class WorkersViewController implements Serializable {
 		if (selectedWorker.getName().equals("")) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A dolgozó nevének megadása kötelező!"));
+			valid = false;
+		}
+		if (newWorker && (newPassword.equals("") || newPassword2.equals(""))) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Jelszó megadása kötelező!"));
 			valid = false;
 		}
 		return valid;
@@ -172,14 +157,6 @@ public class WorkersViewController implements Serializable {
 		this.roleManager = roleManager;
 	}
 
-	public LazyDataModel<WorkerVo> getLazyWorkerModel() {
-		return lazyWorkerModel;
-	}
-
-	public void setLazyWorkerModel(LazyDataModel<WorkerVo> lazyWorkerModel) {
-		this.lazyWorkerModel = lazyWorkerModel;
-	}
-
 	public WorkerVo getSelectedWorker() {
 		return selectedWorker;
 	}
@@ -204,28 +181,28 @@ public class WorkersViewController implements Serializable {
 		this.newPassword2 = newPassword2;
 	}
 
-	public Date getTimeTableFrom() {
-		return timeTableFrom;
+	public String getNewRole() {
+		return newRole;
 	}
 
-	public void setTimeTableFrom(Date timeTableFrom) {
-		this.timeTableFrom = timeTableFrom;
+	public void setNewRole(String newRole) {
+		this.newRole = newRole;
 	}
 
-	public Date getTimeTableTo() {
-		return timeTableTo;
+	public Boolean getNewWorker() {
+		return newWorker;
 	}
 
-	public void setTimeTableTo(Date timeTableTo) {
-		this.timeTableTo = timeTableTo;
+	public void setNewWorker(Boolean newWorker) {
+		this.newWorker = newWorker;
 	}
 
-	public TimeTableManager getTimeTableManager() {
-		return timeTableManager;
+	public LazyDataModel<WorkerVo> getLazyWorkerModel() {
+		return lazyWorkerModel;
 	}
 
-	public void setTimeTableManager(TimeTableManager timeTableManager) {
-		this.timeTableManager = timeTableManager;
+	public void setLazyWorkerModel(LazyDataModel<WorkerVo> lazyWorkerModel) {
+		this.lazyWorkerModel = lazyWorkerModel;
 	}
 
 }

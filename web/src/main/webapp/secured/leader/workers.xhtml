@@ -23,7 +23,7 @@
 				selection="#{workersView.selectedWorker}" id="workerTable"
 				lazy="true">
 				<p:ajax event="rowSelect" listener="#{workersView.onRowSelect}"
-					update="addTimeTableForm:ttDetail,updateWorkerForm:workerDetail,form:updateWorkerButton,form:assignWorkerButton" />
+					update="updateWorkerForm:workerDetail,form:updateWorkerButton" />
 				<p:column headerText="ID" sortBy="#{worker.id}">
 					<h:outputText value="#{worker.id}" />
 				</p:column>
@@ -36,16 +36,15 @@
 				</p:column>
 			</p:dataTable>
 
-			<p:commandButton id="updateWorkerButton" value="Módosítás"
-				type="button" onclick="PF('workerDialog').show();"
-				disabled="#{workersView.selectedWorker == null}" />
+			<p:commandButton id="addWorkerButton" value="Új dolgozó"
+				 actionListener="#{workersView.onAddButtonClick()}" />
 
-			<p:commandButton id="assignWorkerButton" value="Beosztás"
-				type="button" onclick="PF('timetableDialog').show();"
-				disabled="#{workersView.selectedWorker == null}" />
+			<p:commandButton id="updateWorkerButton" value="Módosítás"
+				type="button" onclick="PF('workerDialogWidget').show();"
+				disabled="#{workersView.selectedWorker == null or workersView.newWorker == true}" />
 		</h:form>
 
-		<p:dialog header="Dolgozó adatai" widgetVar="workerDialog"
+		<p:dialog header="Dolgozó adatai" widgetVar="workerDialogWidget"
 			id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
 			resizable="false">
 
@@ -53,19 +52,19 @@
 				<p:messages id="updateMsgs" showDetail="true" closable="true" />
 				<p:outputPanel id="workerDetail" style="text-align:center;">
 					<p:panelGrid columns="2"
-						rendered="#{not empty workersView.selectedWorker}"
+						rendered="#{not empty workersView.selectedWorker and workersView.newWorker != null}"
 						columnClasses="label,value">
 
 						<h:outputLabel id="outTxtUserNameId" value="Felhasználónév"
 							name="outTxtUserNameNm"></h:outputLabel>
-						<p:inputText id="userName" readonly="true"
+						<p:inputText id="userName" disabled="#{not workersView.newWorker}"
 							value="#{workersView.selectedWorker.username}" />
 
-						<h:outputLabel for="pwd1" value="Új jelszó" />
+						<h:outputLabel for="pwd1" value="Jelszó" />
 						<p:password id="pwd1" value="#{workersView.newPassword}"
 							label="Password 1" />
 
-						<h:outputLabel for="pwd2" value="Új jelszó ismét" />
+						<h:outputLabel for="pwd2" value="Jelszó ismét" />
 						<p:password id="pwd2" value="#{workersView.newPassword2}"
 							label="Password 2" />
 
@@ -87,6 +86,16 @@
 							<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
 						</p:calendar>
 
+						<h:outputLabel for="roleSelecter" value="Munkakör" />
+						<p:selectOneListbox id="roleSelecter"
+							value="#{workersView.newRole}">
+							<f:selectItem itemLabel="Vezető" itemValue="LEADER" />
+							<f:selectItem itemLabel="Orvos" itemValue="DOCTOR" />
+							<f:selectItem itemLabel="Recepciós" itemValue="RECEPTIONIST" />
+							<f:selectItem itemLabel="Raktárfelügyelő"
+								itemValue="WAREHOUSEMANAGER" />
+						</p:selectOneListbox>
+
 					</p:panelGrid>
 					<div align="center" style="margin-top: 10px;">
 						<p:commandButton id="saveWorker" value="Mentés"
@@ -97,47 +106,5 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog header="Dolgozó beosztása" widgetVar="timetableDialog"
-			id="timetableDialog" modal="true" showEffect="fade" hideEffect="fade"
-			resizable="false">
-			<h:form id="addTimeTableForm">
-				<p:messages id="ttMessages" showDetail="true" closable="true" />
-				<p:outputPanel id="ttDetail" style="text-align:center;">
-					<p:panelGrid>
-						<p:row>
-							<p:column colspan="2">
-								<h:outputText value="#{workersView.selectedWorker.name}" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:calendar id="ttFrom" value="#{workersView.timeTableFrom}"
-									pattern="yyyy.MM.dd HH:mm:ss" mode="popup">
-									<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss"
-										timeZone="GMT+1" />
-								</p:calendar>
-							</p:column>
-							<p:column>
-								<p:calendar id="ttTo" value="#{workersView.timeTableTo}"
-									pattern="yyyy.MM.dd HH:mm:ss" mode="popup">
-									<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss"
-										timeZone="GMT+1" />
-								</p:calendar>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:commandButton value="Mentés" update="ttMessages"
-									actionListener="#{workersView.saveTimeTable}" />
-							</p:column>
-							<p:column>
-								<p:commandButton value="Mégsem"
-									onclick="PF('timetableDialog').hide();" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
-				</p:outputPanel>
-			</h:form>
-		</p:dialog>
 	</ui:define>
 </ui:composition>
