@@ -31,8 +31,8 @@ public class PatientManagerImpl implements PatientManager, Serializable {
 	PatientConverter converter = new PatientConverter();
 
 	@Override
-	public void savePatient(PatientVo patient) {
-		patientDao.save(converter.toEntity(patient));
+	public PatientVo savePatient(PatientVo patient) {
+		return converter.toVo(patientDao.save(converter.toEntity(patient)));
 
 	}
 

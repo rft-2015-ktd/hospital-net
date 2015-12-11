@@ -1,0 +1,83 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Patient Managment</ui:define>
+	<ui:define name="content">
+
+
+		<p:panel header="Betegkezelés">
+			<h:form id="form">
+
+				<!-- Ez itt a tabla -->
+				<p:dataTable id="patientTable" var="patient"
+					value="#{patientreg.lazyModel}" emptyMessage="Nincs beteg"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="5"
+					selectionMode="single" selection="#{patientreg.selectedPatient}">
+
+					<f:facet name="header">
+						<h:outputText value="Betegek" />
+					</f:facet>
+
+					<p:ajax event="rowSelect" listener="#{patienmanager.onRowSelect}"
+						update="" />
+
+					<p:column headerText="Név" sortBy="#{patient.name}"
+						filterBy="#{patient.name}">
+						<h:outputText value="#{patient.name}" />
+					</p:column>
+
+					<p:column headerText="TAJ" sortBy="#{patient.ssn}"
+						filterBy="#{patient.ssn}">
+						<h:outputText value="#{patient.ssn}" />
+					</p:column>
+
+					<p:column headerText="Személyi szám" sortBy="#{patient.idNumber}"
+						filterBy="#{patient.idNumber}">
+						<h:outputText value="#{patient.idNumber}" />
+					</p:column>
+
+					<p:column headerText="Születési dátum ">
+						<h:outputText value="#{patient.dateOfBirth}" />
+					</p:column>
+
+					<p:column headerText="Státusz" sortBy="#{patient.status}"
+						filterBy="#{patient.status}">
+						<h:outputText value="#{patient.status}" />
+					</p:column>
+				</p:dataTable>
+
+
+				<p:commandButton id="update" value="Kórlapok" title="Mcr"
+					type="button" onclick="PF('mcr').show()">
+				</p:commandButton>
+			</h:form>
+
+			<p:dialog id="McrDialog" widgetVar="mcr" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="">
+				<h:form id="dialogFormMcr">
+
+					<p:outputPanel id="whDetail" style="text-align:left;">
+						<p:panelGrid columns="2" columnClasses="label,value">
+
+						</p:panelGrid>
+						
+						<div align="center" style="margin-top: 10px;">
+							<p:commandButton id="updateMcr" value="Frissités"
+								action="#{patienmanager.mcrUpdate()}" icon="ui-icon-check"
+								oncomplete="PF('updateMcr').hide();" />
+						</div>
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -9,6 +9,7 @@
 		<class>hu.unideb.hospitalnet.core.entity.BaseEntity</class>
 		<class>hu.unideb.hospitalnet.core.entity.Bno</class>
 		<class>hu.unideb.hospitalnet.core.entity.Item</class>
+		<class>hu.unideb.hospitalnet.core.entity.MedicalRecord</class>
 		<class>hu.unideb.hospitalnet.core.entity.Patient</class>
 		<class>hu.unideb.hospitalnet.core.entity.Product</class>
 		<class>hu.unideb.hospitalnet.core.entity.Role</class>

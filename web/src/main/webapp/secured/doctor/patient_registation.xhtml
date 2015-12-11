@@ -28,7 +28,7 @@
 					</f:facet>
 
 					<p:ajax event="rowSelect" listener="#{patientreg.onRowSelect}"
-						update="UpdatepatientDialog,form:update,form:dismiss" />
+						update="UpdatepatientDialog,form:update" />
 
 					<p:column headerText="Név" sortBy="#{patient.name}"
 						filterBy="#{patient.name}">
@@ -49,11 +49,6 @@
 						<h:outputText value="#{patient.dateOfBirth}" />
 					</p:column>
 
-					<p:column headerText="Kórlap" sortBy="#{patient.diagnostic}"
-						filterBy="#{patient.diagnostic}">
-						<h:outputText value="#{patient.diagnostic}" escape="false" />
-					</p:column>
-
 					<p:column headerText="Státusz" sortBy="#{patient.status}"
 						filterBy="#{patient.status}">
 						<h:outputText value="#{patient.status}" />
@@ -66,15 +61,12 @@
 					type="button" onclick="PF('create').show()">
 				</p:commandButton>
 
-				<p:commandButton id="update" value="Beteg frissitése" title="Update"
+				<p:commandButton id="update" value="Beteg újrafelvétele" title="Update"
 					type="button" onclick="PF('update').show()"
 					disabled="#{patientreg.selectedPatient == null}">
 				</p:commandButton>
 
-				<p:commandButton value="Beteg elbocsájtás" id="dismiss"
-					update="growl,patientTable" actionListener="#{patientreg.dismiss}"
-					disabled="#{patientreg.selectedPatient == null}" />
-
+			
 
 
 			</h:form>

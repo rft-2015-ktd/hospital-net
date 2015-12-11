@@ -1,6 +1,8 @@
 package hu.unideb.hospitalnet.web.patient;
 
+import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.PatientManager;
+import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
 import java.io.Serializable;
@@ -20,7 +22,7 @@ import org.primefaces.model.LazyDataModel;
 
 @ManagedBean(name = "patientreg")
 @ViewScoped
-public class PatientManagerControler implements Serializable {
+public class PatientREgistationControler implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,6 +46,9 @@ public class PatientManagerControler implements Serializable {
 
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;
+	
+	@ManagedProperty("#{medicalRecordManager}")
+	private MedicalRecordManager mcrService;
 
 	@PostConstruct
 	public void init() {
@@ -60,7 +65,11 @@ public class PatientManagerControler implements Serializable {
 			patientVo.setIdNumber(idNumber);
 			patientVo.setSsn(ssn);
 			patientVo.setStatus("aktív");
-			service.savePatient(patientVo);
+			patientVo = service.savePatient(patientVo);
+			MedicalRecordVo mcr = new MedicalRecordVo();
+			mcr.setDiag(diagnostic);
+			mcr.setPatient(patientVo);
+			mcrService.save(mcr);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
@@ -89,29 +98,16 @@ public class PatientManagerControler implements Serializable {
 		selectedPatient.setStatus("aktív");
 		selectedPatient.setId(upId);
 		service.savePatient(selectedPatient);
+		MedicalRecordVo mcr = new MedicalRecordVo();
+		mcr.setDiag(diagnostic);
+		mcr.setPatient(selectedPatient);
+		mcrService.save(mcr);
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
 						"Save: " + selectedPatient.getName()));
 	}
 	
-	public void dismiss(ActionEvent actionEvent) {
-		try {
-			selectedPatient.setStatus("elbocsajtva");
-			service.savePatient(selectedPatient);
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
-							"Save: " + selectedPatient.getName()));
-		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
-							"Save"));
-			e.getMessage();
-			e.printStackTrace();
-		}
-	}
 	
 
 	public void onRowSelect(SelectEvent event) {
@@ -126,6 +122,14 @@ public class PatientManagerControler implements Serializable {
 	}
 	
 	
+
+	public MedicalRecordManager getMcrService() {
+		return mcrService;
+	}
+
+	public void setMcrService(MedicalRecordManager mcrService) {
+		this.mcrService = mcrService;
+	}
 
 	public Long getUpId() {
 		return upId;
