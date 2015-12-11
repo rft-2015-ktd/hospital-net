@@ -37,7 +37,7 @@ public class PatieentManagerContrler implements Serializable  {
 	private	 PatientVo selectedPatient;
 	private MedicalRecordVo selectedMcr;
 	
-	private List<BnoVo> bnos;
+	private List<BnoVo> selectedBnos;
 	private Collection<String> bnosNames;
 
 
@@ -92,10 +92,22 @@ public class PatieentManagerContrler implements Serializable  {
 		
 	}
 	
+	public void addBnoToMcr() {
+		for (BnoVo string : selectedBnos) {
+			diagnostic += " " + string.getKod10();
+		}
+	}
 	
 	
 	
-	
+
+	public List<BnoVo> getSelectedBnos() {
+		return selectedBnos;
+	}
+
+	public void setSelectedBnos(List<BnoVo> selectedBnos) {
+		this.selectedBnos = selectedBnos;
+	}
 
 	public LazyDataModel<BnoVo> getLazyBnoModel() {
 		return lazyBnoModel;
@@ -114,11 +126,11 @@ public class PatieentManagerContrler implements Serializable  {
 	}
 
 	public List<BnoVo> getBnos() {
-		return bnos;
+		return selectedBnos;
 	}
 
 	public void setBnos(List<BnoVo> bnos) {
-		this.bnos = bnos;
+		this.selectedBnos = bnos;
 	}
 
 	public BnoManager getBnoManager() {

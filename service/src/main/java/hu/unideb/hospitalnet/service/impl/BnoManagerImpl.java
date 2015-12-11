@@ -8,6 +8,7 @@ import hu.unideb.hospitalnet.service.converter.impl.BnoConverter;
 import hu.unideb.hospitalnet.vo.BnoVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("bnoManager")
 @Transactional(propagation = Propagation.REQUIRED)
-public class BnoManagerImpl implements BnoManager {
+public class BnoManagerImpl implements BnoManager, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	BnoDao bnoDao;
@@ -59,9 +62,9 @@ public class BnoManagerImpl implements BnoManager {
 		Page<Bno> entities;
 
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
-			entities = bnoDao.findByNameStartsWith(filter, pageRequest);
+			entities = bnoDao.findByNameContaining(filter, pageRequest);
 		} else if (filter.length() != 0 && filterColumnName.equals("kod10")) {
-			entities = bnoDao.findByKod10StartsWith(filter, pageRequest);
+			entities = bnoDao.findByKod10Containing(filter, pageRequest);
 		} else {
 			entities = bnoDao.findAll(pageRequest);
 		}

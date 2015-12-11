@@ -96,30 +96,37 @@
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
 
 				<h:form id="edit">
-					<p:panelGrid columns="2" columnClasses="label,value">
+					<p:panelGrid columns="1" columnClasses="label,value">
 						<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
 							value="#{patienmanager.diagnostic}" />
 
+
+						<p:commandButton id="addBno" value="Bno hozzáadása"
+						action="#{patienmanager.addBnoToMcr()}"
+						update="editor"/>
+						
+						<p:dataTable id="bnoTable" var="bno"
+							value="#{patienmanager.lazyBnoModel}" emptyMessage="Nincs bno"
+							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+							rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
+							rows="5" selection="#{patienmanager.selectedBnos}">
+							<p:column selectionMode="multiple"
+								style="width:16px;text-align:center" />
+							<p:column headerText="Kód" filterBy="#{bno.kod10}"
+								sortBy="#{bno.kod10}">
+								<h:outputText value="#{bno.kod10}" />
+							</p:column>
+
+							<p:column headerText="Név" filterBy="#{bno.name}"
+								sortBy="#{bno.name}">
+								<h:outputText value="#{bno.name}" />
+							</p:column>
+
+
+
+
+						</p:dataTable>
 					</p:panelGrid>
-
-					<p:dataTable id="bnoTable" var="bno"
-						value="#{patienmanager.lazyBnoModel}" emptyMessage="Nincs bno"
-						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-						rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
-						rows="5" selectionMode="single">
-
-						<p:column headerText="Kód">
-							<h:outputText value="#{bno.kod10}" />
-						</p:column>
-
-						<p:column headerText="Név">
-							<h:outputText value="#{bno.name}" />
-						</p:column>
-
-
-
-
-					</p:dataTable>
 
 
 

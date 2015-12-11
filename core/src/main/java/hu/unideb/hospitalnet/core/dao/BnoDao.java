@@ -15,8 +15,8 @@ public interface BnoDao extends JpaRepository<Bno, Long> {
 	@Query("SELECT name FROM Bno")
 	public List<String> findBnoName();
 
-	public Page<Bno> findByNameStartsWith(String filter,Pageable pageable);
+	public Page<Bno> findByNameContaining(String filter,Pageable pageable);
 
-	public Page<Bno> findByKod10StartsWith(String filter,Pageable pageable);
+	public Page<Bno> findByKod10Containing(String filter,Pageable pageable);
 
 }
