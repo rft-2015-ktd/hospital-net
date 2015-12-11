@@ -24,8 +24,6 @@ public class Patient extends BaseEntity{
 	@Column(name = "dob")
 	private Date dateOfBirth;
 
-	@Column(name = "diagnostic")
-	private String diagnostic;
 	
 	@Column(name = "status")
 	private String status;
@@ -73,14 +71,6 @@ public class Patient extends BaseEntity{
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getDiagnostic() {
-		return diagnostic;
-	}
-
-	public void setDiagnostic(String diagnostic) {
-		this.diagnostic = diagnostic;
-	}
-	
 	
 
 }

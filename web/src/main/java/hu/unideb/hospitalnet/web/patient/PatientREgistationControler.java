@@ -61,7 +61,6 @@ public class PatientREgistationControler implements Serializable {
 			PatientVo patientVo = new PatientVo();
 			patientVo.setName(name);
 			patientVo.setDateOfBirth(dateOfBirth);
-			patientVo.setDiagnostic(diagnostic);
 			patientVo.setIdNumber(idNumber);
 			patientVo.setSsn(ssn);
 			patientVo.setStatus("aktív");
@@ -94,7 +93,6 @@ public class PatientREgistationControler implements Serializable {
 	public void update() {
 		selectedPatient.setName(upname);
 		selectedPatient.setDateOfBirth(updateOfBirth);
-		selectedPatient.setDiagnostic(updiagnostic);
 		selectedPatient.setIdNumber(upidNumber);
 		selectedPatient.setSsn(upssn);
 		selectedPatient.setStatus("aktív");
@@ -120,7 +118,6 @@ public class PatientREgistationControler implements Serializable {
 		updateOfBirth = selectedPatient.getDateOfBirth();
 		upssn = selectedPatient.getSsn();
 		upidNumber = selectedPatient.getIdNumber();
-		updiagnostic = selectedPatient.getDiagnostic();
 		upId = selectedPatient.getId();
 
 	}

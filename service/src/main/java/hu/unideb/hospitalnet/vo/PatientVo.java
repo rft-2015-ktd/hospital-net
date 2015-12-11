@@ -17,7 +17,6 @@ public class PatientVo implements Serializable{
 
 	private Date dateOfBirth;
 
-	private String diagnostic;
 
 	private String status;
 	
@@ -69,14 +68,6 @@ public class PatientVo implements Serializable{
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getDiagnostic() {
-		return diagnostic;
-	}
-
-	public void setDiagnostic(String diagnostic) {
-		this.diagnostic = diagnostic;
 	}
 
 }

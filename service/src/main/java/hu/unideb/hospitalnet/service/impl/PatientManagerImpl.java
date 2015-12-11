@@ -56,9 +56,7 @@ public class PatientManagerImpl implements PatientManager, Serializable {
 			entities = patientDao.findBySsnStartsWith(filter, pageRequest);
 		} else if (filter.length() != 0 && filterColumnName.equals("idNumber")) {
 			entities = patientDao.findByIdNumberStartsWith(filter, pageRequest);
-		} else if (filter.length() != 0 && filterColumnName.equals("diagnostic")) {
-			entities = patientDao.findByDiagnosticContaining(filter, pageRequest);
-		} else if (filter.length() != 0 && filterColumnName.equals("status")) {
+		}  else if (filter.length() != 0 && filterColumnName.equals("status")) {
 			entities = patientDao.findByStatusStartsWith(filter, pageRequest);
 		}else {
 			entities = patientDao.findAll(pageRequest);

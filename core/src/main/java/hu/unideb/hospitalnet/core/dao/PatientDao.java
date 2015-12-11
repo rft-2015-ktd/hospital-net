@@ -21,7 +21,6 @@ public interface PatientDao extends JpaRepository<Patient, Long>  {
 	
 	Page<Patient>findByDateOfBirthContaining(String filter,Pageable pageable);
 	
-	Page<Patient>findByDiagnosticContaining(String filter,Pageable pageable);
 	
 	Page<Patient>findByStatusStartsWith(String filter,Pageable pageable);
 
