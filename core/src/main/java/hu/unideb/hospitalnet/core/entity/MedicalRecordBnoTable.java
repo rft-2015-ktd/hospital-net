@@ -11,10 +11,10 @@ public class MedicalRecordBnoTable extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	MedicalRecord mcr;
+	private MedicalRecord mcr;
 	
 	@ManyToOne
-	Bno bno;
+	private Bno bno;
 
 	public MedicalRecord getMcr() {
 		return mcr;

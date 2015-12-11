@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class MedicalRecordBnoTableManagerImpl implements MedicalRecordBnoTableManager{
 	
 	@Autowired
-	MedicalRecordBnoTableDao medicalRecordBnoTableManager;
+	private MedicalRecordBnoTableDao medicalRecordBnoTableManager;
 	
-	MedicalRecordBnoTableManagerConverter converter = new MedicalRecordBnoTableManagerConverter();
+	private MedicalRecordBnoTableManagerConverter converter = new MedicalRecordBnoTableManagerConverter();
 
 	@Override
 	public void save(MedicalRecordBnoTableVo mcrbno) {

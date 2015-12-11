@@ -26,9 +26,9 @@ public class PatientREgistationControler implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	List<PatientVo> patients;
-	LazyDataModel<PatientVo> lazyModel;
-	PatientVo selectedPatient;
+	private List<PatientVo> patients;
+	private LazyDataModel<PatientVo> lazyModel;
+	private PatientVo selectedPatient;
 
 	private String name;
 	private String ssn;

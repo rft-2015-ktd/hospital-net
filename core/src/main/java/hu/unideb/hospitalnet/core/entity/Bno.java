@@ -11,10 +11,10 @@ public class Bno extends BaseEntity{
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "kod10")
-	String kod10;
+	private String kod10;
 	
 	@Column(name = "bno_name")
-	String name;
+	private String name;
 
 	public String getKod10() {
 		return kod10;

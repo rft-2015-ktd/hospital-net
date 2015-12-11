@@ -15,8 +15,6 @@
 
 		<p:panel header="Betegkezelés">
 
-
-			<!-- Ez itt a tabla -->
 			<p:dataTable id="patientTable" var="patient"
 				value="#{patientreg.lazyModel}" emptyMessage="Nincs beteg"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -63,6 +61,9 @@
 
 			<p:dialog id="McrDialog" widgetVar="mcr" modal="true"
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
+					<f:facet name="header">
+							<h:outputText value="Kórlapok" />
+						</f:facet>
 				<h:form id="dialogFormMcr">
 
 					<p:outputPanel id="mcrDetail" style="text-align:left;">
@@ -74,10 +75,17 @@
 								style="margin-bottom:0"
 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 								rowsPerPageTemplate="5,10,15" paginator="true" rows="5">
+								<f:facet name="header">
+									<h:outputText value="Kórlapok" />
+								</f:facet>
+
 								<p:column selectionMode="single"
 									style="width:16px;text-align:center" />
-								<p:column headerText="name">
+								<p:column headerText="Név">
 									<h:outputText value="#{mcr.name}" />
+								</p:column>
+								<p:column headerText="Dátum" sortBy="#{mcr.date}">
+									<h:outputText value="#{mcr.date}" />
 								</p:column>
 							</p:dataTable>
 						</p:panelGrid>
@@ -94,17 +102,22 @@
 
 			<p:dialog id="McrDialogOpen" widgetVar="mcrOpen" modal="true"
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
-
+				<f:facet name="header">
+					<h:outputText value="Kórlap szerkesztés" />
+				</f:facet>
 				<h:form id="edit">
 					<p:panelGrid columns="1" columnClasses="label,value">
+						<f:facet name="header">
+							<h:outputText value="Kórlap" />
+						</f:facet>
+
 						<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
 							value="#{patienmanager.diagnostic}" />
 
 
 						<p:commandButton id="addBno" value="Bno hozzáadása"
-						action="#{patienmanager.addBnoToMcr()}"
-						update="editor"/>
-						
+							action="#{patienmanager.addBnoToMcr()}" update="editor" />
+
 						<p:dataTable id="bnoTable" var="bno"
 							value="#{patienmanager.lazyBnoModel}" emptyMessage="Nincs bno"
 							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"

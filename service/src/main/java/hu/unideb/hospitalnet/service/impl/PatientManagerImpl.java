@@ -28,7 +28,7 @@ public class PatientManagerImpl implements PatientManager, Serializable {
 	@Autowired
 	private PatientDao patientDao;
 
-	PatientConverter converter = new PatientConverter();
+	private PatientConverter converter = new PatientConverter();
 
 	@Override
 	public PatientVo savePatient(PatientVo patient) {

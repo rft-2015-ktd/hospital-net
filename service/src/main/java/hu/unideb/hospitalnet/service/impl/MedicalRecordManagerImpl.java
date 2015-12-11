@@ -20,9 +20,9 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager, Serializa
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	MedicalRecordDao medicalRecordDao;
+	private MedicalRecordDao medicalRecordDao;
 	
-	MedicalRecordConverter converter = new MedicalRecordConverter();
+	private MedicalRecordConverter converter = new MedicalRecordConverter();
 
 	@Override
 	public List<MedicalRecordVo> findByPatientId(Long id) {

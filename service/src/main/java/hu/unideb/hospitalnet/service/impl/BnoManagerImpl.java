@@ -27,9 +27,9 @@ public class BnoManagerImpl implements BnoManager, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	BnoDao bnoDao;
+	private BnoDao bnoDao;
 	
-	BnoConverter converter = new BnoConverter();
+	private BnoConverter converter = new BnoConverter();
 	
 	@Override
 	public List<BnoVo> getAll() {
