@@ -3,6 +3,9 @@ package hu.unideb.hospitalnet.vo;
 import hu.unideb.hospitalnet.core.entity.Patient;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
 
 public class MedicalRecordVo implements Serializable{
 	
@@ -14,6 +17,34 @@ public class MedicalRecordVo implements Serializable{
 
 
 	private String diag;
+	
+	private Date date;
+	
+
+	private String name;
+	
+	
+	
+
+
+	public Date getDate() {
+		return date;
+	}
+
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 
 	public Long getId() {

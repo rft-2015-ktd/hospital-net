@@ -69,6 +69,8 @@ public class PatientREgistationControler implements Serializable {
 			MedicalRecordVo mcr = new MedicalRecordVo();
 			mcr.setDiag(diagnostic);
 			mcr.setPatient(patientVo);
+			mcr.setDate(new Date());
+			mcr.setName(patientVo.getName()+ " " + mcr.getDate());
 			mcrService.save(mcr);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -99,8 +101,10 @@ public class PatientREgistationControler implements Serializable {
 		selectedPatient.setId(upId);
 		service.savePatient(selectedPatient);
 		MedicalRecordVo mcr = new MedicalRecordVo();
-		mcr.setDiag(diagnostic);
+		mcr.setDiag(updiagnostic);
 		mcr.setPatient(selectedPatient);
+		mcr.setDate(new Date());
+		mcr.setName(selectedPatient.getName() + "" + mcr.getDate());
 		mcrService.save(mcr);
 		FacesContext.getCurrentInstance().addMessage(
 				null,

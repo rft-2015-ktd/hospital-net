@@ -1,5 +1,6 @@
 package hu.unideb.hospitalnet.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 
 @Service("medicalRecordManager")
 @Component
-public class MedicalRecordManagerImpl implements MedicalRecordManager{
+public class MedicalRecordManagerImpl implements MedicalRecordManager, Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	MedicalRecordDao medicalRecordDao;
 	

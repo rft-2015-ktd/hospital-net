@@ -30,6 +30,7 @@ public class PatieentManagerContrler implements Serializable  {
 	List<PatientVo> patients;
 	LazyDataModel<PatientVo> lazyModel;
 	PatientVo selectedPatient;
+	MedicalRecordVo selectedMcr;
 
 	private String name;
 	private String ssn;
@@ -37,6 +38,8 @@ public class PatieentManagerContrler implements Serializable  {
 	private Date dateOfBirth;
 	private String diagnostic;
 	private Long id;
+	
+	List<MedicalRecordVo> medicalRecords;
 	
 
 
@@ -54,24 +57,51 @@ public class PatieentManagerContrler implements Serializable  {
 	}
 
 	public void mcrUpdate() {
-		List<MedicalRecordVo> ads = mcrService.findByPatientId(selectedPatient.getId());
-	
+		diagnostic = selectedMcr.getDiag();
 	}
 	
+	public void updateMcr(){
+		selectedMcr.setDiag(diagnostic);
+		mcrService.save(selectedMcr);
+	}
+	
+	public void openMcr(){
+		
+	}
 
 
 	public void onRowSelect(SelectEvent event) {
-		
 		selectedPatient = (PatientVo) event.getObject();
 		name = selectedPatient.getName();
 		dateOfBirth = selectedPatient.getDateOfBirth();
 		ssn = selectedPatient.getSsn();
 		idNumber = selectedPatient.getIdNumber();
 		id = selectedPatient.getId();
-
+		medicalRecords =  mcrService.findByPatientId(selectedPatient.getId());
+		medicalRecords.size();
+		
 	}
 	
 	
+	
+	
+	
+
+	public MedicalRecordVo getSelectedMcr() {
+		return selectedMcr;
+	}
+
+	public void setSelectedMcr(MedicalRecordVo selectedMcr) {
+		this.selectedMcr = selectedMcr;
+	}
+
+	public List<MedicalRecordVo> getMedicalRecords() {
+		return medicalRecords;
+	}
+
+	public void setMedicalRecords(List<MedicalRecordVo> medicalRecords) {
+		this.medicalRecords = medicalRecords;
+	}
 
 	public MedicalRecordManager getMcrService() {
 		return mcrService;

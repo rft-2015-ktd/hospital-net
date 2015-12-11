@@ -28,7 +28,7 @@
 					</f:facet>
 
 					<p:ajax event="rowSelect" listener="#{patienmanager.onRowSelect}"
-						update="" />
+						update="McrDialog" />
 
 					<p:column headerText="Név" sortBy="#{patient.name}"
 						filterBy="#{patient.name}">
@@ -65,18 +65,46 @@
 				showEffect="fade" hideEffect="fade" resizable="false" header="">
 				<h:form id="dialogFormMcr">
 
-					<p:outputPanel id="whDetail" style="text-align:left;">
+					<p:outputPanel id="mcrDetail" style="text-align:left;">
 						<p:panelGrid columns="2" columnClasses="label,value">
 
+							<p:dataTable id="mcrTable" var="mcr"
+								value="#{patienmanager.medicalRecords}"
+								selection="#{patienmanager.selectedMcr}" rowKey="#{mcr.name}"
+								style="margin-bottom:0"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+								rowsPerPageTemplate="5,10,15" paginator="true"
+								rows="5">
+								<p:column selectionMode="single"
+									style="width:16px;text-align:center" />
+								<p:column headerText="name">
+									<h:outputText value="#{mcr.name}" />
+								</p:column>
+							</p:dataTable>
 						</p:panelGrid>
-						
+
 						<div align="center" style="margin-top: 10px;">
-							<p:commandButton id="updateMcr" value="Frissités"
-								action="#{patienmanager.mcrUpdate()}" icon="ui-icon-check"
-								oncomplete="PF('updateMcr').hide();" />
+							<p:commandButton id="updateMcr" value="Megnyitás"
+								action="#{patienmanager.mcrUpdate()}"
+								onclick="PF('mcrOpen').show()" icon="ui-icon-check"
+								update="editor" />
 						</div>
 					</p:outputPanel>
 				</h:form>
+			</p:dialog>
+
+			<p:dialog id="McrDialogOpen" widgetVar="mcrOpen" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="">
+
+
+				<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
+					value="#{patienmanager.diagnostic}" />
+
+
+				<p:commandButton id="updateMcr" value="Mentés"
+					action="#{patienmanager.updateMcr()}" />
+
+
 			</p:dialog>
 		</p:panel>
 	</ui:define>

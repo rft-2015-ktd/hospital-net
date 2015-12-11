@@ -25,6 +25,24 @@ public class MedicalRecord extends BaseEntity{
 	
 	@Column(name = "mcr_name")
 	private String name;
+	
+	
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Patient getPatient() {
 		return patient;
