@@ -1,12 +1,16 @@
 package hu.unideb.hospitalnet.web.patient;
 
+import hu.unideb.hospitalnet.service.BnoManager;
 import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.PatientManager;
+import hu.unideb.hospitalnet.vo.BnoVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -27,10 +31,15 @@ public class PatieentManagerContrler implements Serializable  {
 	private static final long serialVersionUID = 1L;
 	
 	
-	List<PatientVo> patients;
-	LazyDataModel<PatientVo> lazyModel;
-	PatientVo selectedPatient;
-	MedicalRecordVo selectedMcr;
+	private List<PatientVo> patients;
+	private LazyDataModel<PatientVo> lazyModel;
+	private LazyDataModel<BnoVo> lazyBnoModel;
+	private	 PatientVo selectedPatient;
+	private MedicalRecordVo selectedMcr;
+	
+	private List<BnoVo> bnos;
+	private Collection<String> bnosNames;
+
 
 	private String name;
 	private String ssn;
@@ -49,11 +58,16 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	@ManagedProperty("#{medicalRecordManager}")
 	private MedicalRecordManager mcrService;
+	
+	@ManagedProperty("#{bnoManager}")
+	private BnoManager bnoManager;
 
 	@PostConstruct
 	public void init() {
 		diagnostic = " ";
+
 		setLazyModel(new LazyPatientDataModel(service));
+		setLazyBnoModel(new BnoLazyDataModel(bnoManager));
 	}
 
 	public void mcrUpdate() {
@@ -82,6 +96,38 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	
 	
+
+	public LazyDataModel<BnoVo> getLazyBnoModel() {
+		return lazyBnoModel;
+	}
+
+	public void setLazyBnoModel(LazyDataModel<BnoVo> lazyBnoModel) {
+		this.lazyBnoModel = lazyBnoModel;
+	}
+
+	public Collection<String> getBnosNames() {
+		return bnosNames;
+	}
+
+	public void setBnosNames(Collection<String> bnosNames) {
+		this.bnosNames = bnosNames;
+	}
+
+	public List<BnoVo> getBnos() {
+		return bnos;
+	}
+
+	public void setBnos(List<BnoVo> bnos) {
+		this.bnos = bnos;
+	}
+
+	public BnoManager getBnoManager() {
+		return bnoManager;
+	}
+
+	public void setBnoManager(BnoManager bnoManager) {
+		this.bnoManager = bnoManager;
+	}
 
 	public MedicalRecordVo getSelectedMcr() {
 		return selectedMcr;
