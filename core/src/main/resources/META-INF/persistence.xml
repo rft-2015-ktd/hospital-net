@@ -11,6 +11,7 @@
 		<class>hu.unideb.hospitalnet.core.entity.Item</class>
 		<class>hu.unideb.hospitalnet.core.entity.MedicalRecord</class>
 		<class>hu.unideb.hospitalnet.core.entity.MedicalRecordBnoTable</class>
+		<class>hu.unideb.hospitalnet.core.entity.Operation</class>
 		<class>hu.unideb.hospitalnet.core.entity.Patient</class>
 		<class>hu.unideb.hospitalnet.core.entity.Product</class>
 		<class>hu.unideb.hospitalnet.core.entity.Role</class>

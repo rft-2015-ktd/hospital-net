@@ -1,0 +1,127 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Patient Managment</ui:define>
+	<ui:define name="content">
+		<h:form id="tables">
+			<p:panel id="operationPanel" header="Műtéteim">
+
+				<p:dataTable id="operationTable" var="operation"
+					value="#{operationmanager.operations}" emptyMessage="Nincs műtét"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" paginator="true" rows="5"
+					rowKey="#{operation.id}" sortBy="#{operation.fromDate}">
+
+					<f:facet name="header">
+						<h:outputText value="Műtétek" />
+					</f:facet>
+
+
+
+					<p:column headerText="Név" sortBy="#{operation.operationName}">
+						<h:outputText value="#{operation.operationName}" />
+					</p:column>
+
+					<p:column headerText="Kezdés" sortBy="#{operation.fromDate}">
+						<h:outputText value="#{operation.fromDate}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Vég" sortBy="#{operation.toDate}">
+						<h:outputText value="#{operation.toDate}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Páciens neve">
+						<h:outputText value="#{operation.patient.name}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			<p:panel id="PatientPanel" header="Műtét hozzáadása">
+				<p:dataTable id="patientTable" var="patient"
+					value="#{operationmanager.patientLazyModel}"
+					emptyMessage="Nincs beteg"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="5"
+					selectionMode="single" rowKey="#{patient.id}"
+					selection="#{operationmanager.selectedpatient}">
+
+					<f:facet name="header">
+						<h:outputText value="Betegek" />
+					</f:facet>
+
+					<p:column headerText="Név" sortBy="#{patient.name}"
+						filterBy="#{patient.name}">
+						<h:outputText value="#{patient.name}" />
+					</p:column>
+
+					<p:column headerText="TAJ" sortBy="#{patient.ssn}"
+						filterBy="#{patient.ssn}">
+						<h:outputText value="#{patient.ssn}" />
+					</p:column>
+
+					<p:column headerText="Személyi szám" sortBy="#{patient.idNumber}"
+						filterBy="#{patient.idNumber}">
+						<h:outputText value="#{patient.idNumber}" />
+					</p:column>
+
+					<p:column headerText="Születési dátum ">
+						<h:outputText value="#{patient.dateOfBirth}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Státusz" sortBy="#{patient.status}"
+						filterBy="#{patient.status}">
+						<h:outputText value="#{patient.status}" />
+					</p:column>
+
+					<p:ajax event="rowSelect" update="tables:save " />
+				</p:dataTable>
+			</p:panel>
+			<p:panel id="buttens">
+				<h:outputText value="Kezdés" />
+				<p:calendar id="start" value="#{operationmanager.startOp}"
+					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true">
+					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+				</p:calendar>
+
+				<h:outputText value="Végzés" />
+				<p:calendar id="end" value="#{operationmanager.endOp}"
+					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true">
+					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+				</p:calendar>
+
+				<p:commandButton id="save" value="Mentés" title="Save" type="button"
+					onclick="PF('save').show()"
+					disabled="#{operationmanager.selectedpatient == null and operationmanager.startOp == null
+								and operationmanager.endOp == null}">
+				</p:commandButton>
+			</p:panel>
+
+			<h:form id="dialog">
+				<p:dialog id="SaveDialog" widgetVar="save" modal="true"
+					showEffect="fade" hideEffect="fade" resizable="false" header="">
+					<h:form id="dialogFormSave">
+						<p:inputText value="#{operationmanager.opName}" />
+						<p:commandButton id="save" value="Mentés"
+							action="#{operationmanager.saveOperation()}"
+							oncomplete="PF('save').hide()" update="tables:operationTable" />
+					</h:form>
+				</p:dialog>
+			</h:form>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

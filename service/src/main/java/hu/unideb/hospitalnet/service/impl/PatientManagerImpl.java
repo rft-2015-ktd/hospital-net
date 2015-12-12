@@ -18,9 +18,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("patientManager")
-@Component
+@Transactional(propagation = Propagation.REQUIRED)
 public class PatientManagerImpl implements PatientManager, Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -25,8 +25,9 @@
 					<h:outputText value="Betegek" />
 				</f:facet>
 
+
 				<p:ajax event="rowSelect" listener="#{patienmanager.onRowSelect}"
-					update="McrDialog" />
+					update="McrDialog,update" />
 
 				<p:column headerText="Név" sortBy="#{patient.name}"
 					filterBy="#{patient.name}">
@@ -55,7 +56,8 @@
 
 
 			<p:commandButton id="update" value="Kórlapok" title="Mcr"
-				type="button" onclick="PF('mcr').show()">
+				type="button" onclick="PF('mcr').show()"
+				disabled="#{patienmanager.selectedPatient == null}">
 			</p:commandButton>
 
 
@@ -79,6 +81,8 @@
 									<h:outputText value="Kórlapok" />
 								</f:facet>
 
+								<p:ajax event="rowSelectRadio" update="dialogFormMcr:updateMcr" />
+
 								<p:column selectionMode="single"
 									style="width:16px;text-align:center" />
 								<p:column headerText="Név">
@@ -93,6 +97,7 @@
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="updateMcr" value="Megnyitás"
 								action="#{patienmanager.mcrUpdate()}"
+								disabled="#{patienmanager.selectedMcr == null}"
 								onclick="PF('mcrOpen').show()" icon="ui-icon-check"
 								update="edit:editor" />
 						</div>
@@ -138,6 +143,8 @@
 						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 						lazy="true" paginator="true" paginatorPosition="bottom" rows="5"
 						selection="#{patienmanager.selectedBnos}">
+
+
 						<p:column selectionMode="multiple"
 							style="width:16px;text-align:center" />
 						<p:column headerText="Kód" filterBy="#{bno.kod10}"
