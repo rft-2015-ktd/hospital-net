@@ -17,4 +17,6 @@ public interface WorkerManager {
 	public int getWorkersCount();
 
 	public WorkerVo getWorkerById(Long id);
+
+	public List<WorkerVo> getWorkerByName(String query);
 }

@@ -10,22 +10,11 @@ public class TimeTable extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "day_of_week")
-	private int dayOfWeek;
-
 	@Column(name = "from_time")
 	private Date from;
 
 	@Column(name = "to_time")
 	private Date to;
-
-	public int getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(int dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
 
 	public Date getFrom() {
 		return from;

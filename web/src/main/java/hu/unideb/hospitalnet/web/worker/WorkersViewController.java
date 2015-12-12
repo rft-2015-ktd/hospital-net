@@ -39,8 +39,31 @@ public class WorkersViewController implements Serializable {
 	private String newPassword;
 	private String newPassword2;
 
+	private String newRole;
+
+	private Boolean newWorker = null;
+
 	public void onRowSelect(SelectEvent e) {
 		selectedWorker = (WorkerVo) e.getObject();
+
+		newRole = roleManager.nameOfRole(selectedWorker.getRole());
+		newPassword = "";
+		newPassword2 = "";
+		newWorker = false;
+	}
+
+	public void onAddButtonClick() {
+		selectedWorker = new WorkerVo();
+
+		newRole = "";
+		newPassword = "";
+		newPassword2 = "";
+		newWorker = true;
+
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("updateWorkerForm:workerDetail");
+		requestContext.update("form:updateWorkerButton");
+		requestContext.execute("PF('workerDialogWidget').show();");
 	}
 
 	public String roleView(RoleVo role) {
@@ -48,7 +71,7 @@ public class WorkersViewController implements Serializable {
 	}
 
 	public void save() {
-		if (validateUpdate()) {
+		if (validateInput()) {
 
 			if (!newPassword.equals("")) {
 				BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -56,6 +79,9 @@ public class WorkersViewController implements Serializable {
 
 				selectedWorker.setPassword(encPassword);
 			}
+
+			RoleVo role = roleManager.getRoleByName("ROLE_" + newRole);
+			selectedWorker.setRole(role);
 
 			workerManager.saveWorker(selectedWorker);
 
@@ -65,21 +91,21 @@ public class WorkersViewController implements Serializable {
 		}
 	}
 
-	private boolean validateUpdate() {
+	private boolean validateInput() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Boolean valid = true;
 		if (!validateDate()) {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Hibás dátum"));
 			valid = false;
 		}
+		if (newRole.equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A munkakör megadása kötelező!"));
+			valid = false;
+		}
 		if (!newPassword.equals(newPassword2)) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A megadott jelszó nem egyezik!"));
-			valid = false;
-		}
-		if (selectedWorker.getRole() == null) {
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Munkakör kiválasztása kötelező!"));
 			valid = false;
 		}
 		if (selectedWorker.getSsn().equals("")) {
@@ -95,6 +121,11 @@ public class WorkersViewController implements Serializable {
 		if (selectedWorker.getName().equals("")) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "A dolgozó nevének megadása kötelező!"));
+			valid = false;
+		}
+		if (newWorker && (newPassword.equals("") || newPassword2.equals(""))) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Jelszó megadása kötelező!"));
 			valid = false;
 		}
 		return valid;
@@ -126,14 +157,6 @@ public class WorkersViewController implements Serializable {
 		this.roleManager = roleManager;
 	}
 
-	public LazyDataModel<WorkerVo> getLazyWorkerModel() {
-		return lazyWorkerModel;
-	}
-
-	public void setLazyWorkerModel(LazyDataModel<WorkerVo> lazyWorkerModel) {
-		this.lazyWorkerModel = lazyWorkerModel;
-	}
-
 	public WorkerVo getSelectedWorker() {
 		return selectedWorker;
 	}
@@ -156,6 +179,30 @@ public class WorkersViewController implements Serializable {
 
 	public void setNewPassword2(String newPassword2) {
 		this.newPassword2 = newPassword2;
+	}
+
+	public String getNewRole() {
+		return newRole;
+	}
+
+	public void setNewRole(String newRole) {
+		this.newRole = newRole;
+	}
+
+	public Boolean getNewWorker() {
+		return newWorker;
+	}
+
+	public void setNewWorker(Boolean newWorker) {
+		this.newWorker = newWorker;
+	}
+
+	public LazyDataModel<WorkerVo> getLazyWorkerModel() {
+		return lazyWorkerModel;
+	}
+
+	public void setLazyWorkerModel(LazyDataModel<WorkerVo> lazyWorkerModel) {
+		this.lazyWorkerModel = lazyWorkerModel;
 	}
 
 }

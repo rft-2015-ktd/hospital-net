@@ -1,4 +1,4 @@
-package hu.unideb.hospitalnet.web.worker;
+package hu.unideb.hospitalnet.web.worker.model;
 
 import java.util.List;
 import java.util.Map;

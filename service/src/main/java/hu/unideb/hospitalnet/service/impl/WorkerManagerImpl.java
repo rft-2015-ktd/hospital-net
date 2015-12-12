@@ -71,4 +71,9 @@ public class WorkerManagerImpl implements WorkerManager, Serializable {
 		return converter.toVo(workerDao.findOne(id));
 	}
 
+	@Override
+	public List<WorkerVo> getWorkerByName(String query) {
+		return converter.toVo(workerDao.findByNameContaining(query));
+	}
+
 }

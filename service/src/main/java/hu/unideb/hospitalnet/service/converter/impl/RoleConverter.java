@@ -12,6 +12,8 @@ import hu.unideb.hospitalnet.vo.RoleVo;
 
 public class RoleConverter implements Converter<Role, RoleVo> {
 
+	private static final long serialVersionUID = 1L;
+
 	private static Mapper mapper = new DozerBeanMapper();
 
 	@Override
