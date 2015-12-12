@@ -68,9 +68,7 @@ public class ScheduleViewController implements Serializable {
 	public void addEvent(ActionEvent actionEvent) {
 		if (timeTableManager.hasCoveringTimeTable(worker.getId(), event.getTt())) {
 			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nem lehet beosztás átfedő!"));
-			return;
-		}
-		if (event.getId() == null) {
+		} else if (event.getId() == null) {
 			timeTableManager.addTimeTableToWorker(worker.getId(), event.getTt());
 		} else {
 			timeTableManager.saveTimeTable(event.getTt());

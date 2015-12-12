@@ -31,7 +31,7 @@ public class WorkerScheduleModel extends LazyScheduleModel {
 		}
 	}
 
-	private void addEvent(TimeTableVo timeTableVo) {
+	public void addEvent(TimeTableVo timeTableVo) {
 		TimeTableEvent event = new TimeTableEvent();
 		event.setTt(timeTableVo);
 		addEvent(event);

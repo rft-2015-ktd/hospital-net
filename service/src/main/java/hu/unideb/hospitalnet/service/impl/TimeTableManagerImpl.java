@@ -25,7 +25,12 @@ public class TimeTableManagerImpl implements TimeTableManager {
 
 	@Override
 	public Boolean hasCoveringTimeTable(Long workerId, TimeTableVo tt) {
-		List<TimeTable> tte = timeTableDao.findByWorkerAndDate(workerId, tt.getFrom(), tt.getTo());
+		List<TimeTable> tte;
+		if (tt.getId() != null) {
+			tte = timeTableDao.findByWorkerTimeTableAndDate(workerId, tt.getId(), tt.getFrom(), tt.getTo());
+		} else {
+			tte = timeTableDao.findByWorkerAndDate(workerId, tt.getFrom(), tt.getTo());
+		}
 		return !tte.isEmpty();
 	}
 

@@ -14,7 +14,7 @@
 		<!-- custom css -->
 	</ui:define>
 	<ui:define name="content">
-	<p:growl id="messages" showDetail="true" autoUpdate="true" />
+		<p:growl id="messages" showDetail="true" autoUpdate="true" />
 		<h:form id="scheduleForm">
 			<p:panelGrid columns="1" columnClasses="value">
 
@@ -32,9 +32,11 @@
 					value="#{scheduleView.lazyEventModel}" id="schedule"
 					widgetVar="myschedule" timeZone="GMT+1">
 					<p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}"
-						update="eventDetails,messages" oncomplete="PF('eventDialog').show();" />
+						update="eventDetails,messages"
+						oncomplete="PF('eventDialog').show();" />
 					<p:ajax event="eventSelect"
-						listener="#{scheduleView.onEventSelect}" update="eventDetails,messages"
+						listener="#{scheduleView.onEventSelect}"
+						update="eventDetails,messages"
 						oncomplete="PF('eventDialog').show();" />
 					<p:ajax event="eventMove" listener="#{scheduleView.onEventMove}"
 						update="messages" />
@@ -56,7 +58,8 @@
 						<!-- 						<p:commandButton type="reset" value="Reset" /> -->
 						<p:commandButton id="addButton" value="Save"
 							actionListener="#{scheduleView.addEvent}"
-							oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+							oncomplete="PF('eventDialog').hide();"
+							update="scheduleForm:schedule,messages" />
 					</h:panelGrid>
 				</p:dialog>
 			</p:panelGrid>
