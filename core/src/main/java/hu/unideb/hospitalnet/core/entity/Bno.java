@@ -6,13 +6,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bno")
-public class Bno extends BaseEntity{
+public class Bno extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "kod10")
+	@Column(name = "kod10", unique = true)
 	private String kod10;
-	
+
 	@Column(name = "bno_name")
 	private String name;
 
@@ -31,6 +31,5 @@ public class Bno extends BaseEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }
