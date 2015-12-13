@@ -1,13 +1,15 @@
 package hu.unideb.hospitalnet.web.statistics;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import org.primefaces.model.chart.PieChartModel;
 
@@ -26,13 +28,20 @@ public class StatisticsView implements Serializable {
 
 	private StatType type;
 
-	private List<StatType> types;
+	private List<SelectItem> types;
 
 	private PieChartModel pieModel;
 
 	@PostConstruct
 	public void init() {
-		types = Arrays.asList(StatType.values());
+		types = new ArrayList<>();
+		types.add(new SelectItem(StatType.NONE, "Típus kiválasztása"));
+
+		SelectItemGroup groupHospital = new SelectItemGroup("Kórház");
+		groupHospital.setSelectItems(
+				new SelectItem[] { new SelectItem(StatType.TOP10DISEASES, StatType.TOP10DISEASES.getDisplayName()) });
+
+		types.add(groupHospital);
 	}
 
 	public void onTypeSelectChange() {
@@ -69,20 +78,20 @@ public class StatisticsView implements Serializable {
 		this.type = type;
 	}
 
-	public List<StatType> getTypes() {
-		return types;
-	}
-
-	public void setTypes(List<StatType> types) {
-		this.types = types;
-	}
-
 	public PieChartModel getPieModel() {
 		return pieModel;
 	}
 
 	public void setPieModel(PieChartModel pieModel) {
 		this.pieModel = pieModel;
+	}
+
+	public void setTypes(List<SelectItem> types) {
+		this.types = types;
+	}
+
+	public List<SelectItem> getTypes() {
+		return types;
 	}
 
 }
