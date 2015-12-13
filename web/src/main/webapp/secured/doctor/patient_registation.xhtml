@@ -63,7 +63,8 @@
 
 				<p:commandButton id="update" value="Beteg újrafelvétele" title="Update"
 					type="button" onclick="PF('update').show()"
-					disabled="#{patientreg.selectedPatient == null}">
+					disabled="#{patientreg.selectedPatient == null or
+					 patientreg.selectedPatient.status == 'aktív'}">
 				</p:commandButton>
 
 			

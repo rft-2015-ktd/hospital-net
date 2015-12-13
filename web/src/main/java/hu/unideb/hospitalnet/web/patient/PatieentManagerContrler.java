@@ -22,6 +22,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -105,6 +106,25 @@ public class PatieentManagerContrler implements Serializable  {
 	public void addBnoToMcr() {
 		for (BnoVo string : selectedBnos) {
 			diagnostic += " " + string.getKod10();
+		}
+	}
+	
+	
+	public void dismiss() {
+		try {
+			selectedPatient.setStatus("elbocsajtva");
+			service.savePatient(selectedPatient);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
+							"Save: " + selectedPatient.getName()));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+							"Save"));
+			e.getMessage();
+			e.printStackTrace();
 		}
 	}
 	
