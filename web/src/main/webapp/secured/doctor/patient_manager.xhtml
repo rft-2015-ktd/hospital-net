@@ -74,43 +74,45 @@
 					<f:facet name="header">
 						<h:outputText value="Kórlapok" />
 					</f:facet>
-					<h:form id="dialogFormMcr">
 
-						<p:outputPanel id="mcrDetail" style="text-align:left;">
-							<p:panelGrid columns="2" columnClasses="label,value">
 
-								<p:dataTable id="mcrTable" var="mcr"
-									value="#{patienmanager.medicalRecords}"
-									selection="#{patienmanager.selectedMcr}" rowKey="#{mcr.name}"
-									style="margin-bottom:0"
-									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-									rowsPerPageTemplate="5,10,15" paginator="true" rows="5">
-									<f:facet name="header">
-										<h:outputText value="Kórlapok" />
-									</f:facet>
+					<p:outputPanel id="mcrDetail" style="text-align:left;">
+						<p:panelGrid columns="2" columnClasses="label,value">
 
-									<p:ajax event="rowSelectRadio" update="ptManager:dialogFormMcr:updateMcr" />
+							<p:dataTable id="mcrTable" var="mcr"
+								value="#{patienmanager.medicalRecords}"
+								selection="#{patienmanager.selectedMcr}" rowKey="#{mcr.name}"
+								style="margin-bottom:0"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+								rowsPerPageTemplate="5,10,15" paginator="true" rows="5">
+								<f:facet name="header">
+									<h:outputText value="Kórlapok" />
+								</f:facet>
 
-									<p:column selectionMode="single"
-										style="width:16px;text-align:center" />
-									<p:column headerText="Név">
-										<h:outputText value="#{mcr.name}" />
-									</p:column>
-									<p:column headerText="Dátum" sortBy="#{mcr.date}">
-										<h:outputText value="#{mcr.date}" />
-									</p:column>
-								</p:dataTable>
-							</p:panelGrid>
+								<p:ajax event="rowSelectRadio"
+									update="ptManager:updateMcr,
+									ptManager:updateMcrEditor" />
 
-							<div align="center" style="margin-top: 10px;">
-								<p:commandButton id="updateMcr" value="Megnyitás"
-									action="#{patienmanager.mcrUpdate()}"
-									disabled="#{patienmanager.selectedMcr == null}"
-									onclick="PF('mcrOpen').show()" icon="ui-icon-check"
-									update="ptManager:edit:editor" />
-							</div>
-						</p:outputPanel>
-					</h:form>
+								<p:column selectionMode="single"
+									style="width:16px;text-align:center" />
+								<p:column headerText="Név">
+									<h:outputText value="#{mcr.name}" />
+								</p:column>
+								<p:column headerText="Dátum" sortBy="#{mcr.date}">
+									<h:outputText value="#{mcr.date}" />
+								</p:column>
+							</p:dataTable>
+						</p:panelGrid>
+
+						<div align="center" style="margin-top: 10px;">
+							<p:commandButton id="updateMcrEditor" value="Megnyitás"
+								action="#{patienmanager.mcrUpdate()}"
+								disabled="#{patienmanager.selectedMcr == null}"
+								onclick="PF('mcrOpen').show()" icon="ui-icon-check"
+								update="ptManager:editor" />
+						</div>
+					</p:outputPanel>
+
 				</p:dialog>
 
 				<p:dialog id="McrDialogOpen" widgetVar="mcrOpen" modal="true"
@@ -118,25 +120,23 @@
 					<f:facet name="header">
 						<h:outputText value="Kórlap szerkesztés" />
 					</f:facet>
-					<h:form id="edit">
-						<p:panelGrid columns="1" columnClasses="label,value">
-							<f:facet name="header">
-								<h:outputText value="Kórlap" />
-							</f:facet>
+					<p:panelGrid columns="1" columnClasses="label,value">
+						<f:facet name="header">
+							<h:outputText value="Kórlap" />
+						</f:facet>
 
-							<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
-								value="#{patienmanager.diagnostic}" />
+						<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
+							value="#{patienmanager.diagnostic}" />
 
 
-							<p:commandButton id="addBnoTable" value="Bno hozzáadás"
-								onclick="PF('bnoOpen').show()" icon="ui-icon-check"
-								update="editor" />
-						</p:panelGrid>
+						<p:commandButton id="addBnoTable" value="Bno hozzáadás"
+							onclick="PF('bnoOpen').show()" icon="ui-icon-check"
+							update="editor" />
+					</p:panelGrid>
 
-						<p:commandButton id="updateMcr" value="Mentés"
-							action="#{patienmanager.updateMcr()}"
-							oncomplete="PF('mcrOpen').hide();" />
-					</h:form>
+					<p:commandButton id="updateMcr" value="Mentés"
+						action="#{patienmanager.updateMcr()}"
+						oncomplete="PF('mcrOpen').hide();" />
 
 				</p:dialog>
 
@@ -166,7 +166,7 @@
 							</p:column>
 						</p:dataTable>
 						<p:commandButton id="addBno" value="Bno hozzáadása"
-							action="#{patienmanager.addBnoToMcr()}" update="ptManager:edit:editor"
+							action="#{patienmanager.addBnoToMcr()}" update="ptManager:editor"
 							oncomplete="PF('bnoOpen').hide();" />
 					</h:form>
 
