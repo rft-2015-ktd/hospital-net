@@ -13,4 +13,8 @@ public interface PatientManager {
 			int dir, String filter, String filterColumnName);
 
 	public int getRowNumber();
+	
+	public String getUsername();
+
+	public void setUsername(String username);
 }

@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedProperty;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class LazyPatientDataModel extends LazyDataModel<PatientVo> {
 
@@ -20,6 +21,7 @@ public class LazyPatientDataModel extends LazyDataModel<PatientVo> {
 
 	public LazyPatientDataModel(PatientManager service) {
 		this.service = service;
+		service.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		// this.datasource = service.getAll();
 	}
 
