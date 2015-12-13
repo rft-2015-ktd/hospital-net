@@ -1,5 +1,6 @@
 package hu.unideb.hospitalnet.core.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import hu.unideb.hospitalnet.core.entity.Operation;
@@ -22,6 +23,8 @@ public interface OperationDao extends JpaRepository<Operation, Long> {
 	Page<Operation>findByWorker(Worker worker,Pageable pageable);
 	
 	List<Operation>findByWorker(Worker worke);
+	
+	List<Operation>findByWorkerAndFromDateGreaterThanEqual(Worker worke,Date date);
 	
 
 }

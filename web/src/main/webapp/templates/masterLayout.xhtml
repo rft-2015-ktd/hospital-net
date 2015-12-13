@@ -58,9 +58,12 @@
 						<sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_RECEPTIONIST">
 							<p:menuitem style="!important;" value="Betegfelvétel"
 								url="/secured/doctor/patient_registation.xhtml" />
+						</sec:authorize>
+						
+						<sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_DOCTOR">
 							<p:menuitem style="!important;" value="Betegkezelés"
 								url="/secured/doctor/patient_manager.xhtml" />
-									<p:menuitem style="!important;" value="Műtétek"
+							<p:menuitem style="!important;" value="Műtétek"
 								url="/secured/doctor/operation.xhtml" />
 						</sec:authorize>
 

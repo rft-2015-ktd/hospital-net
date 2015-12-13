@@ -11,6 +11,7 @@ import hu.unideb.hospitalnet.vo.WorkerVo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,38 +24,45 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysql.fabric.xmlrpc.base.Data;
+
 @Service("operationManager")
 @Transactional(propagation = Propagation.REQUIRED)
 public class OperationManagerImpl implements OperationManager, Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private OperationDao operationDao;
-	
+
 	@Autowired
 	private WorkerDao workerDao;
-	
+
 	private OperationConverter converter = new OperationConverter();
 	private WorkerConverter workerConvert = new WorkerConverter();
-	
+
 	private String username;
 
 	@Override
 	public OperationVo save(OperationVo operation) {
 		return converter.toVo(operationDao.save(converter.toEntity(operation)));
 	}
-	
+
 	@Override
-	public List<OperationVo>  getAll() {
+	public List<OperationVo> getAll() {
 		List<OperationVo> ret = new ArrayList<OperationVo>();// converter.toVo(entities.getContent());
-		WorkerVo worker = workerConvert.toVo(workerDao.findByUsername(username));
-		ret =  converter.toVo(operationDao.findByWorker(workerConvert.toEntity(worker)));
+		WorkerVo worker = workerConvert
+				.toVo(workerDao.findByUsername(username));
+//		ret = converter.toVo(operationDao.findByWorker(workerConvert
+//				.toEntity(worker)));
 		
+		ret = converter.toVo(operationDao
+				.findByWorkerAndFromDateGreaterThanEqual(workerConvert
+						.toEntity(worker), new Date()));
+
 		return ret;
 	}
-	
-	
+
 	@Override
 	public List<OperationVo> getPatients(int page, int size, String sortField,
 			int sortOrder, String filter, String filterColumnName) {
@@ -64,14 +72,20 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 				new org.springframework.data.domain.Sort.Order(dir, sortField)));
 		Page<Operation> entities;
 
-		WorkerVo worker = workerConvert.toVo(workerDao.findByUsername(username));
+		WorkerVo worker = workerConvert
+				.toVo(workerDao.findByUsername(username));
 
-		//entities = operationDao.findAll(pageRequest);//operationDao.findByWorker(workerConvert.toEntity(worker), pageRequest);
+		// entities =
+		// operationDao.findAll(pageRequest);//operationDao.findByWorker(workerConvert.toEntity(worker),
+		// pageRequest);
 		List<OperationVo> ret = new ArrayList<OperationVo>();// converter.toVo(entities.getContent());
-		ret =  converter.toVo(operationDao.findByWorker(workerConvert.toEntity(worker)));
-		
-		//entities = operationDao.findAll(pageRequest);//operationDao.findByWorker(workerConvert.toEntity(worker), pageRequest);
-		//ret = converter.toVo(entities.getContent());
+		ret = converter.toVo(operationDao.findByWorker(workerConvert
+				.toEntity(worker)));
+
+		// entities =
+		// operationDao.findAll(pageRequest);//operationDao.findByWorker(workerConvert.toEntity(worker),
+		// pageRequest);
+		// ret = converter.toVo(entities.getContent());
 		return ret;
 	}
 
@@ -80,18 +94,14 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 		return (int) operationDao.count();
 	}
 
-
 	@Override
 	public String getUsername() {
 		return username;
 	}
 
-
 	@Override
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	
 
 }
