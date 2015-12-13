@@ -56,6 +56,10 @@
 					selectionMode="single" rowKey="#{patient.id}"
 					selection="#{operationmanager.selectedpatient}">
 
+					<p:ajax event="rowSelect"
+						listener="#{operationmanager.onRowSelect}"
+						update=":tables:mcrDialog,:tables:saveOperation" />
+
 					<f:facet name="header">
 						<h:outputText value="Betegek" />
 					</f:facet>
@@ -89,10 +93,16 @@
 					<p:ajax event="rowSelect" update="tables:save " />
 				</p:dataTable>
 			</p:panel>
+
+
 			<p:panel id="buttens">
+				<p:commandButton id="open" value="Kórlapok" title="Mcr"
+					type="button" onclick="PF('mcrDialog').show()">
+				</p:commandButton>
+
 				<h:outputText value="Kezdés" />
 				<p:calendar id="start" value="#{operationmanager.startOp}"
-					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true">
+					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true"  >
 					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
 				</p:calendar>
 
@@ -102,24 +112,77 @@
 					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
 				</p:calendar>
 
-				<p:commandButton id="save" value="Mentés" title="Save" type="button"
+				<p:commandButton id="saveOperation" value="Mentés" title="Save" type="button"
 					onclick="PF('save').show()"
-					disabled="#{operationmanager.selectedpatient == null and operationmanager.startOp == null
-								and operationmanager.endOp == null}">
+					disabled="#{operationmanager.selectedpatient == null}">
 				</p:commandButton>
 			</p:panel>
 
-			<h:form id="dialog">
-				<p:dialog id="SaveDialog" widgetVar="save" modal="true"
-					showEffect="fade" hideEffect="fade" resizable="false" header="">
-					<h:form id="dialogFormSave">
-						<p:inputText value="#{operationmanager.opName}" />
-						<p:commandButton id="save" value="Mentés"
-							action="#{operationmanager.saveOperation()}"
-							oncomplete="PF('save').hide()" update="tables:operationTable" />
-					</h:form>
-				</p:dialog>
-			</h:form>
+			<p:dialog id="SaveDialog" widgetVar="save" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="">
+				<p:inputText value="#{operationmanager.opName}" />
+				<p:commandButton id="save" value="Mentés"
+					action="#{operationmanager.saveOperation()}"
+					oncomplete="PF('save').hide()" update="tables:operationTable" />
+
+			</p:dialog>
+
+
+
+
+			<p:dialog id="mcrDialog" widgetVar="mcrDialog" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="">
+				<p:dataTable id="mcrTable" var="mcr"
+					value="#{operationmanager.medicalRecords}"
+					selection="#{operationmanager.selectedMcr}" rowKey="#{mcr.name}"
+					style="margin-bottom:0"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" paginator="true" rows="5">
+					<f:facet name="header">
+						<h:outputText value="Kórlapok" />
+					</f:facet>
+					<p:ajax event="rowSelectRadio" update=":tables:saveMcr,:tables:updateMcr" />
+					<p:column selectionMode="single"
+						style="width:16px;text-align:center" />
+					<p:column headerText="Név">
+						<h:outputText value="#{mcr.name}" />
+					</p:column>
+					<p:column headerText="Dátum" sortBy="#{mcr.date}">
+						<h:outputText value="#{mcr.date}" />
+					</p:column>
+				</p:dataTable>
+
+				<div align="center" style="margin-top: 10px;">
+					<p:commandButton id="updateMcr" value="Megnyitás"
+						disabled="#{operationmanager.selectedMcr == null}"
+						action="#{operationmanager.mcrUpdate()}"
+						update=":tables:editor"
+						onclick="PF('mcrOpen').show()" />
+				</div>
+			</p:dialog>
+
+			<p:dialog id="McrDialogOpen" widgetVar="mcrOpen" modal="true"
+				header="" styleClass="center">
+				<f:facet name="header">
+					<h:outputText value="Kórlap szerkesztés" />
+				</f:facet>
+
+				<p:panelGrid columns="1" columnClasses="label,value">
+					<f:facet name="header">
+						<h:outputText value="Kórlap" />
+					</f:facet>
+
+					<p:editor id="editor" widgetVar="editorWidget" showEffect="fade"
+						value="#{operationmanager.diagnostic}" />
+					<p:commandButton id="saveMcr" value="Mentés"
+						action="#{operationmanager.updateMcr()}"
+						oncomplete="PF('mcrOpen').hide()" />
+				</p:panelGrid>
+
+			</p:dialog>
+
+
+
 
 
 		</h:form>

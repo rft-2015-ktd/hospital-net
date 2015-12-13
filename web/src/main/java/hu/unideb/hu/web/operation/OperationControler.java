@@ -1,8 +1,10 @@
 package hu.unideb.hu.web.operation;
 
+import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.OperationManager;
 import hu.unideb.hospitalnet.service.PatientManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
+import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.OperationVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
@@ -18,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,13 +42,21 @@ public class OperationControler implements Serializable {
 
 	@ManagedProperty("#{workerManager}")
 	private WorkerManager workerManager;
+	
+	@ManagedProperty("#{medicalRecordManager}")
+	private MedicalRecordManager mcrService;
 
 	private Date startOp;
 	private Date endOp;
 	private PatientVo selectedpatient;
 	private String opName;
 	private List<OperationVo> operations;
+	
+	private MedicalRecordVo selectedMcr;
+	private List<MedicalRecordVo> medicalRecords;
 
+	private String diagnostic;
+	
 	@PostConstruct
 	public void init() {
 		setPatientLazyModel(new LazyPatientDataModel(patientService));
@@ -71,11 +82,58 @@ public class OperationControler implements Serializable {
 				.getAuthentication().getName());
 		operations = opService.getAll();
 	}
+	
 
+	public void onRowSelect(SelectEvent event) {
+		medicalRecords =  mcrService.findByPatientId(selectedpatient.getId());
+		medicalRecords.size();
+		
+	}
+	
+	public void mcrUpdate() {
+		diagnostic = selectedMcr.getDiag();
+	}
+	
+	public void updateMcr() {
+		selectedMcr.setDiag(diagnostic);
+		mcrService.save(selectedMcr);
+	}
 	
 	
 	
 	
+	public String getDiagnostic() {
+		return diagnostic;
+	}
+
+	public void setDiagnostic(String diagnostic) {
+		this.diagnostic = diagnostic;
+	}
+
+	public MedicalRecordManager getMcrService() {
+		return mcrService;
+	}
+
+	public void setMcrService(MedicalRecordManager mcrService) {
+		this.mcrService = mcrService;
+	}
+
+	public MedicalRecordVo getSelectedMcr() {
+		return selectedMcr;
+	}
+
+	public void setSelectedMcr(MedicalRecordVo selectedMcr) {
+		this.selectedMcr = selectedMcr;
+	}
+
+	public List<MedicalRecordVo> getMedicalRecords() {
+		return medicalRecords;
+	}
+
+	public void setMedicalRecords(List<MedicalRecordVo> medicalRecords) {
+		this.medicalRecords = medicalRecords;
+	}
+
 	public List<OperationVo> getOperations() {
 		return operations;
 	}
