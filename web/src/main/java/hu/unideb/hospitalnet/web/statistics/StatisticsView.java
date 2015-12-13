@@ -54,6 +54,7 @@ public class StatisticsView implements Serializable {
 				}
 				pieModel.setTitle(type.getDisplayName());
 				pieModel.setLegendPosition("e");
+				pieModel.setExtender("pieExtender");
 				break;
 			default:
 				pieModel = null;

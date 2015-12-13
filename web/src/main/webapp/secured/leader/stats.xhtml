@@ -7,13 +7,14 @@
 	template="/templates/masterLayout.xhtml">
 	<ui:define name="pageTitle">Kimutatások</ui:define>
 	<ui:define name="content">
-		<h:form id="statForm">
-			<p:panelGrid>
-				<f:facet name="header">
-					<p:row>
-						<p:column colspan="2">Kimutatások készítése</p:column>
-					</p:row>
-				</f:facet>
+
+		<p:panelGrid>
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="2">Kimutatások készítése</p:column>
+				</p:row>
+			</f:facet>
+			<h:form id="statForm">
 				<p:row>
 					<p:column colspan="2">
 						<p:outputLabel for="statType" value="Kimutatás típusa" />
@@ -24,16 +25,29 @@
 						</p:selectOneMenu>
 					</p:column>
 				</p:row>
+
 				<p:row>
 					<p:column colspan="2">
-					<p:outputPanel id="piePanel">
-						<p:chart id="piechart" type="pie" model="#{statView.pieModel}"
-							rendered="#{not empty statView.pieModel}"
-							style="width:400px;height:300px" />
-							</p:outputPanel>
+						<p:outputPanel id="piePanel">
+							<p:chart id="piechart" type="pie" model="#{statView.pieModel}"
+								rendered="#{not empty statView.pieModel}"
+								style="width:800px;height:500px" />
+							<f:verbatim>
+								<script type="text/javascript">
+									function pieExtender() {
+										this.cfg.highlighter = {
+											show : true,
+											tooltipLocation : 'ne',
+											useAxesFormatters : false,
+											formatString : '%s: %d'
+										};
+									}
+								</script>
+							</f:verbatim>
+						</p:outputPanel>
 					</p:column>
 				</p:row>
-			</p:panelGrid>
-		</h:form>
+			</h:form>
+		</p:panelGrid>
 	</ui:define>
 </ui:composition>
