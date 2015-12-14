@@ -27,8 +27,10 @@ public class ItemContorller implements Serializable {
 	
 	public void setItems(){
 		System.out.println(selectedItems.size());
+		
 		for(ItemVo item : selectedItems){
-			itemManager.updateItem("leselejtezett", item.getId());
+			//itemManager.updateItem("leselejtezett", item.getId());
+			System.out.println(item.getId());
 		}
 	}
 	
