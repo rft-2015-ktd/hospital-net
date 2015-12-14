@@ -9,6 +9,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 @Table(name = "products")
 public class Product  extends BaseEntity{
@@ -21,7 +24,7 @@ public class Product  extends BaseEntity{
 	@Column(name = "producer")
 	private String producer;
 	
-	@Column(name = "description")
+	@Column(name = "description", columnDefinition="TEXT")
 	private String description;
 	
 	@Column(name = "product_type")
@@ -33,6 +36,7 @@ public class Product  extends BaseEntity{
 	@OneToMany
 	@JoinTable(name = "product_items", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "item_id") })
+	@Cascade({CascadeType.ALL})
 	private List<Item> items;
 
 	public String getUnitName() {

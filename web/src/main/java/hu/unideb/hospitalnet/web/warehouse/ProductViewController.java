@@ -1,7 +1,6 @@
 package hu.unideb.hospitalnet.web.warehouse;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -36,34 +35,68 @@ public class ProductViewController implements Serializable {
 	private String producer;
 	private String description;
 	private String type;
+	private String unitName;
 	private List<ItemVo> items;
 	
 	public void save() {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			List<ItemVo> empyItems = new ArrayList<>();
-			ProductVo productVo = new ProductVo();
-			productVo.setName(name);
-			productVo.setProducer(producer);
-			productVo.setDescription(description);
-			productVo.setType(type);
-			productVo.setItems(empyItems);
-			productManager.saveProduct(productVo);
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
-							"Save: " + productVo.getName()));
-			name = "";
-			producer = null;
-			description = "";
-			type = "";
+			ProductVo productVo = validateProduct();
+			if(productVo != null){
+				productManager.saveProduct(productVo);
+				name = "";
+				producer = "";
+				description = "";
+				type = "";
+				context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Termék sikeresen hozzáadva!",
+						"Termék neve: " + productVo.getName()));
+			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
-							"Save"));
 			e.getMessage();
 			e.printStackTrace();
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nem sikerült a termék mentése!", e.getMessage()));
 		}
+	}
+	
+	private ProductVo validateProduct() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Boolean isValid = true;
+
+		if (name.equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "A termék nevének megadása kötelező!"));
+			isValid = false;
+		}
+		if (producer.equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nincs megadva a termék gyártója!"));
+			isValid = false;
+		}
+		if (description.equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nincs megadva a termék leírása!"));
+			isValid = false;
+		}
+		if (type.equals("")) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nincs megadva a termék kiszerelése!"));
+			isValid = false;
+		}
+
+		if (!isValid) {
+			return null;
+		}
+
+		ProductVo productVo = new ProductVo();
+		productVo.setName(name);
+		productVo.setProducer(producer);
+		productVo.setDescription(description);
+		productVo.setType(type);
+		productVo.setUnitName(unitName);
+
+		return productVo;
+
 	}
 	
 	public void onRowSelect(SelectEvent e) {
@@ -144,6 +177,14 @@ public class ProductViewController implements Serializable {
 
 	public void setItems(List<ItemVo> items) {
 		this.items = items;
+	}
+
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
 
 	

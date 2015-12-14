@@ -15,11 +15,27 @@ public class Item extends BaseEntity{
 	@Column(name = "unit")
 	private int numberOfUnit;
 	
+	@Column(name = "unit_n")
+	private int numberOfUnitNow;
+	
 	@Column(name = "doe")
 	private Date warranty;
 	
 	@Column(name = "status")
 	private String status;
+
+	
+	public int getNumberOfUnitNow() {
+		return numberOfUnitNow;
+	}
+
+	public void setNumberOfUnitNow(int numberOfUnitNow) {
+		this.numberOfUnitNow = numberOfUnitNow;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public int getNumberOfUnit() {
 		return numberOfUnit;

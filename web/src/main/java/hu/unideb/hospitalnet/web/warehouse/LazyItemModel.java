@@ -42,7 +42,31 @@ public class LazyItemModel  extends LazyDataModel<ItemVo>{
 	public Object getRowKey(ItemVo item) {
 		return item.getId();
 	}
+	
+	@Override
+	public List<ItemVo> load(int first, int pageSize, String sortField, SortOrder sortOrder,
+			Map<String, Object> filters) {
+		String filter = "";
+		String filterColumnName = "";
+		if (filters.keySet().size() > 0) {
+			filter = (String) filters.values().toArray()[0];
+			filterColumnName = filters.keySet().iterator().next();
+		}
+		if (sortField == null) {
+			sortField = "name";
+		}
 
+		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
+
+		List<ItemVo> items = itemManager.getItems(first / pageSize, pageSize, sortField, dir, filter,
+				filterColumnName);
+		
+		int dataSize = itemManager.getItemsCount();
+		setRowCount(dataSize);
+
+		return items;
+	}
+/*
 	@Override
 	public List<ItemVo> load(int first, int pageSize, String sortField, SortOrder sortOrder,
 			Map<String, Object> filters) {
@@ -66,5 +90,5 @@ public class LazyItemModel  extends LazyDataModel<ItemVo>{
 		setRowCount(dataSize);
 
 		return items;
-	}
+	}*/
 }

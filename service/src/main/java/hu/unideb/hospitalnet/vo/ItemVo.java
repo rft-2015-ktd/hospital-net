@@ -11,6 +11,8 @@ public class ItemVo implements Serializable{
 	
 	private int numberOfUnit;
 	
+	private int numberOfUnitNow;
+	
 	private Date warranty;
 	
 	private String status;
@@ -49,6 +51,14 @@ public class ItemVo implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getNumberOfUnitNow() {
+		return numberOfUnitNow;
+	}
+
+	public void setNumberOfUnitNow(int numberOfUnitNow) {
+		this.numberOfUnitNow = numberOfUnitNow;
 	}
 
 	

@@ -18,5 +18,5 @@ public interface ItemManager {
 
 	public int getItemsCount();
 	
-
+	void updateItem(String status, Long id);
 }

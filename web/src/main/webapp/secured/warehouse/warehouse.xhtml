@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/templates/masterLayout.xhtml">
 
-	<ui:define name="pageTitle">Dolgozók</ui:define>
+	<ui:define name="pageTitle">Termékek</ui:define>
 	<ui:define name="header">
 	</ui:define>
 
@@ -15,11 +15,13 @@
 	</ui:define>
 
 	<ui:define name="content">
+	<p:messages id="messages" showDetail="true" closable="true" />
 	
+	<!-- termék tábla -->
 	<p:panel header="Termékek kezelése">
 		<h:form id="form">
 			<p:dataTable var="product" value="#{productsView.lazyProductModel}"
-				paginator="true" rows="10" emptyMessage="Nincs dolgozó"
+				paginator="true" rows="10" emptyMessage="Nincs termék regisztrálva a rendeszerben."
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" selectionMode="single"
 				selection="#{productsView.selectedProduct}" id="productTable"
@@ -38,11 +40,56 @@
 					<h:outputText value="#{product.producer}" />
 				</p:column>
 			</p:dataTable>
-			<p:commandButton id="newProduct" value="Új termék" title="Save"
+			<p:commandButton id="newProduct" value="Új termék" title="új tétel"
 					type="button" onclick="PF('create').show()">
 			</p:commandButton>
+			<p:commandButton id="newItem" value="Új tétel" title="új tétel"
+					type="button" onclick="PF('add').show()">
+			</p:commandButton>
 		</h:form>
+	</p:panel>
+	
+		<!-- add item -->
+		<p:dialog id="addItem" widgetVar="add" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" header="Tétel kiírés">
+				<h:form id="dialogFormAddItem">
+
+					<p:outputPanel id="itemDetails" style="text-align:left;">
+						<p:panelGrid columns="2" columnClasses="label,value">
+						
+							<h:outputText value="Termék" />
+							<p:autoComplete id="itemSelect" value="#{addItemView.product}"
+								completeMethod="#{addItemView.completeProduct}" var="selectedProductToItem"
+								itemLabel="#{selectedProductToItem.name}" itemValue="#{selectedProductToItem}"
+								converter="#{productVoConverter}" forceSelection="true"
+								minQueryLength="3">
+								<p:ajax event="itemSelect" listener="#{addItemView.onSelect}"
+									update="messages,dialogFormAddItem" />
+							</p:autoComplete>
+
+							<h:outputText value="Tétel mérete" />
+							<p:inputText id="addItemUnitInput" value="#{addItemView.unit}" />
+
+							<p:outputLabel for="calendar" value="Szavatosság" />
+							<p:calendar id="calendar"
+								value="#{addItemView.warranty}" showOn="button"
+								pattern="yyyy.MM.dd" mask="true">
+								<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+							</p:calendar>
+
+						</p:panelGrid>
+						<!-- -->
+						<div align="center" style="margin-top: 10px;">
+							<p:commandButton id="addItem" value="Mentés"
+								action="#{addItemView.save()}" icon="ui-icon-check"
+								update="createProduct,messages,form:productTable"
+								oncomplete="PF('add').hide();" />
+						</div> 
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
 		
+		<!-- add termék -->
 		<p:dialog id="createProduct" widgetVar="create" modal="true"
 				showEffect="fade" hideEffect="fade" resizable="false" header="Termék hozzáadás">
 				<h:form id="dialogFormCreateProduct">
@@ -51,36 +98,46 @@
 						<p:panelGrid columns="2" columnClasses="label,value">
 
 							<h:outputText value="Név" />
-							<p:inputText id="nameInput" required="true" value="#{productsView.name}" />
+							<p:inputText id="nameInput" value="#{productsView.name}" />
 
 							<h:outputText value="Gyártó" />
-							<p:inputText id="producerInput" required="true" value="#{productsView.producer}" />
+							<p:inputText id="producerInput" value="#{productsView.producer}" />
 
 							<h:outputText value="Típus" />
-							<p:inputText id="typeInput" required="true"
+							<p:inputText id="typeInput"
 								value="#{productsView.type}" />
+								
+							<h:outputLabel for="unitName" value="Kiszerelés" />
+							<p:selectOneListbox id="unitName" value="#{productsView.unitName}">
+								<f:selectItem itemLabel="Folyadék - ml" itemValue="ml" />
+								<f:selectItem itemLabel="Tabletta - db" itemValue="db" />
+								<f:selectItem itemLabel="Por - g" itemValue="g" />
+							</p:selectOneListbox>
 
 							<h:outputText value="Leírás" />
-							<p:inputText id="descrInput" required="true"
-								value="#{productsView.description}" />
+							<p:editor id="descrInput" widgetVar="editorWidget" showEffect="fade"
+							value="#{productsView.description}" />
 
 						</p:panelGrid>
 						<!-- -->
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="saveProduct" value="Mentés"
 								action="#{productsView.save()}" icon="ui-icon-check"
-								update="createProduct,form:productTable"
+								update="messages,createProduct,form:productTable"
 								oncomplete="PF('create').hide();" />
 						</div> 
 					</p:outputPanel>
 				</h:form>
 			</p:dialog>
 		
-		<p:dialog header="Dolgozó adatai" widgetVar="workerDialog" id="workerDialog"
-			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		
+		<!-- Termék adatai -->
+		<p:dialog header="Termék adatai" widgetVar="workerDialog" id="workerDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="width:40%;margin-right:25%">
 			<h:form id="updateWorkerForm">
+			
 				<p:outputPanel id="workerDetail" style="text-align:center;">
-					<p:panelGrid columns="2"
+					<p:panelGrid columns="2" 
 						rendered="#{not empty productsView.selectedProduct}"
 						columnClasses="label,label">
 
@@ -95,14 +152,50 @@
 						
 						<h:outputText value="Leírás:" />
 						<h:outputText value="#{productsView.selectedProduct.description}" />
-
 					</p:panelGrid>
+						
 
+						<!-- Tételek adatai -->
+					
+					    <p:dataTable id="checkboxDT" var="item" 
+					    value="#{productsView.selectedProduct.items}" selection="#{itemView.selectedItems}" 
+					    rowKey="#{item.id}" style="margin-bottom:0"
+					    rendered="#{not empty productsView.selectedProduct.items}">
+					        <f:facet name="header">
+					            Tételek
+					        </f:facet>
+					        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+					        <p:column headerText="Azonosító">
+					            <h:outputText value="#{item.id}" />
+					        </p:column>
+					        <p:column headerText="Jelenlegi Méret">
+					            <h:outputText value="#{item.numberOfUnitNow}" />
+					        </p:column>
+					        <p:column headerText="Tétel Mérert">
+					            <h:outputText value="#{item.numberOfUnit} #{selectedProduct.unitName}" />
+					        </p:column>
+					        <p:column headerText="Szavatosság">
+					            <h:outputText value="#{item.warranty}" />
+					        </p:column>
+					        <f:facet name="footer">
+					            <p:commandButton process="checkboxDT" value="Leselejtez" 
+					            actionListener="#{itemView.setItems}" oncomplete="PF('multiCarDialog').show()" />
+					        </f:facet>
+					    </p:dataTable>
+					    
 				</p:outputPanel>
 			</h:form>
 		</p:dialog>
 
+		<!-- Tételek leselejtezés után-->
+	    <p:dialog header="Selected Items" widgetVar="multiCarDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="200">
+	        <p:outputPanel id="multiCarDetail" style="text-align:center;">
+	            <ui:repeat value="#{itemView.selectedItems}" var="item">
+	                <h:outputText value="#{item.id}" style="display:block"/>
+	            </ui:repeat>
+	        </p:outputPanel>
+	    </p:dialog>
 
-		</p:panel>
+
 	</ui:define>
 </ui:composition>

@@ -42,7 +42,7 @@ public class ProductManagerImpl implements ProductManager, Serializable{
 		} else {
 			entities = productDao.findAll(pageRequest);
 		}
-
+		
 		return converter.toVo(entities.getContent());
 	}
 
@@ -64,6 +64,11 @@ public class ProductManagerImpl implements ProductManager, Serializable{
 	@Override
 	public int getProductsCount() {
 		return (int) productDao.count();
+	}
+
+	@Override
+	public List<ProductVo> getProductByName(String query) {
+		return converter.toVo(productDao.findByNameContaining(query));
 	}
 
 }

@@ -1,7 +1,6 @@
 package hu.unideb.hospitalnet.service.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +69,11 @@ public class ItemManagerImpl implements ItemManager, Serializable{
 	public void setStatus(List<ItemVo> itemsVo){
 		List<Item> items = itemConverter.toEntity(itemsVo);
 		itemDao.save(items);
+	}
+
+	@Override
+	public void updateItem(String status, Long id) {
+		itemDao.updateItemStatus(id, status);
 	}
 
 }
