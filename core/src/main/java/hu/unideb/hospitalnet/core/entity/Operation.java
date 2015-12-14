@@ -19,13 +19,13 @@ public class Operation extends BaseEntity {
 	@ManyToOne(targetEntity = Patient.class)
 	Patient patient;
 	
-	@Column(name = "operation_name")
+	@Column(name = "operation_name",nullable=false)
 	String operationName;
 	
-	@Column(name = "from_date")
+	@Column(name = "from_date",nullable=false)
 	Date fromDate;
 	
-	@Column(name = "to_date")
+	@Column(name = "to_date",nullable=false)
 	Date toDate;
 
 	public Worker getDoctor() {

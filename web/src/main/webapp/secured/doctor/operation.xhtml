@@ -123,7 +123,7 @@
 				<p:inputText value="#{operationmanager.opName}" />
 				<p:commandButton id="save" value="Mentés"
 					action="#{operationmanager.saveOperation()}"
-					oncomplete="PF('save').hide()" update="tables:operationTable" />
+					oncomplete="PF('save').hide()" update="tables:operationTable,:growl" />
 
 			</p:dialog>
 

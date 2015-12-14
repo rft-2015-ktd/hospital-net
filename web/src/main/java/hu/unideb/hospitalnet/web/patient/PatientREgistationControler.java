@@ -73,8 +73,8 @@ public class PatientREgistationControler implements Serializable {
 			mcrService.save(mcr);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
-							"Save: " + patientVo.getName()));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres",
+							"felvétel: " + patientVo.getName()));
 			name = "";
 			dateOfBirth = null;
 			ssn = "";
@@ -83,14 +83,13 @@ public class PatientREgistationControler implements Serializable {
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
-							"Save"));
-			e.getMessage();
-			e.printStackTrace();
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Succes",
+							"Sikertelen felvétel"));
 		}
 	}
 
 	public void update() {
+		try{
 		selectedPatient.setName(upname);
 		selectedPatient.setDateOfBirth(updateOfBirth);
 		selectedPatient.setIdNumber(upidNumber);
@@ -107,7 +106,13 @@ public class PatientREgistationControler implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
-						"Save: " + selectedPatient.getName()));
+						"Sikeres felvétel: " + selectedPatient.getName()));
+		}catch(Exception e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Succes",
+							"Sikertelen felvétel: " + selectedPatient.getName()));
+		}
 	}
 	
 	

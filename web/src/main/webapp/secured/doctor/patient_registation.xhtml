@@ -15,7 +15,6 @@
 
 		<p:panel header="Betegkezelés">
 			<h:form id="form">
-
 				<!-- Ez itt a tabla -->
 				<p:dataTable id="patientTable" var="patient"
 					value="#{patientreg.lazyModel}" emptyMessage="Nincs beteg"
@@ -61,13 +60,13 @@
 					type="button" onclick="PF('create').show()">
 				</p:commandButton>
 
-				<p:commandButton id="update" value="Beteg újrafelvétele" title="Update"
-					type="button" onclick="PF('update').show()"
+				<p:commandButton id="update" value="Beteg újrafelvétele"
+					title="Update" type="button" onclick="PF('update').show()"
 					disabled="#{patientreg.selectedPatient == null or
 					 patientreg.selectedPatient.status == 'aktív'}">
 				</p:commandButton>
 
-			
+
 
 
 			</h:form>
@@ -104,7 +103,7 @@
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="savePatient" value="Mentés"
 								action="#{patientreg.save()}" icon="ui-icon-check"
-								update="CreatepatientDialog,form:patientTable"
+								update="CreatepatientDialog,form:patientTable,:growl"
 								oncomplete="PF('create').hide();" />
 						</div>
 					</p:outputPanel>
@@ -143,7 +142,7 @@
 						<div align="center" style="margin-top: 10px;">
 							<p:commandButton id="updatePatient" value="Frissités"
 								action="#{patientreg.update()}" icon="ui-icon-check"
-								update="UpdatepatientDialog,form:patientTable"
+								update="UpdatepatientDialog,form:patientTable,:growl"
 								oncomplete="PF('update').hide();" />
 						</div>
 					</p:outputPanel>

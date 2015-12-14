@@ -12,16 +12,16 @@ public class Patient extends BaseEntity{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "full_name")
+	@Column(name = "full_name",nullable=false)
 	private String name;
 
-	@Column(name = "ssn")
+	@Column(name = "ssn", unique=true, nullable=false)
 	private String ssn;
 
-	@Column(name = "id_num")
+	@Column(name = "id_num",nullable=false)
 	private String idNumber;
 
-	@Column(name = "dob")
+	@Column(name = "dob",nullable=false)
 	private Date dateOfBirth;
 
 	

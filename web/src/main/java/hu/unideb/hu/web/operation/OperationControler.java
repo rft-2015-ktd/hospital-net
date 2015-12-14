@@ -8,7 +8,6 @@ import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.OperationVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
-import hu.unideb.hospitalnet.web.patient.BnoLazyDataModel;
 import hu.unideb.hospitalnet.web.patient.LazyPatientDataModel;
 
 import java.io.Serializable;
@@ -16,13 +15,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @ManagedBean(name = "operationmanager")
@@ -30,7 +30,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class OperationControler implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 
 	private LazyDataModel<PatientVo> patientLazyModel;
 
@@ -42,7 +41,7 @@ public class OperationControler implements Serializable {
 
 	@ManagedProperty("#{workerManager}")
 	private WorkerManager workerManager;
-	
+
 	@ManagedProperty("#{medicalRecordManager}")
 	private MedicalRecordManager mcrService;
 
@@ -51,57 +50,64 @@ public class OperationControler implements Serializable {
 	private PatientVo selectedpatient;
 	private String opName;
 	private List<OperationVo> operations;
-	
+
 	private MedicalRecordVo selectedMcr;
 	private List<MedicalRecordVo> medicalRecords;
 
 	private String diagnostic;
-	
+
 	@PostConstruct
 	public void init() {
 		setPatientLazyModel(new LazyPatientDataModel(patientService));
 		startOp = null;
 		endOp = null;
-		opService.setUsername(	SecurityContextHolder.getContext()
+		opService.setUsername(SecurityContextHolder.getContext()
 				.getAuthentication().getName());
 		operations = opService.getAll();
 	}
 
 	public void saveOperation() {
-		OperationVo op = new OperationVo();
-		String name = SecurityContextHolder.getContext().getAuthentication()
-				.getName();
-		WorkerVo doctor = workerManager.getWorkerByUsername(name);
-		op.setDoctor(doctor);
-		op.setFromDate(startOp);
-		op.setToDate(endOp);
-		op.setPatient(selectedpatient);
-		op.setOperationName(opName);
-		opService.save(op);
-		opService.setUsername(	SecurityContextHolder.getContext()
-				.getAuthentication().getName());
-		operations = opService.getAll();
+		try {
+			OperationVo op = new OperationVo();
+			String name = SecurityContextHolder.getContext()
+					.getAuthentication().getName();
+			WorkerVo doctor = workerManager.getWorkerByUsername(name);
+			op.setDoctor(doctor);
+			op.setFromDate(startOp);
+			op.setToDate(endOp);
+			op.setPatient(selectedpatient);
+			op.setOperationName(opName);
+			opService.save(op);
+			opService.setUsername(SecurityContextHolder.getContext()
+					.getAuthentication().getName());
+			operations = opService.getAll();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
+							"Sikeres kiírás "));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+							"Sikertelen kiírás"));
+		}
 	}
-	
 
 	public void onRowSelect(SelectEvent event) {
-		medicalRecords =  mcrService.findByPatientId(selectedpatient.getId());
+		medicalRecords = mcrService.findByPatientId(selectedpatient.getId());
 		medicalRecords.size();
-		
+
 	}
-	
+
 	public void mcrUpdate() {
 		diagnostic = selectedMcr.getDiag();
 	}
-	
+
 	public void updateMcr() {
 		selectedMcr.setDiag(diagnostic);
 		mcrService.save(selectedMcr);
 	}
-	
-	
-	
-	
+
 	public String getDiagnostic() {
 		return diagnostic;
 	}
@@ -197,7 +203,6 @@ public class OperationControler implements Serializable {
 	public void setEndOp(Date endOp) {
 		this.endOp = endOp;
 	}
-
 
 	public OperationManager getOpService() {
 		return opService;
