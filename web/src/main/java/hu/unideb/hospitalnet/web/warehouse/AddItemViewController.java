@@ -28,7 +28,6 @@ public class AddItemViewController implements Serializable{
 	private ProductVo product;
 
 	private String unit;
-	private int intUnit;
 	private Date warranty;
 	
 	public ProductManager getProductManager() {
@@ -76,7 +75,21 @@ public class AddItemViewController implements Serializable{
 	}
 	
 	public void save(){
-		if (validateItem()) {}
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			if (validateItem()) {
+				addSelectedProduct();
+				productManager.saveProduct(product);
+				product = null;
+				unit = "";
+				warranty = null;
+				context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Tétel sikeresen hozzáadva!",""));
+			}
+		} catch (Exception e) {
+			e.getMessage();
+			e.printStackTrace();
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nem sikerült a tétel mentése!", e.getMessage()));
+		}
 		
 		
 	}
@@ -142,6 +155,15 @@ public class AddItemViewController implements Serializable{
 	
 	private ItemVo createItemVo(){
 		ItemVo item = new ItemVo();
-		return null;
+		int unitSize = Integer.parseInt(unit);
+		item.setNumberOfUnit(unitSize);
+		item.setNumberOfUnitNow(unitSize);
+		item.setStatus("aktív");
+		item.setWarranty(warranty);
+		return item;
+	}
+	
+	public void addSelectedProduct(){
+		product.getItems().add(createItemVo());
 	}
 }
