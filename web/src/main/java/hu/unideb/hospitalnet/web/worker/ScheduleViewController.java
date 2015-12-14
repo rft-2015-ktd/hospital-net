@@ -88,13 +88,30 @@ public class ScheduleViewController implements Serializable {
 	}
 
 	public void onEventMove(ScheduleEntryMoveEvent moveEvent) {
+		TimeTableEvent movedEvent = (TimeTableEvent) moveEvent.getScheduleEvent();
+		if (timeTableManager.hasCoveringTimeTable(worker.getId(), movedEvent.getTt())) {
+			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nem lehet beosztás átfedő!"));
+
+			return;
+		}
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Siker!", "Beosztás módosítva");
 		addMessage(message);
+
+		timeTableManager.saveTimeTable(movedEvent.getTt());
 	}
 
-	public void onEventResize(ScheduleEntryResizeEvent event) {
+	public void onEventResize(ScheduleEntryResizeEvent resizeEvent) {
+		TimeTableEvent movedEvent = (TimeTableEvent) resizeEvent.getScheduleEvent();
+		if (timeTableManager.hasCoveringTimeTable(worker.getId(), movedEvent.getTt())) {
+			addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hiba!", "Nem lehet beosztás átfedő!"));
+
+			return;
+		}
+
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Siker!", "Beosztás módosítva");
 		addMessage(message);
+
+		timeTableManager.saveTimeTable(movedEvent.getTt());
 	}
 
 	private void addMessage(FacesMessage message) {

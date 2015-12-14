@@ -48,6 +48,14 @@
 						<p:menuitem style="!important;" value="Dolgozók beosztása"
 							url="/secured/leader/schedule.xhtml" />
 					</p:submenu>
+					<p:submenu label="Kimutatások">
+						<p:submenu label="Kórház">
+							<p:menuitem value="Leggyakoribb betegségek"
+								url="/secured/leader/stat/diseases.xhtml" />
+							<p:menuitem value="Dolgozói statisztika"
+								url="/secured/leader/stat/doctors.xhtml" />
+						</p:submenu>
+					</p:submenu>
 				</sec:authorize>
 
 				<sec:authorize
@@ -59,7 +67,7 @@
 							<p:menuitem style="!important;" value="Betegfelvétel"
 								url="/secured/doctor/patient_registation.xhtml" />
 						</sec:authorize>
-						
+
 						<sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_DOCTOR">
 							<p:menuitem style="!important;" value="Betegkezelés"
 								url="/secured/doctor/patient_manager.xhtml" />

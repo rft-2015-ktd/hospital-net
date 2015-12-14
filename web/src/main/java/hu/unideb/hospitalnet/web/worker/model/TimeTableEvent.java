@@ -35,7 +35,7 @@ public class TimeTableEvent extends DefaultScheduleEvent implements Serializable
 
 	@Override
 	public Date getStartDate() {
-		return tt.getTo();
+		return tt.getFrom();
 	}
 
 	@Override
@@ -55,6 +55,16 @@ public class TimeTableEvent extends DefaultScheduleEvent implements Serializable
 
 	@Override
 	public void setId(String arg0) {
+	}
+
+	@Override
+	public void setEndDate(Date endDate) {
+		tt.setTo(endDate);
+	}
+
+	@Override
+	public void setStartDate(Date startDate) {
+		tt.setFrom(startDate);
 	}
 
 	public TimeTableVo getTt() {
