@@ -1,6 +1,7 @@
 package hu.unideb.hospitalnet.service.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import hu.unideb.hospitalnet.core.dao.WorkerDao;
 import hu.unideb.hospitalnet.core.entity.Worker;
 import hu.unideb.hospitalnet.service.WorkerManager;
 import hu.unideb.hospitalnet.service.converter.impl.WorkerConverter;
+import hu.unideb.hospitalnet.vo.RoleVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 @Service("workerManager")
@@ -74,6 +76,21 @@ public class WorkerManagerImpl implements WorkerManager, Serializable {
 	@Override
 	public List<WorkerVo> getWorkerByName(String query) {
 		return converter.toVo(workerDao.findByNameContaining(query));
+	}
+
+	@Override
+	public List<WorkerVo> getWorkersByWorkingDates(Date start, Date end) {
+		return converter.toVo(workerDao.findIfWorkingBetween(start, end));
+	}
+
+	@Override
+	public int getWorkerCountByRole(RoleVo r) {
+		return workerDao.countByRoleId(r.getId());
+	}
+
+	@Override
+	public List<WorkerVo> getWorkersByRole(RoleVo r) {
+		return converter.toVo(workerDao.findByRoleId(r.getId()));
 	}
 
 }

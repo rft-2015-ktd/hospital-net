@@ -1,7 +1,9 @@
 package hu.unideb.hospitalnet.service;
 
+import java.util.Date;
 import java.util.List;
 
+import hu.unideb.hospitalnet.vo.RoleVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 public interface WorkerManager {
@@ -19,4 +21,10 @@ public interface WorkerManager {
 	public WorkerVo getWorkerById(Long id);
 
 	public List<WorkerVo> getWorkerByName(String query);
+
+	public int getWorkerCountByRole(RoleVo r);
+
+	public List<WorkerVo> getWorkersByRole(RoleVo r);
+
+	List<WorkerVo> getWorkersByWorkingDates(Date start, Date end);
 }
