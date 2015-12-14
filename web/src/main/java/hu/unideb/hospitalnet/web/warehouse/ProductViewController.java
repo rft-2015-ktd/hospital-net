@@ -1,6 +1,7 @@
 package hu.unideb.hospitalnet.web.warehouse;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -100,7 +101,18 @@ public class ProductViewController implements Serializable {
 	}
 	
 	public void onRowSelect(SelectEvent e) {
-		selectedProduct = (ProductVo) e.getObject();
+		ProductVo pvo = (ProductVo) e.getObject();
+		List<ItemVo> activeItems = new ArrayList<>();
+		
+		if(!pvo.getItems().isEmpty()){
+			for(ItemVo item : pvo.getItems()){
+				if(item.getStatus().equals("aktív"))
+					activeItems.add(item);
+			}
+			
+			pvo.setItems(activeItems);
+		}
+		selectedProduct = pvo;
 	}
 
 	public ProductVo getSelectedProduct() {
