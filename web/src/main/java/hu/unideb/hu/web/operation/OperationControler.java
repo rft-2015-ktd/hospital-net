@@ -72,7 +72,7 @@ public class OperationControler implements Serializable {
 			String name = SecurityContextHolder.getContext()
 					.getAuthentication().getName();
 			WorkerVo doctor = workerManager.getWorkerByUsername(name);
-			op.setDoctor(doctor);
+			op.setWorker(doctor);
 			op.setFromDate(startOp);
 			op.setToDate(endOp);
 			op.setPatient(selectedpatient);

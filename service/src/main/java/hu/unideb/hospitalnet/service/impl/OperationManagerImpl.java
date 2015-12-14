@@ -6,6 +6,7 @@ import hu.unideb.hospitalnet.core.entity.Operation;
 import hu.unideb.hospitalnet.service.OperationManager;
 import hu.unideb.hospitalnet.service.converter.impl.OperationConverter;
 import hu.unideb.hospitalnet.service.converter.impl.WorkerConverter;
+import hu.unideb.hospitalnet.vo.BnoVo;
 import hu.unideb.hospitalnet.vo.OperationVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
@@ -53,39 +54,35 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 		List<OperationVo> ret = new ArrayList<OperationVo>();// converter.toVo(entities.getContent());
 		WorkerVo worker = workerConvert
 				.toVo(workerDao.findByUsername(username));
-//		ret = converter.toVo(operationDao.findByWorker(workerConvert
-//				.toEntity(worker)));
-		
+		// ret = converter.toVo(operationDao.findByWorker(workerConvert
+		// .toEntity(worker)));
+
 		ret = converter.toVo(operationDao
-				.findByWorkerAndFromDateGreaterThanEqual(workerConvert
-						.toEntity(worker), new Date()));
+				.findByWorkerAndFromDateGreaterThanEqual(
+						workerConvert.toEntity(worker), new Date()));
 
 		return ret;
 	}
 
 	@Override
-	public List<OperationVo> getPatients(int page, int size, String sortField,
-			int sortOrder, String filter, String filterColumnName) {
+	public List<OperationVo> getOperations(int page, int size,
+			String sortField, int sortOrder, String filter,
+			String filterColumnName) {
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
 				: Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(
 				new org.springframework.data.domain.Sort.Order(dir, sortField)));
 		Page<Operation> entities;
 
+		//entities = operationDao.findAll(pageRequest);
+
 		WorkerVo worker = workerConvert
 				.toVo(workerDao.findByUsername(username));
+		List<OperationVo> ret = converter.toVo(operationDao
+				.findByWorkerAndFromDateGreaterThanEqual(
+						workerConvert.toEntity(worker), new Date()));//converter.toVo(entities.getContent());
+		
 
-		// entities =
-		// operationDao.findAll(pageRequest);//operationDao.findByWorker(workerConvert.toEntity(worker),
-		// pageRequest);
-		List<OperationVo> ret = new ArrayList<OperationVo>();// converter.toVo(entities.getContent());
-		ret = converter.toVo(operationDao.findByWorker(workerConvert
-				.toEntity(worker)));
-
-		// entities =
-		// operationDao.findAll(pageRequest);//operationDao.findByWorker(workerConvert.toEntity(worker),
-		// pageRequest);
-		// ret = converter.toVo(entities.getContent());
 		return ret;
 	}
 

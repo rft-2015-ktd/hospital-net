@@ -11,7 +11,7 @@ public class OperationVo implements Serializable {
 
 	private Long id;
 
-	private WorkerVo doctor;
+	private WorkerVo worker;
 
 	private PatientVo patient;
 
@@ -29,12 +29,14 @@ public class OperationVo implements Serializable {
 		this.id = id;
 	}
 
-	public WorkerVo getDoctor() {
-		return doctor;
+
+
+	public WorkerVo getWorker() {
+		return worker;
 	}
 
-	public void setDoctor(WorkerVo doctor) {
-		this.doctor = doctor;
+	public void setWorker(WorkerVo worker) {
+		this.worker = worker;
 	}
 
 	public PatientVo getPatient() {

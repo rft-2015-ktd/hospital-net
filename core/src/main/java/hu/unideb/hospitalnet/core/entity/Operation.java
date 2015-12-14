@@ -13,27 +13,30 @@ public class Operation extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(targetEntity = Worker.class)
-	Worker worker;
+	@ManyToOne()
+	private Worker worker;
 	
-	@ManyToOne(targetEntity = Patient.class)
-	Patient patient;
+	@ManyToOne()
+	private Patient patient;
 	
 	@Column(name = "operation_name",nullable=false)
-	String operationName;
+	private String operationName;
 	
 	@Column(name = "from_date",nullable=false)
-	Date fromDate;
+	private Date fromDate;
 	
 	@Column(name = "to_date",nullable=false)
-	Date toDate;
+	private Date toDate;
+	
+	
+	
 
-	public Worker getDoctor() {
+	public Worker getWorker() {
 		return worker;
 	}
 
-	public void setDoctor(Worker doctor) {
-		this.worker = doctor;
+	public void setWorker(Worker worker) {
+		this.worker = worker;
 	}
 
 	public Patient getPatient() {

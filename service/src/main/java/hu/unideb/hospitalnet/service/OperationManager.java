@@ -9,7 +9,7 @@ public interface OperationManager {
 
 	public OperationVo save(OperationVo operation);
 
-	public List<OperationVo> getPatients(int i, int pageSize, String sortField,
+	public List<OperationVo> getOperations(int i, int pageSize, String sortField,
 			int dir, String filter, String filterColumnName);
 
 	public int getRowNumber();
