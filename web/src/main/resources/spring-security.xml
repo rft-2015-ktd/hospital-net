@@ -9,7 +9,9 @@
 		<security:intercept-url pattern="/secured/leader/**"
 			access="hasAnyRole('LEADER, ADMIN')" />
 		<security:intercept-url pattern="/secured/doctor/**"
-			access="hasAnyRole('DOCTOR, RECEPTIONIST, ADMIN')" />
+			access="hasAnyRole('DOCTOR, ADMIN')" />
+		<security:intercept-url pattern="/secured/receptionist/**"
+			access="hasAnyRole('RECEPTIONIST, ADMIN')" />
 		<security:intercept-url pattern="/secured/warehouse/**"
 			access="hasAnyRole('WAREHOUSEMANAGER, ADMIN')" />
 		<security:form-login login-page="/public/login.xhtml"
