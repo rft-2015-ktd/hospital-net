@@ -1,18 +1,5 @@
 package hu.unideb.hospitalnet.web.patient;
 
-import hu.unideb.hospitalnet.service.BnoManager;
-import hu.unideb.hospitalnet.service.ItemManager;
-import hu.unideb.hospitalnet.service.MedicalRecordBnoTableManager;
-import hu.unideb.hospitalnet.service.MedicalRecordManager;
-import hu.unideb.hospitalnet.service.PatientManager;
-import hu.unideb.hospitalnet.service.ProductManager;
-import hu.unideb.hospitalnet.vo.BnoVo;
-import hu.unideb.hospitalnet.vo.ItemVo;
-import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
-import hu.unideb.hospitalnet.vo.MedicalRecordVo;
-import hu.unideb.hospitalnet.vo.PatientVo;
-import hu.unideb.hospitalnet.vo.ProductVo;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,23 +16,37 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 
+import hu.unideb.hospitalnet.service.BnoManager;
+import hu.unideb.hospitalnet.service.ItemManager;
+import hu.unideb.hospitalnet.service.MedicalRecordBnoTableManager;
+import hu.unideb.hospitalnet.service.MedicalRecordManager;
+import hu.unideb.hospitalnet.service.PatientManager;
+import hu.unideb.hospitalnet.service.ProductManager;
+import hu.unideb.hospitalnet.service.WarehouseStatManager;
+import hu.unideb.hospitalnet.service.stats.vo.WarehouseStatVo;
+import hu.unideb.hospitalnet.service.util.DateUtil;
+import hu.unideb.hospitalnet.vo.BnoVo;
+import hu.unideb.hospitalnet.vo.ItemVo;
+import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
+import hu.unideb.hospitalnet.vo.MedicalRecordVo;
+import hu.unideb.hospitalnet.vo.PatientVo;
+import hu.unideb.hospitalnet.vo.ProductVo;
+
 @ManagedBean(name = "patienmanager")
 @ViewScoped
-public class PatieentManagerContrler implements Serializable  {
+public class PatieentManagerContrler implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	private List<PatientVo> patients;
 	private LazyDataModel<PatientVo> lazyModel;
 	private LazyDataModel<BnoVo> lazyBnoModel;
-	private	 PatientVo selectedPatient;
+	private PatientVo selectedPatient;
 	private MedicalRecordVo selectedMcr;
-	
+
 	private List<BnoVo> selectedBnos;
 	private Collection<String> bnosNames;
 	private List<ItemVo> selectedItems;
-
 
 	private String name;
 	private String ssn;
@@ -53,37 +54,38 @@ public class PatieentManagerContrler implements Serializable  {
 	private Date dateOfBirth;
 	private String diagnostic;
 	private Long id;
-	
+
 	private List<MedicalRecordVo> medicalRecords;
-	
+
 	private ProductVo selectedProduct;
 	private ItemVo selectedItem;
-	
+
 	private int unit;
 
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;
-	
+
 	@ManagedProperty("#{medicalRecordManager}")
 	private MedicalRecordManager mcrService;
-	
+
 	@ManagedProperty("#{bnoManager}")
 	private BnoManager bnoManager;
 
-	
 	@ManagedProperty("#{medicalRecordBnoTableManager}")
 	private MedicalRecordBnoTableManager medicalRecordBnoTableManager;
-	
-	
+
 	@ManagedProperty("#{productManager}")
 	private ProductManager productManager;
-	
+
 	@ManagedProperty("#{itemManager}")
 	private ItemManager itemManager;
-	
+
 	@ManagedProperty("#{lazyProductModel}")
 	private LazyDataModel<ProductVo> lazyProductModel;
-	
+
+	@ManagedProperty("#{warehouseStatManager}")
+	private WarehouseStatManager warehouseStatManager;
+
 	@PostConstruct
 	public void init() {
 		diagnostic = " ";
@@ -95,91 +97,85 @@ public class PatieentManagerContrler implements Serializable  {
 	public void mcrUpdate() {
 		diagnostic = selectedMcr.getDiag();
 	}
-	
-	public void updateMcr(){
+
+	public void updateMcr() {
 		selectedMcr.setDiag(diagnostic);
 		mcrService.save(selectedMcr);
-		
+
 		MedicalRecordBnoTableVo mcbt = new MedicalRecordBnoTableVo();
 		for (BnoVo bno : selectedBnos) {
 			mcbt.setBno(bno);
 			mcbt.setMcr(selectedMcr);
 			medicalRecordBnoTableManager.save(mcbt);
 		}
-		
+
 		for (ItemVo item : selectedItems) {
 			itemManager.saveItem(item);
 		}
-	
-		
+
 	}
-	
 
 	public void onRowSelect(SelectEvent event) {
 		selectedPatient = (PatientVo) event.getObject();
-		medicalRecords =  mcrService.findByPatientId(selectedPatient.getId());
+		medicalRecords = mcrService.findByPatientId(selectedPatient.getId());
 		medicalRecords.size();
-		
+
 	}
-	
-	
-	
+
 	public void onRowSelectProduct(SelectEvent e) {
 		ProductVo pvo = (ProductVo) e.getObject();
 		List<ItemVo> activeItems = new ArrayList<>();
-		
-		if(!pvo.getItems().isEmpty()){
-			for(ItemVo item : pvo.getItems()){
-				if(item.getStatus().equals("aktív"))
+
+		if (!pvo.getItems().isEmpty()) {
+			for (ItemVo item : pvo.getItems()) {
+				if (item.getStatus().equals("aktív")) {
 					activeItems.add(item);
+				}
 			}
-			
+
 			pvo.setItems(activeItems);
 		}
 		selectedProduct = pvo;
 	}
 
-	
 	public void addBnoToMcr() {
 		for (BnoVo string : selectedBnos) {
 			diagnostic += " " + string.getKod10();
 		}
 	}
-	
-	
+
 	public void dismiss() {
 		try {
 			selectedPatient.setStatus("elbocsajtva");
 			service.savePatient(selectedPatient);
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
-							"Save: " + selectedPatient.getName()));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes", "Save: " + selectedPatient.getName()));
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
-							"Save"));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Save"));
 			e.getMessage();
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	public void addMedicine() {
 		int a = itemManager.getItemById(selectedItem.getId()).getNumberOfUnitNow();
 		if (unit < a) {
 			diagnostic += selectedProduct.getName() + " " + unit + " " + selectedProduct.getUnitName();
 			selectedItem.setNumberOfUnitNow(a - unit);
 			selectedItems.add(selectedItem);
+			saveStat(unit);
 		}
-	
 	}
-	
-	
-	
-	
-	
+
+	private void saveStat(int givenToRats) {
+		WarehouseStatVo whStatVo = new WarehouseStatVo();
+		whStatVo.setDayOfOccurence(DateUtil.getStartOfDay(DateUtil.now()));
+		whStatVo.setOrdered(0L);
+		whStatVo.setShippedAway(0L);
+		whStatVo.setGivenToPatients(Long.valueOf(givenToRats));
+		warehouseStatManager.addStat(whStatVo);
+	}
 
 	public int getUnit() {
 		return unit;
@@ -210,7 +206,7 @@ public class PatieentManagerContrler implements Serializable  {
 	}
 
 	public void setSelectedItems(ItemVo selectedItem) {
-		this.selectedItem= selectedItem;
+		this.selectedItem = selectedItem;
 	}
 
 	public ProductVo getSelectedProduct() {
@@ -241,8 +237,7 @@ public class PatieentManagerContrler implements Serializable  {
 		return medicalRecordBnoTableManager;
 	}
 
-	public void setMedicalRecordBnoTableManager(
-			MedicalRecordBnoTableManager medicalRecordBnoTableManager) {
+	public void setMedicalRecordBnoTableManager(MedicalRecordBnoTableManager medicalRecordBnoTableManager) {
 		this.medicalRecordBnoTableManager = medicalRecordBnoTableManager;
 	}
 
@@ -326,19 +321,13 @@ public class PatieentManagerContrler implements Serializable  {
 		this.patients = patients;
 	}
 
-	
-	
 	public Long getId() {
 		return id;
 	}
 
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -396,6 +385,12 @@ public class PatieentManagerContrler implements Serializable  {
 		this.selectedPatient = selectedPatient;
 	}
 
-	
+	public WarehouseStatManager getWarehouseStatManager() {
+		return warehouseStatManager;
+	}
+
+	public void setWarehouseStatManager(WarehouseStatManager warehouseStatManager) {
+		this.warehouseStatManager = warehouseStatManager;
+	}
 
 }

@@ -41,6 +41,7 @@ public class WarehouseStatManagerImpl implements WarehouseStatManager {
 		} else {
 			stat.setOrdered(stat.getOrdered() + vo.getOrdered());
 			stat.setShippedAway(stat.getShippedAway() + vo.getShippedAway());
+			stat.setGivenToPatients(stat.getGivenToPatients() + vo.getGivenToPatients());
 			warehouseStatDao.save(converter.toEntity(stat));
 		}
 	}
