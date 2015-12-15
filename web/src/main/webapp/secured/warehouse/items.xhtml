@@ -17,23 +17,27 @@
 	<ui:define name="content">
 	<p:messages id="messages" showDetail="true" closable="true" />
 	<p:panel header="Elszállíttatás kezelése">
+	
 		<h:form id="form">
 			<p:dataTable id="inactiveItemTable" 
-				var="item" value="#{inactiveItemView.lazyItemModel}" selection="#{inactiveItemView.selectedItems}" 
+				var="item" value="#{inactiveItemView.lazyThrowedItemModel}" selection="#{inactiveItemView.selectedTrhowedItems}" 
 				rowKey="#{item.id}" style="margin-bottom:0"
 				emptyMessage="Nincs leselejtezett tétel!"
-				paginator="true" rows="10" lazy="true"
-				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="5,10,15">
+				paginator="false" rows="100" lazy="true"
+				paginatorTemplate=""
+				>
 					        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-					        <p:column headerText="Azonosító">
+					        <p:column headerText="Tétel Azonosító">
 					            <h:outputText value="#{item.id}" />
 					        </p:column>
-					        <p:column headerText="Jelenlegi Méret">
-					            <h:outputText value="#{item.numberOfUnitNow}" />
+					        <p:column headerText="Termék neve">
+					            <h:outputText value="#{item.productName}" />
 					        </p:column>
-					        <p:column headerText="Tétel Mérert">
-					            <h:outputText value="#{item.numberOfUnit}" />
+					        <p:column headerText="Jelenlegi Méret">
+					            <h:outputText value="#{item.numberOfUnitNow} #{item.unitName}" />
+					        </p:column>
+					        <p:column headerText="Tétel Méret">
+					            <h:outputText value="#{item.numberOfUnit} #{item.unitName}" />
 					        </p:column>
 					        <p:column headerText="Szavatosság">
 					            <h:outputText value="#{item.warranty}" >
@@ -44,13 +48,12 @@
 					            <p:commandButton value="Elszállítva"
 					            	process="inactiveItemTable"
 					            	update="messages, inactiveItemTable"
-					            	actionListener="#{inactiveItemView.setItemsToInactive}" 
+					            	actionListener="#{inactiveItemView.removeItems}" 
 					             	/>
 					        </f:facet>
 				</p:dataTable>
 					     
 		</h:form>
-		
 		
 
 

@@ -1,6 +1,7 @@
 package hu.unideb.hospitalnet.web.warehouse;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -27,12 +28,19 @@ public class InactiveItemController implements Serializable {
 	private ItemVo selectedItem;
 
 	private List<ItemVo> selectedItems;
+	
+	private ThrowedItem selectedTrhowedItem;
+	
+	private List<ThrowedItem> selectedTrhowedItems;
 
 	@ManagedProperty("#{itemManager}")
 	private ItemManager itemManager;
 
 	@ManagedProperty("#{lazyItemModel}")
 	private LazyDataModel<ItemVo> lazyItemModel;
+	
+	@ManagedProperty("#{lazyThrowedItemModel}")
+	private LazyDataModel<ThrowedItem> lazyThrowedItemModel;
 
 	@ManagedProperty("#{warehouseStatManager}")
 	private WarehouseStatManager warehouseStatManager;
@@ -91,12 +99,12 @@ public class InactiveItemController implements Serializable {
 			itemManager.setItemsStatus(selectedItems, "elszállítva");
 			saveStat(selectedItems.stream().mapToInt(itm -> itm.getNumberOfUnitNow()).sum());
 			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres elszállítás!", getSuccesMassage()));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres elszállítás!", getSuccesMessage()));
 		} catch (Exception e) {
 			e.getMessage();
 			e.printStackTrace();
 			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sikeres elszállítás!", getErrorMassage()));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sikeres elszállítás!", getErrorMessage()));
 		}
 	}
 
@@ -108,8 +116,64 @@ public class InactiveItemController implements Serializable {
 		whStatVo.setGivenToPatients(0L);
 		warehouseStatManager.addStat(whStatVo);
 	}
-
-	public String getSuccesMassage() {
+	
+	public void removeItems(){
+		FacesContext context = FacesContext.getCurrentInstance();
+	
+		List<ItemVo> removedItems = new ArrayList<>();
+		for(ThrowedItem ti : selectedTrhowedItems){
+			ItemVo ivo = new ItemVo();
+			ivo.setId(ti.getId());
+			ivo.setNumberOfUnit(ti.getNumberOfUnit());
+			ivo.setNumberOfUnitNow(ti.getNumberOfUnitNow());
+			ivo.setStatus("leselejtezett");
+			ivo.setWarranty(ti.getWarranty());
+			removedItems.add(ivo);
+		}
+		
+		try {
+			itemManager.setItemsStatus(removedItems, "elszállítva");
+			saveStat(removedItems.stream().mapToInt(itm -> itm.getNumberOfUnitNow()).sum());
+			context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres elszállítás!", getThrowedSuccessMessage()));
+		} catch (Exception e) {
+			e.getMessage();
+			e.printStackTrace();
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sikertelen elszállítás!", getThrowedErrorMessage()));
+		}
+	}
+	
+	public String getThrowedSuccessMessage(){
+		StringBuilder sb = new StringBuilder();
+		if(selectedTrhowedItems.size() > 1){
+			sb.append("Elszállított tételek azonosítója: ");
+		}
+		else{
+			sb.append("Elszállított tétel azonosítója: ");
+		}
+		for(ThrowedItem ti : selectedTrhowedItems){
+			sb.append(ti.getId() + ", ");
+		}
+			
+		return sb.toString().substring(0, sb.length()-2);
+	}
+	
+	public String getThrowedErrorMessage(){
+		StringBuilder sb = new StringBuilder();
+		
+		if(selectedTrhowedItems.size() > 1){
+			sb.append("Nem sikeült leselejtezni a következő azonosítójú tételeket: ");
+		}
+		else{
+			sb.append("Nem sikeült leselejtezni a következő azonosítójú tételt: ");
+		}
+		for(ThrowedItem ti : selectedTrhowedItems){
+			sb.append(ti.getId() + ", ");
+		}
+			
+		return sb.toString().substring(0, sb.length()-2);
+	}
+	
+	public String getSuccesMessage() {
 		StringBuilder sb = new StringBuilder();
 
 		if (selectedItems.size() > 1) {
@@ -124,7 +188,7 @@ public class InactiveItemController implements Serializable {
 		return sb.toString();
 	}
 
-	public String getErrorMassage() {
+	public String getErrorMessage() {
 		StringBuilder sb = new StringBuilder();
 
 		if (selectedItems.size() > 1) {
@@ -139,4 +203,27 @@ public class InactiveItemController implements Serializable {
 		return sb.toString();
 	}
 
+	public List<ThrowedItem> getSelectedTrhowedItems() {
+		return selectedTrhowedItems;
+	}
+
+	public void setSelectedTrhowedItems(List<ThrowedItem> selectedTrhowedItems) {
+		this.selectedTrhowedItems = selectedTrhowedItems;
+	}
+
+	public ThrowedItem getSelectedTrhowedItem() {
+		return selectedTrhowedItem;
+	}
+
+	public void setSelectedTrhowedItem(ThrowedItem selectedTrhowedItem) {
+		this.selectedTrhowedItem = selectedTrhowedItem;
+	}
+
+	public LazyDataModel<ThrowedItem> getLazyThrowedItemModel() {
+		return lazyThrowedItemModel;
+	}
+
+	public void setLazyThrowedItemModel(LazyDataModel<ThrowedItem> lazyThrowedItemModel) {
+		this.lazyThrowedItemModel = lazyThrowedItemModel;
+	}
 }
