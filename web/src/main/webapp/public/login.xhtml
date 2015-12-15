@@ -1,52 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:sec="http://www.springframework.org/security/tags"
-	xmlns:p="http://primefaces.org/ui">
-
-<f:view>
-
-	<h:head>
-
-		<h:outputStylesheet library="default" name="css/bootstrap.css"></h:outputStylesheet>
-		<h:outputStylesheet library="default" name="/css/font-awesome.css"
-			rel="stylesheet" />
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans'
-			rel='stylesheet' type='text/css' />
-
-	</h:head>
-	<h:body style="background-color: #E2E2E2;">
-
-		<form action="#{request.contextPath}/login" method="post">
-			<h:panelGroup layout="block" class="error"
-				styleClass="alert alert-danger" rendered="#{param['error'] == 1}">Wrong password!</h:panelGroup>
-			<hr />
-			<h5>Enter Details to Login</h5>
-			<br />
-			<div class="form-group input-group">
-				<span class="input-group-addon"><i class="fa fa-tag"></i></span> <input
-					type="text" class="form-control" name="username"
-					placeholder="Your Username " />
-			</div>
-			<div class="form-group input-group">
-				<span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
-					type="password" class="form-control" name="password"
-					placeholder="Your Password" />
-			</div>
-			<div class="form-group">
-				<label class="checkbox-inline"> <input type="checkbox"
-					name="remember-me" /> Remember me
-				</label>
-			</div>
-			<input type="submit" value="Login" class="btn btn-primary "></input>
-		</form>
-
-	</h:body>
-
-</f:view>
-</html>
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="pageTitle">HospitalNET</ui:define>
+	<ui:define name="content">
+		<p:panel header="Bejelentkezés" style="text-align: center;">
+			<form action="#{request.contextPath}/login" method="post">
+				<h:panelGroup layout="block" class="error"
+					styleClass="alert alert-danger" rendered="#{param['error'] == 1}">Wrong password!
+				<hr />
+				</h:panelGroup>
+				<h5>Írd be az adatokat a bejelentkezéshez</h5>
+				<br />
+				<div class="form-group input-group">
+					<span class="input-group-addon"><i class="fa fa-tag"></i></span> <input
+						type="text"
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
+						name="username" placeholder="Your Username " />
+				</div>
+				<div class="form-group input-group">
+					<span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
+						type="password"
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
+						name="password" placeholder="Your Password" />
+				</div>
+				<div class="form-group">
+					<label class="checkbox-inline"> <input type="checkbox"
+						name="remember-me" /> Remember me
+					</label>
+				</div>
+				<input type="submit" value="Login" class="btn btn-primary "></input>
+			</form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
