@@ -172,13 +172,15 @@
 					            <h:outputText value="#{item.id}" />
 					        </p:column>
 					        <p:column headerText="Jelenlegi Méret">
-					            <h:outputText value="#{item.numberOfUnitNow}" />
+					            <h:outputText value="#{item.numberOfUnitNow} #{productsView.selectedProduct.unitName}" />
 					        </p:column>
 					        <p:column headerText="Tétel Mérert">
-					            <h:outputText value="#{item.numberOfUnit} #{selectedProduct.unitName}" />
+					            <h:outputText value="#{item.numberOfUnit} #{productsView.selectedProduct.unitName}" />
 					        </p:column>
 					        <p:column headerText="Szavatosság">
-					            <h:outputText value="#{item.warranty}" />
+					            <h:outputText value="#{item.warranty}" >
+									<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+					    		</h:outputText>
 					        </p:column>
 					        <f:facet name="footer">
 					            <p:commandButton process="checkboxDT" value="Leselejtez" 

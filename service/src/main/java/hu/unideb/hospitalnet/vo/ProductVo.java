@@ -20,6 +20,8 @@ public class ProductVo implements Serializable{
 	private List<ItemVo> items;
 	
 	private String unitName;
+	
+	private String unitType;
 
 	public String getUnitName() {
 		return unitName;
@@ -79,6 +81,14 @@ public class ProductVo implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getUnitType() {
+		return unitType;
+	}
+
+	public void setUnitType(String unitType) {
+		this.unitType = unitType;
 	}
 
 }

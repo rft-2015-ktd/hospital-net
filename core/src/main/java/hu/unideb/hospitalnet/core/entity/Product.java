@@ -33,6 +33,9 @@ public class Product  extends BaseEntity{
 	@Column(name = "unit_name")
 	private String unitName;
 	
+	@Column(name = "unit_type")
+	private String unitType;
+	
 	@OneToMany
 	@JoinTable(name = "product_items", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "item_id") })
