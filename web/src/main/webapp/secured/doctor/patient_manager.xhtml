@@ -101,44 +101,6 @@
 
 
 
-				<p:dialog header="Termék adatai" widgetVar="workerDialog"
-					id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
-					resizable="false" style="width:40%;margin-right:25%">
-
-					<p:dataTable id="checkboxDT" var="item"
-						value="#{patienmanager.selectedProduct.items}" rowKey="#{item.id}"
-						selection="#{patienmanager.selectedItem}">
-
-
-
-						<p:column selectionMode="single"
-							style="width:16px;text-align:center" />
-						<p:column headerText="Azonosító">
-							<h:outputText value="#{item.id}" />
-						</p:column>
-						<p:column headerText="Jelenlegi Méret">
-							<h:outputText value="#{item.numberOfUnitNow}" />
-						</p:column>
-						<p:column headerText="Tétel Mérert">
-							<h:outputText
-								value="#{item.numberOfUnit} #{selectedProduct.unitName}" />
-						</p:column>
-						<p:column headerText="Szavatosság">
-							<h:outputText value="#{item.warranty}" />
-						</p:column>
-
-					</p:dataTable>
-
-					<div align="center" style="margin-top: 10px;">
-						<h:outputLabel for="minMax" value="Mennyiság " />
-						<p:spinner id="minMax" value="#{patienmanager.unit}" min="0" />
-					</div>
-
-					<div align="center" style="margin-top: 10px;">
-						<p:commandButton id="addMed" value="Kiírás"
-							action="#{patienmanager.addMedicine()}" />
-					</div>
-				</p:dialog>
 
 
 
@@ -203,11 +165,10 @@
 
 
 						<p:commandButton id="addBnoTable" value="Bno hozzáadás"
-							onclick="PF('bnoOpen').show()" 
-							update="editor" />
+							onclick="PF('bnoOpen').show()" update="editor" />
 
 						<p:commandButton id="med" value="Gyógyszer kiírása" title="med"
-							type="button" onclick="PF('med').show()"
+							type="button" onclick="PF('med').show()" update="editor"
 							disabled="#{patienmanager.selectedPatient == null}">
 						</p:commandButton>
 					</p:panelGrid>
@@ -217,6 +178,48 @@
 						oncomplete="PF('mcrOpen').hide();" />
 
 				</p:dialog>
+
+
+				<p:dialog header="Termék adatai" widgetVar="workerDialog"
+					id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
+					resizable="false" style="width:40%;margin-right:25%">
+
+					<p:dataTable id="checkboxDT" var="item"
+						value="#{patienmanager.selectedProduct.items}" rowKey="#{item.id}"
+						selection="#{patienmanager.selectedItem}">
+
+
+
+						<p:column selectionMode="single"
+							style="width:16px;text-align:center" />
+						<p:column headerText="Azonosító">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Jelenlegi Méret">
+							<h:outputText value="#{item.numberOfUnitNow}" />
+						</p:column>
+						<p:column headerText="Tétel Mérert">
+							<h:outputText
+								value="#{item.numberOfUnit} #{selectedProduct.unitName}" />
+						</p:column>
+						<p:column headerText="Szavatosság">
+							<h:outputText value="#{item.warranty}" />
+						</p:column>
+
+					</p:dataTable>
+
+					<div align="center" style="margin-top: 10px;">
+						<h:outputLabel for="minMax" value="Mennyiság " />
+						<p:spinner id="minMax" value="#{patienmanager.unit}" min="0" />
+					</div>
+
+					<div align="center" style="margin-top: 10px;">
+						<p:commandButton id="addMed" value="Kiírás"
+							update="ptManager:editor" action="#{patienmanager.addMedicine()}"
+							oncomplete="PF('workerDialog').hide()" />
+					</div>
+				</p:dialog>
+
 
 				<p:dialog id="BnoDialogOpen" widgetVar="bnoOpen" modal="true"
 					showEffect="fade" hideEffect="fade" header="" styleClass="center">

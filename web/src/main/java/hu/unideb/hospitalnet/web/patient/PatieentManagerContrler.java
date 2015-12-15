@@ -164,7 +164,8 @@ public class PatieentManagerContrler implements Serializable  {
 	public void addMedicine() {
 		int a = itemManager.getItemById(selectedItem.getId()).getNumberOfUnitNow();
 		if (unit < a) {
-			int b = a - unit;
+			diagnostic += selectedProduct.getName() + " " + unit + " " + selectedProduct.getUnitName();
+ 			int b = a - unit;
 			System.out.println(b);
 		}
 	
