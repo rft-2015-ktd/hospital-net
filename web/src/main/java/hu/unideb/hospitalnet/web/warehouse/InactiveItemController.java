@@ -3,9 +3,11 @@ package hu.unideb.hospitalnet.web.warehouse;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -70,10 +72,47 @@ public class InactiveItemController implements Serializable{
 	}
 	
 	public void setItemsToInactive(){
-		for(ItemVo ivo : selectedItems)
-			System.out.println(ivo.getId());
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			itemManager.setItemsStatus(selectedItems, "elszállítva");
+			context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres elszállítás!", getSuccesMassage()));
+		} catch (Exception e) {
+			e.getMessage();
+			e.printStackTrace();
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sikeres elszállítás!", getErrorMassage()));
+		}
+	}
+	
+	public String getSuccesMassage(){
+		StringBuilder sb = new StringBuilder();
 		
-		itemManager.setItemsStatus(selectedItems, "elszállítva");
+		if(selectedItems.size() > 1){
+			sb.append("Elszállított tételek azonosítója: ");
+		}
+		else{
+			sb.append("Elszállított tétel azonosítója: ");
+		}
+		for(ItemVo ivo : selectedItems){
+			sb.append(ivo.getId());
+		}
+			
+		return sb.toString();
+	}
+	
+	public String getErrorMassage(){
+		StringBuilder sb = new StringBuilder();
+		
+		if(selectedItems.size() > 1){
+			sb.append("Nem sikerült leselejtezni a következő azonosítójú tételeket: ");
+		}
+		else{
+			sb.append("Nem sikerült leselejtezni a következő azonosítójú tételt: ");
+		}
+		for(ItemVo ivo : selectedItems){
+			sb.append(ivo.getId());
+		}
+			
+		return sb.toString();
 	}
 	
 }

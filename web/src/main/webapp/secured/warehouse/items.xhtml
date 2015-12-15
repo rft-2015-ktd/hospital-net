@@ -15,7 +15,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-	
+	<p:messages id="messages" showDetail="true" closable="true" />
 	<p:panel header="Elszállíttatás kezelése">
 		<h:form id="form">
 			<p:dataTable id="inactiveItemTable" 
@@ -43,6 +43,7 @@
 					        <f:facet name="footer">
 					            <p:commandButton value="Elszállítva"
 					            	process="inactiveItemTable"
+					            	update="messages, inactiveItemTable"
 					            	actionListener="#{inactiveItemView.setItemsToInactive}" 
 					             	/>
 					        </f:facet>
