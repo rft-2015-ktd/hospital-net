@@ -16,6 +16,6 @@ public interface WarehouseStatDao extends JpaRepository<WarehouseStat, Long> {
 
 	WarehouseStat findByDayOfOccurence(Date d);
 
-	List<WarehouseStat> findByDayOfOccurenceBetween(Date start, Date end);
+	List<WarehouseStat> findByDayOfOccurenceBetweenOrderByDayOfOccurence(Date start, Date end);
 
 }

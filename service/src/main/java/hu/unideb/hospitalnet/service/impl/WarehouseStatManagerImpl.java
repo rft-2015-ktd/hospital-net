@@ -47,7 +47,7 @@ public class WarehouseStatManagerImpl implements WarehouseStatManager {
 
 	@Override
 	public List<WarehouseStatVo> getStatsBetween(Date start, Date end) {
-		return converter.toVo(warehouseStatDao.findByDayOfOccurenceBetween(start, end));
+		return converter.toVo(warehouseStatDao.findByDayOfOccurenceBetweenOrderByDayOfOccurence(start, end));
 	}
 
 }
