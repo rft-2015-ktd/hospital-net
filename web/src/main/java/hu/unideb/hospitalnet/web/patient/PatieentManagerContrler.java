@@ -149,10 +149,10 @@ public class PatieentManagerContrler implements Serializable {
 			selectedPatient.setStatus("elbocsajtva");
 			service.savePatient(selectedPatient);
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes", "Save: " + selectedPatient.getName()));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes", "Sikser"));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Save"));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Sikertelen"));
 			e.getMessage();
 			e.printStackTrace();
 		}
