@@ -43,7 +43,9 @@ public class ProductManagerImpl implements ProductManager, Serializable{
 			entities = productDao.findByProducerContaining(filter, pageRequest);
 		} else if (filter.length() != 0 && filterColumnName.equals("type")) {
 			entities = productDao.findByTypeContaining(filter, pageRequest);
-		} else {
+		}  else if (filter.length() != 0 && filterColumnName.equals("unitType")) {
+			entities = productDao.findByUnitTypeContaining(filter, pageRequest);
+		}else {
 			entities = productDao.findAll(pageRequest);
 		}
 		

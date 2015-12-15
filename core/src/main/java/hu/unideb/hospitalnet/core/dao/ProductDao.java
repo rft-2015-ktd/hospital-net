@@ -27,6 +27,8 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 	
 	Page<Product> findByTypeContaining(String name, Pageable pageable);
 	
+	Page<Product> findByUnitTypeContaining(String name, Pageable pageable);
+	
 	@Query(value = "SELECT product_name FROM products p JOIN"
 			+ " product_items pi on p.id = pi.product_id JOIN"
 			+ " items i ON i.id = pi.item_id WHERE i.id = ?" , nativeQuery = true)

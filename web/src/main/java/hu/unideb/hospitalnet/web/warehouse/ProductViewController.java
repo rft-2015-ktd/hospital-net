@@ -95,6 +95,16 @@ public class ProductViewController implements Serializable {
 		productVo.setDescription(description);
 		productVo.setType(type);
 		productVo.setUnitName(unitName);
+		
+		switch(unitName){
+			case "db":
+				productVo.setUnitType("Tabletta");
+			case "ml":
+				productVo.setUnitType("Folyadék");
+			case "g":
+				productVo.setUnitType("Por");
+		
+		}
 
 		return productVo;
 

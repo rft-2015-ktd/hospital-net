@@ -35,7 +35,7 @@ public class Product  extends BaseEntity{
 	
 	@Column(name = "unit_type")
 	private String unitType;
-	
+
 	@OneToMany
 	@JoinTable(name = "product_items", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "item_id") })
@@ -81,7 +81,15 @@ public class Product  extends BaseEntity{
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String getUnitType() {
+		return unitType;
+	}
 
+	public void setUnitType(String unitType) {
+		this.unitType = unitType;
+	}
+	
 	public List<Item> getItems() {
 		return items;
 	}

@@ -43,7 +43,12 @@
 					filterBy="#{product.type}">
 					<h:outputText value="#{product.type}" />
 				</p:column>
+				<p:column headerText="Kiszerelés" sortBy="#{product.unitType}"
+					filterBy="#{product.unitType}">
+					<h:outputText value="#{product.unitType}" />
+				</p:column>
 			</p:dataTable>
+			
 			<p:commandButton id="newProduct" value="Új termék" title="új tétel"
 					type="button" onclick="PF('create').show()">
 			</p:commandButton>
@@ -152,6 +157,9 @@
 						
 						<h:outputText value="Típus:" />
 						<h:outputText value="#{productsView.selectedProduct.type}" />
+						
+						<h:outputText value="Kiszerelés:" />
+						<h:outputText value="#{productsView.selectedProduct.unitType}" />
 						
 						<h:outputText value="Leírás:" />
 						<h:outputText value="#{productsView.selectedProduct.description}" />
