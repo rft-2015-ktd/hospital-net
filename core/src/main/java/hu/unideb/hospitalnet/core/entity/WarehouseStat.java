@@ -47,4 +47,13 @@ public class WarehouseStat extends BaseEntity {
 	public void setShippedAway(Long shippedAway) {
 		this.shippedAway = shippedAway;
 	}
+
+	public Long getGivenToPatients() {
+		return givenToPatients;
+	}
+
+	public void setGivenToPatients(Long givenToPatients) {
+		this.givenToPatients = givenToPatients;
+	}
+
 }

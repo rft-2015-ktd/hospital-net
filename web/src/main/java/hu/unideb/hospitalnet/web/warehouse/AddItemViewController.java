@@ -184,8 +184,8 @@ public class AddItemViewController implements Serializable {
 	/**
 	 * Elmenti a statisztikát a kimutatáshoz
 	 * 
-	 * @param itemVo
-	 *            a rendelés mértékéhez
+	 * @param ordered
+	 *            mennyit rendeltünk
 	 */
 	private void saveStat(int ordered) {
 		WarehouseStatVo whStatVo = new WarehouseStatVo();
