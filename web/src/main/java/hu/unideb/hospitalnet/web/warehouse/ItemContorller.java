@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import hu.unideb.hospitalnet.service.ItemManager;
@@ -15,6 +16,7 @@ public class ItemContorller implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<ItemVo> selectedItems;
 	
+	@ManagedProperty("#{itemManager}")
 	private ItemManager itemManager;
 
 	public List<ItemVo> getSelectedItems() {
@@ -25,13 +27,20 @@ public class ItemContorller implements Serializable {
 		this.selectedItems = selectedItems;
 	}
 	
-	public void setItems(){
-		System.out.println(selectedItems.size());
-		
-		for(ItemVo item : selectedItems){
-			//itemManager.updateItem("leselejtezett", item.getId());
-			System.out.println(item.getId());
-		}
+	public ItemManager getItemManager() {
+		return itemManager;
+	}
+
+	public void setItemManager(ItemManager itemManager) {
+		this.itemManager = itemManager;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setItems(){		
+		itemManager.setItemsStatus(selectedItems);
 	}
 	
 }

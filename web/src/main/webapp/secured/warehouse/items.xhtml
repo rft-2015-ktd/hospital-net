@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/templates/masterLayout.xhtml">
 
-	<ui:define name="pageTitle">Dolgozók</ui:define>
+	<ui:define name="pageTitle">Leselejtezett Tételek</ui:define>
 	<ui:define name="header">
 	</ui:define>
 
@@ -16,29 +16,38 @@
 
 	<ui:define name="content">
 	
-	<p:panel header="Termékek kezelése">
+	<p:panel header="Elszállíttatás kezelése">
 		<h:form id="form">
-			<p:dataTable var="product" value="#{productsView.lazyProductModel}"
-				paginator="true" rows="10" emptyMessage="Nincs dolgozó"
+			<p:dataTable id="inactiveItemTable" 
+				var="item" value="#{inactiveItemView.lazyItemModel}" selection="#{inactiveItemView.selectedItems}" 
+				rowKey="#{item.id}" style="margin-bottom:0"
+				emptyMessage="Nincs leselejtezett tétel!"
+				paginator="true" rows="10" lazy="true"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="5,10,15" selectionMode="single"
-				selection="#{productsView.selectedProduct}" id="productTable"
-				lazy="true">
-				<p:column headerText="ID" sortBy="#{product.id}">
-					<h:outputText value="#{product.id}" />
-				</p:column>
-				<p:column headerText="Név" sortBy="#{product.name}"
-					filterBy="#{product.name}">
-					<h:outputText value="#{product.name}" />
-				</p:column>
-				<p:column headerText="Gyártó" sortBy="#{product.producer}"
-					filterBy="#{product.producer}">
-					<h:outputText value="#{product.producer}" />
-				</p:column>
-			</p:dataTable>
-			<p:commandButton id="newProduct" value="Új termék" title="Save"
-					type="button" onclick="PF('create').show()">
-			</p:commandButton>
+				rowsPerPageTemplate="5,10,15">
+					        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+					        <p:column headerText="Azonosító">
+					            <h:outputText value="#{item.id}" />
+					        </p:column>
+					        <p:column headerText="Jelenlegi Méret">
+					            <h:outputText value="#{item.numberOfUnitNow}" />
+					        </p:column>
+					        <p:column headerText="Tétel Mérert">
+					            <h:outputText value="#{item.numberOfUnit}" />
+					        </p:column>
+					        <p:column headerText="Szavatosság">
+					            <h:outputText value="#{item.warranty}" >
+					            	<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+					            </h:outputText>
+					        </p:column>
+					        <f:facet name="footer">
+					            <p:commandButton value="Elszállítva"
+					            	process="inactiveItemTable"
+					            	actionListener="#{inactiveItemView.setItemsToInactive}" 
+					             	/>
+					        </f:facet>
+				</p:dataTable>
+					     
 		</h:form>
 		
 		

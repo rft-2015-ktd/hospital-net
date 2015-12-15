@@ -15,6 +15,4 @@ public interface ItemDao extends JpaRepository<Item, Long> {
 	@Modifying
 	@Query(value = "UPDATE items SET status=?2 WHERE id=?1", nativeQuery = true)
 	void updateItemStatus(Long id, String status);
-	
-
 }

@@ -1,5 +1,6 @@
 package hu.unideb.hospitalnet.web.warehouse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import hu.unideb.hospitalnet.service.ItemManager;
 import hu.unideb.hospitalnet.vo.ItemVo;
 
-@Service("lazyItemtModel")
+@Service("lazyItemModel")
 public class LazyItemModel  extends LazyDataModel<ItemVo>{
 	
 	private static Logger logger = LoggerFactory.getLogger(LazyItemModel.class);
@@ -46,6 +47,7 @@ public class LazyItemModel  extends LazyDataModel<ItemVo>{
 	@Override
 	public List<ItemVo> load(int first, int pageSize, String sortField, SortOrder sortOrder,
 			Map<String, Object> filters) {
+		
 		String filter = "";
 		String filterColumnName = "";
 		if (filters.keySet().size() > 0) {
@@ -53,7 +55,7 @@ public class LazyItemModel  extends LazyDataModel<ItemVo>{
 			filterColumnName = filters.keySet().iterator().next();
 		}
 		if (sortField == null) {
-			sortField = "name";
+			sortField = "id";
 		}
 
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
@@ -61,10 +63,17 @@ public class LazyItemModel  extends LazyDataModel<ItemVo>{
 		List<ItemVo> items = itemManager.getItems(first / pageSize, pageSize, sortField, dir, filter,
 				filterColumnName);
 		
-		int dataSize = itemManager.getItemsCount();
+		List<ItemVo> requestedList = new ArrayList<>();
+		for(ItemVo ivo : items){
+			if(ivo.getStatus().equals("leselejtezett"))
+				requestedList.add(ivo);
+			
+		}
+		
+		int dataSize = requestedList.size();
 		setRowCount(dataSize);
 
-		return items;
+		return requestedList;
 	}
 /*
 	@Override

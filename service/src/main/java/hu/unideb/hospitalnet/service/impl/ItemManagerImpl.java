@@ -47,6 +47,7 @@ public class ItemManagerImpl implements ItemManager, Serializable{
 	@Override
 	public List<ItemVo> getItems(int page, int pageSize, String sortField, int sortOrder, String filter,
 			String filterColumnName) {
+		
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(page, pageSize,
 				new Sort(new org.springframework.data.domain.Sort.Order(dir, sortField)));
@@ -55,9 +56,10 @@ public class ItemManagerImpl implements ItemManager, Serializable{
 		//if (filter.length() != 0 && filterColumnName.equals("name")) {
 			//entities = itemDao.findByNameContaining(filter, pageRequest);
 		//} else {
-			entities = itemDao.findAll(pageRequest);
+		entities = itemDao.findAll(pageRequest);
 		//}
-
+	
+			
 		return itemConverter.toVo(entities.getContent());
 	}
 	
@@ -66,14 +68,39 @@ public class ItemManagerImpl implements ItemManager, Serializable{
 		return (int) itemDao.count();
 	}
 	
+	@Override
 	public void setStatus(List<ItemVo> itemsVo){
 		List<Item> items = itemConverter.toEntity(itemsVo);
+		itemDao.save(items);
+	}
+	
+	@Override
+	public void setItemsStatus(List<ItemVo> itemsVo){
+		List<Item> items = itemConverter.toEntity(itemsVo);
+		
+		for(Item i : items)
+			i.setStatus("leselejtezett");
 		itemDao.save(items);
 	}
 
 	@Override
 	public void updateItem(String status, Long id) {
 		itemDao.updateItemStatus(id, status);
+	}
+
+	@Override
+	public List<ItemVo> getItems() {
+		return itemConverter.toVo(itemDao.findAll());
+	}
+
+	@Override
+	public void setItemsStatus(List<ItemVo> itemsVo, String status) {
+		List<Item> items = itemConverter.toEntity(itemsVo);
+		
+		for(Item i : items)
+			i.setStatus(status);
+		itemDao.save(items);
+		
 	}
 
 }

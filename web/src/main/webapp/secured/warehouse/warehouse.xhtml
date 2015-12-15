@@ -27,7 +27,7 @@
 				selection="#{productsView.selectedProduct}" id="productTable"
 				lazy="true">
 				<p:ajax event="rowSelect" listener="#{productsView.onRowSelect}"
-				update="updateWorkerForm:workerDetail" oncomplete="PF('workerDialog').show()"/>
+				update="productDetailsForm:productDetail" oncomplete="PF('productItemsDialog').show()"/>
 				<p:column headerText="ID" sortBy="#{product.id}">
 					<h:outputText value="#{product.id}" />
 				</p:column>
@@ -132,13 +132,12 @@
 		
 		
 		<!-- Termék adatai -->
-		<p:dialog header="Termék adatai" widgetVar="workerDialog" id="workerDialog"
+		<p:dialog header="Termék adatai" widgetVar="productItemsDialog" id="productItemsDialog"
 			modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="width:40%;margin-right:25%">
-			<h:form id="updateWorkerForm">
+			<h:form id="productDetailsForm">
 			
-				<p:outputPanel id="workerDetail" style="text-align:center;">
-					<p:panelGrid columns="2" 
-						rendered="#{not empty productsView.selectedProduct}"
+				<p:outputPanel id="productDetail" style="text-align:center;" >
+					<p:panelGrid columns="2" rendered="#{not empty productsView.selectedProduct}"  
 						columnClasses="label,label">
 
 						<h:outputText value="Név:" />
@@ -160,7 +159,7 @@
 					    <p:dataTable id="checkboxDT" var="item" 
 					    value="#{productsView.selectedProduct.items}" selection="#{itemView.selectedItems}" 
 					    rowKey="#{item.id}" style="margin-bottom:0"
-					    rendered="#{not empty productsView.selectedProduct.items}">
+					    emptyMessage="Nincs tétel a termékhez!">
 					        <f:facet name="header">
 					            Tételek
 					        </f:facet>
@@ -179,22 +178,13 @@
 					        </p:column>
 					        <f:facet name="footer">
 					            <p:commandButton process="checkboxDT" value="Leselejtez" 
-					            actionListener="#{itemView.setItems}" oncomplete="PF('multiCarDialog').show()" />
+					            actionListener="#{itemView.setItems}" oncomplete="PF('productItemsDialog').hide()" />
 					        </f:facet>
 					    </p:dataTable>
 					    
 				</p:outputPanel>
 			</h:form>
 		</p:dialog>
-
-		<!-- Tételek leselejtezés után-->
-	    <p:dialog header="Selected Items" widgetVar="multiCarDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="200">
-	        <p:outputPanel id="multiCarDetail" style="text-align:center;">
-	            <ui:repeat value="#{itemView.selectedItems}" var="item">
-	                <h:outputText value="#{item.id}" style="display:block"/>
-	            </ui:repeat>
-	        </p:outputPanel>
-	    </p:dialog>
 
 
 	</ui:define>
