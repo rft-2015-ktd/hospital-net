@@ -70,10 +70,10 @@ public class InactiveItemController implements Serializable{
 	}
 	
 	public void setItemsToInactive(){
-		System.out.println("send");
 		for(ItemVo ivo : selectedItems)
 			System.out.println(ivo.getId());
-		itemManager.setItemsStatus(selectedItems, "leselejtezett");
+		
+		itemManager.setItemsStatus(selectedItems, "elszállítva");
 	}
 	
 }

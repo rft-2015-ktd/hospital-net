@@ -77,7 +77,6 @@ public class ItemManagerImpl implements ItemManager, Serializable{
 	@Override
 	public void setItemsStatus(List<ItemVo> itemsVo){
 		List<Item> items = itemConverter.toEntity(itemsVo);
-		
 		for(Item i : items)
 			i.setStatus("leselejtezett");
 		itemDao.save(items);
@@ -99,6 +98,7 @@ public class ItemManagerImpl implements ItemManager, Serializable{
 		
 		for(Item i : items)
 			i.setStatus(status);
+		
 		itemDao.save(items);
 		
 	}

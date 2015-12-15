@@ -28,7 +28,7 @@
 				lazy="true">
 				<p:ajax event="rowSelect" listener="#{productsView.onRowSelect}"
 				update="productDetailsForm:productDetail" oncomplete="PF('productItemsDialog').show()"/>
-				<p:column headerText="ID" sortBy="#{product.id}">
+				<p:column headerText="Azonosító" sortBy="#{product.id}">
 					<h:outputText value="#{product.id}" />
 				</p:column>
 				<p:column headerText="Név" sortBy="#{product.name}"
@@ -38,6 +38,10 @@
 				<p:column headerText="Gyártó" sortBy="#{product.producer}"
 					filterBy="#{product.producer}">
 					<h:outputText value="#{product.producer}" />
+				</p:column>
+				<p:column headerText="Típus" sortBy="#{product.type}"
+					filterBy="#{product.type}">
+					<h:outputText value="#{product.type}" />
 				</p:column>
 			</p:dataTable>
 			<p:commandButton id="newProduct" value="Új termék" title="új tétel"
