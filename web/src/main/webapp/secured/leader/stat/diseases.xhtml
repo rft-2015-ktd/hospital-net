@@ -7,24 +7,24 @@
 	template="/templates/masterLayout.xhtml">
 	<ui:define name="pageTitle">Kimutatás: Betegségek</ui:define>
 	<ui:define name="content">
-
-		<p:outputPanel id="piePanel">
-			<p:chart id="piechart" type="pie" model="#{statView.pieModel}"
-				rendered="#{not empty statView.pieModel}"
-				style="width:800px;height:500px" />
-			<f:verbatim>
-				<script type="text/javascript">
-					function pieExtender() {
-						this.cfg.highlighter = {
-							show : true,
-							tooltipLocation : 'ne',
-							useAxesFormatters : false,
-							formatString : '%s: %d'
-						};
-					}
-				</script>
-			</f:verbatim>
-		</p:outputPanel>
-
+		<p:panel header="Leggyakoribb betegségek">
+			<p:outputPanel id="piePanel">
+				<p:chart id="piechart" type="pie" model="#{statView.pieModel}"
+					rendered="#{not empty statView.pieModel}"
+					style="width:800px;height:500px" />
+				<f:verbatim>
+					<script type="text/javascript">
+						function pieExtender() {
+							this.cfg.highlighter = {
+								show : true,
+								tooltipLocation : 'ne',
+								useAxesFormatters : false,
+								formatString : '%s: %d'
+							};
+						}
+					</script>
+				</f:verbatim>
+			</p:outputPanel>
+		</p:panel>
 	</ui:define>
 </ui:composition>

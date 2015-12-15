@@ -7,44 +7,38 @@
 	template="/templates/masterLayout.xhtml">
 	<ui:define name="pageTitle">Kimutatás: Dolgozók</ui:define>
 	<ui:define name="content">
-		<p:outputPanel>
-			<h:form id="form">
-				<p:growl id="messages" autoUpdate="true" />
-				<p:panelGrid id="table">
-					<f:facet name="header">
+		<p:panel header="Dolgozói kimutatás">
+			<p:outputPanel>
+				<h:form id="form">
+					<p:growl id="messages" autoUpdate="true" />
+					<p:panelGrid id="table">
 						<p:row>
-							<p:column colspan="4">
-								<h:outputText value="Dolgozói kimutatás" />
+							<p:column colspan="2">
+								<p:outputLabel for="startSelect" value="Kezdő dátum:" />
+								<p:calendar id="startSelect" value="#{doctorStatView.startDate}"
+									showOn="button" pattern="yyyy.MM.dd" mask="true">
+									<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+								</p:calendar>
+							</p:column>
+							<p:column colspan="2">
+								<p:outputLabel for="endSelect" value="Vég dátum:" />
+								<p:calendar id="endSelect" value="#{doctorStatView.endDate}"
+									showOn="button" pattern="yyyy.MM.dd" mask="true">
+									<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+								</p:calendar>
 							</p:column>
 						</p:row>
-					</f:facet>
-
-					<p:row>
-						<p:column colspan="2">
-							<p:outputLabel for="startSelect" value="Kezdő dátum:" />
-							<p:calendar id="startSelect" value="#{doctorStatView.startDate}"
-								showOn="button" pattern="yyyy.MM.dd" mask="true">
-								<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
-							</p:calendar>
-						</p:column>
-						<p:column colspan="2">
-							<p:outputLabel for="endSelect" value="Vég dátum:" />
-							<p:calendar id="endSelect" value="#{doctorStatView.endDate}"
-								showOn="button" pattern="yyyy.MM.dd" mask="true">
-								<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
-							</p:calendar>
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column colspan="4">
-							<p:commandButton action="#{doctorStatView.show}" value="Lekérdez"
-								update="piechart,messages,padding" onclick="PF('chartWidget').show();" />
-						</p:column>
-					</p:row>
-				</p:panelGrid>
-			</h:form>
-		</p:outputPanel>
-
+						<p:row>
+							<p:column colspan="4">
+								<p:commandButton action="#{doctorStatView.show}"
+									value="Lekérdez" update="piechart,messages,padding"
+									onclick="PF('chartWidget').show();" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:outputPanel>
+		</p:panel>
 		<p:dialog header="Dolgozók aránya" widgetVar="chartWidget"
 			id="chartDialog" modal="true" showEffect="fade" hideEffect="fade"
 			resizable="false">

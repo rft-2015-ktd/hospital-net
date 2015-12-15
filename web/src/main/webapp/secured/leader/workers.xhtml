@@ -15,35 +15,37 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form id="form">
-			<p:dataTable var="worker" value="#{workersView.lazyWorkerModel}"
-				paginator="true" rows="10" emptyMessage="Nincs dolgozó"
-				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="5,10,15" selectionMode="single"
-				selection="#{workersView.selectedWorker}" id="workerTable"
-				lazy="true">
-				<p:ajax event="rowSelect" listener="#{workersView.onRowSelect}"
-					update="updateWorkerForm:workerDetail,form:updateWorkerButton" />
-				<p:column headerText="ID" sortBy="#{worker.id}">
-					<h:outputText value="#{worker.id}" />
-				</p:column>
-				<p:column headerText="Név" sortBy="#{worker.name}"
-					filterBy="#{worker.name}">
-					<h:outputText value="#{worker.name}" />
-				</p:column>
-				<p:column headerText="Beosztás" sortBy="#{worker.role}">
-					<h:outputText value="#{workersView.roleView(worker.role)}" />
-				</p:column>
-			</p:dataTable>
+		<p:panel header="Dolgozók">
+			<h:form id="form">
+				<p:dataTable var="worker" value="#{workersView.lazyWorkerModel}"
+					paginator="true" rows="10" emptyMessage="Nincs dolgozó"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{workersView.selectedWorker}" id="workerTable"
+					lazy="true">
+					<p:ajax event="rowSelect" listener="#{workersView.onRowSelect}"
+						update="updateWorkerForm:workerDetail,form:updateWorkerButton" />
+					<p:column headerText="ID" sortBy="#{worker.id}">
+						<h:outputText value="#{worker.id}" />
+					</p:column>
+					<p:column headerText="Név" sortBy="#{worker.name}"
+						filterBy="#{worker.name}">
+						<h:outputText value="#{worker.name}" />
+					</p:column>
+					<p:column headerText="Beosztás" sortBy="#{worker.role}">
+						<h:outputText value="#{workersView.roleView(worker.role)}" />
+					</p:column>
+				</p:dataTable>
 
-			<p:commandButton id="addWorkerButton" value="Új dolgozó"
-				 actionListener="#{workersView.onAddButtonClick}" />
+				<p:commandButton id="addWorkerButton" value="Új dolgozó"
+					actionListener="#{workersView.onAddButtonClick}" />
 
-			<p:commandButton id="updateWorkerButton" value="Módosítás"
-				type="button" onclick="PF('workerDialogWidget').show();"
-				disabled="#{workersView.selectedWorker == null or workersView.newWorker == true}" />
-		</h:form>
-
+				<p:commandButton id="updateWorkerButton" value="Módosítás"
+					type="button" onclick="PF('workerDialogWidget').show();"
+					disabled="#{workersView.selectedWorker == null or workersView.newWorker == true}" />
+			</h:form>
+		</p:panel>
+		
 		<p:dialog header="Dolgozó adatai" widgetVar="workerDialogWidget"
 			id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
 			resizable="false">
