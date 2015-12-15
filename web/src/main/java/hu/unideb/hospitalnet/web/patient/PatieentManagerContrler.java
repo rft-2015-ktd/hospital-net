@@ -1,6 +1,7 @@
 package hu.unideb.hospitalnet.web.patient;
 
 import hu.unideb.hospitalnet.service.BnoManager;
+import hu.unideb.hospitalnet.service.ItemManager;
 import hu.unideb.hospitalnet.service.MedicalRecordBnoTableManager;
 import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.PatientManager;
@@ -55,8 +56,9 @@ public class PatieentManagerContrler implements Serializable  {
 	private List<MedicalRecordVo> medicalRecords;
 	
 	private ProductVo selectedProduct;
+	private ItemVo selectedItem;
 	
-
+	private int unit;
 
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;
@@ -74,6 +76,9 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	@ManagedProperty("#{productManager}")
 	private ProductManager productManager;
+	
+	@ManagedProperty("#{itemManager}")
+	private ItemManager itemManager;
 	
 	@ManagedProperty("#{lazyProductModel}")
 	private LazyDataModel<ProductVo> lazyProductModel;
@@ -156,7 +161,51 @@ public class PatieentManagerContrler implements Serializable  {
 	}
 	
 	
+	public void addMedicine() {
+		int a = itemManager.getItemById(selectedItem.getId()).getNumberOfUnitNow();
+		if (unit < a) {
+			int b = a - unit;
+			System.out.println(b);
+		}
 	
+	}
+	
+	
+	
+	
+	
+
+	public int getUnit() {
+		return unit;
+	}
+
+	public void setUnit(int unit) {
+		this.unit = unit;
+	}
+
+	public ItemVo getSelectedItem() {
+		return selectedItem;
+	}
+
+	public void setSelectedItem(ItemVo selectedItem) {
+		this.selectedItem = selectedItem;
+	}
+
+	public ItemManager getItemManager() {
+		return itemManager;
+	}
+
+	public void setItemManager(ItemManager itemManager) {
+		this.itemManager = itemManager;
+	}
+
+	public ItemVo getSelectedItems() {
+		return selectedItem;
+	}
+
+	public void setSelectedItems(ItemVo selectedItem) {
+		this.selectedItem= selectedItem;
+	}
 
 	public ProductVo getSelectedProduct() {
 		return selectedProduct;

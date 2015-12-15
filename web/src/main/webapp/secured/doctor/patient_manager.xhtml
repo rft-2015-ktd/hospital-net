@@ -68,10 +68,7 @@
 				</p:commandButton>
 
 
-				<p:commandButton id="med" value="Gyógyszer kiírása" title="med"
-					type="button" onclick="PF('med').show()"
-					disabled="#{patienmanager.selectedPatient == null}">
-				</p:commandButton>
+
 
 				<p:dialog id="medDialog" widgetVar="med" modal="true"
 					showEffect="fade" hideEffect="fade" resizable="false" header="">
@@ -86,9 +83,7 @@
 							listener="#{patienmanager.onRowSelectProduct}"
 							update="ptManager:checkboxDT"
 							oncomplete="PF('workerDialog').show()" />
-						<p:column headerText="ID" sortBy="#{product.id}">
-							<h:outputText value="#{product.id}" />
-						</p:column>
+
 						<p:column headerText="Név" sortBy="#{product.name}"
 							filterBy="#{product.name}">
 							<h:outputText value="#{product.name}" />
@@ -96,6 +91,9 @@
 						<p:column headerText="Gyártó" sortBy="#{product.producer}"
 							filterBy="#{product.producer}">
 							<h:outputText value="#{product.producer}" />
+						</p:column>
+						<p:column headerText="ID" sortBy="#{product.unitName}">
+							<h:outputText value="#{product.unitName}" />
 						</p:column>
 					</p:dataTable>
 
@@ -108,9 +106,12 @@
 					resizable="false" style="width:40%;margin-right:25%">
 
 					<p:dataTable id="checkboxDT" var="item"
-						value="#{patienmanager.selectedProduct.items}" rowKey="#{item.id}">
+						value="#{patienmanager.selectedProduct.items}" rowKey="#{item.id}"
+						selection="#{patienmanager.selectedItem}">
 
-						<p:column selectionMode="multiple"
+
+
+						<p:column selectionMode="single"
 							style="width:16px;text-align:center" />
 						<p:column headerText="Azonosító">
 							<h:outputText value="#{item.id}" />
@@ -128,7 +129,15 @@
 
 					</p:dataTable>
 
+					<div align="center" style="margin-top: 10px;">
+						<h:outputLabel for="minMax" value="Mennyiság " />
+						<p:spinner id="minMax" value="#{patienmanager.unit}" min="0" />
+					</div>
 
+					<div align="center" style="margin-top: 10px;">
+						<p:commandButton id="addMed" value="Kiírás"
+							action="#{patienmanager.addMedicine()}" />
+					</div>
 				</p:dialog>
 
 
@@ -194,8 +203,13 @@
 
 
 						<p:commandButton id="addBnoTable" value="Bno hozzáadás"
-							onclick="PF('bnoOpen').show()" icon="ui-icon-check"
+							onclick="PF('bnoOpen').show()" 
 							update="editor" />
+
+						<p:commandButton id="med" value="Gyógyszer kiírása" title="med"
+							type="button" onclick="PF('med').show()"
+							disabled="#{patienmanager.selectedPatient == null}">
+						</p:commandButton>
 					</p:panelGrid>
 
 					<p:commandButton id="updateMcr" value="Mentés"
