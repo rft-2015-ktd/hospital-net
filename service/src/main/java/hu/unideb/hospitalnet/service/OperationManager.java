@@ -15,7 +15,6 @@ public interface OperationManager {
 
 	public String getUsername();
 
-	public List<OperationVo> getAll();
 
 	public void setUsername(String username);
 

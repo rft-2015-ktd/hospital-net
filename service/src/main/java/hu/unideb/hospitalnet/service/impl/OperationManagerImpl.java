@@ -10,7 +10,6 @@ import hu.unideb.hospitalnet.vo.OperationVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,20 +44,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 		return converter.toVo(operationDao.save(converter.toEntity(operation)));
 	}
 
-	@Override
-	public List<OperationVo> getAll() {
-		List<OperationVo> ret = new ArrayList<OperationVo>();// converter.toVo(entities.getContent());
-		WorkerVo worker = workerConvert
-				.toVo(workerDao.findByUsername(username));
-		// ret = converter.toVo(operationDao.findByWorker(workerConvert
-		// .toEntity(worker)));
 
-		ret = converter.toVo(operationDao
-				.findByWorkerAndFromDateGreaterThanEqual(
-						workerConvert.toEntity(worker), new Date()));
-
-		return ret;
-	}
 
 	@Override
 	public List<OperationVo> getOperations(int page, int size,
@@ -69,15 +55,13 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(
 				new org.springframework.data.domain.Sort.Order(dir, sortField)));
 		Page<Operation> entities;
-
-		//entities = operationDao.findAll(pageRequest);
-
 		WorkerVo worker = workerConvert
 				.toVo(workerDao.findByUsername(username));
-		List<OperationVo> ret = converter.toVo(operationDao
-				.findByWorkerAndFromDateGreaterThanEqual(
-						workerConvert.toEntity(worker), new Date()));//converter.toVo(entities.getContent());
-		
+
+		entities = operationDao.findByWorkerAndFromDateGreaterThanEqual(
+				workerConvert.toEntity(worker), new Date(), pageRequest);
+
+		List<OperationVo> ret = converter.toVo(entities.getContent());
 
 		return ret;
 	}

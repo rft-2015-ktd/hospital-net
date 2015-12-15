@@ -32,6 +32,7 @@ public class OperationControler implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private LazyDataModel<PatientVo> patientLazyModel;
+	private LazyDataModel<OperationVo> opLazyModel;
 
 	@ManagedProperty("#{operationManager}")
 	private OperationManager opService;
@@ -59,11 +60,12 @@ public class OperationControler implements Serializable {
 	@PostConstruct
 	public void init() {
 		setPatientLazyModel(new LazyPatientDataModel(patientService));
+		setOpLazyModel(new OperationLazyDataModel(opService));
 		startOp = null;
 		endOp = null;
 		opService.setUsername(SecurityContextHolder.getContext()
 				.getAuthentication().getName());
-		operations = opService.getAll();
+
 	}
 
 	public void saveOperation() {
@@ -80,7 +82,6 @@ public class OperationControler implements Serializable {
 			opService.save(op);
 			opService.setUsername(SecurityContextHolder.getContext()
 					.getAuthentication().getName());
-			operations = opService.getAll();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Succes",
@@ -106,6 +107,14 @@ public class OperationControler implements Serializable {
 	public void updateMcr() {
 		selectedMcr.setDiag(diagnostic);
 		mcrService.save(selectedMcr);
+	}
+
+	public LazyDataModel<OperationVo> getOpLazyModel() {
+		return opLazyModel;
+	}
+
+	public void setOpLazyModel(LazyDataModel<OperationVo> opLazyModel) {
+		this.opLazyModel = opLazyModel;
 	}
 
 	public String getDiagnostic() {
