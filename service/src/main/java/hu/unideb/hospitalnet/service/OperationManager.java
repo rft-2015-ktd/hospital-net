@@ -1,9 +1,8 @@
 package hu.unideb.hospitalnet.service;
 
-import java.util.List;
-
 import hu.unideb.hospitalnet.vo.OperationVo;
-import hu.unideb.hospitalnet.vo.PatientVo;
+
+import java.util.List;
 
 public interface OperationManager {
 

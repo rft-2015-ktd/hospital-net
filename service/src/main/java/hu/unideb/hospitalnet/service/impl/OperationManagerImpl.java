@@ -6,7 +6,6 @@ import hu.unideb.hospitalnet.core.entity.Operation;
 import hu.unideb.hospitalnet.service.OperationManager;
 import hu.unideb.hospitalnet.service.converter.impl.OperationConverter;
 import hu.unideb.hospitalnet.service.converter.impl.WorkerConverter;
-import hu.unideb.hospitalnet.vo.BnoVo;
 import hu.unideb.hospitalnet.vo.OperationVo;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
@@ -20,12 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.mysql.fabric.xmlrpc.base.Data;
 
 @Service("operationManager")
 @Transactional(propagation = Propagation.REQUIRED)

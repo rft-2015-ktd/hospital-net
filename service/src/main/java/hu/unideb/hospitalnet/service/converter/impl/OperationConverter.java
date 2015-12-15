@@ -13,6 +13,10 @@ import org.dozer.Mapper;
 
 public class OperationConverter implements Converter<Operation, OperationVo>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Mapper mapper = new DozerBeanMapper();
 	
 	@Override

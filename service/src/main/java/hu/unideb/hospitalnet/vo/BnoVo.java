@@ -2,17 +2,15 @@ package hu.unideb.hospitalnet.vo;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-
 public class BnoVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	Long id;
+	private Long id;
 	
-	String kod10;
+	private String kod10;
 	
-	String name;
+	private String name;
 
 	public Long getId() {
 		return id;

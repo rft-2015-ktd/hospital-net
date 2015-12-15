@@ -8,11 +8,9 @@ import hu.unideb.hospitalnet.vo.BnoVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
-import hu.unideb.hospitalnet.vo.WorkerVo;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +20,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -51,7 +48,7 @@ public class PatieentManagerContrler implements Serializable  {
 	private String diagnostic;
 	private Long id;
 	
-	List<MedicalRecordVo> medicalRecords;
+	private List<MedicalRecordVo> medicalRecords;
 	
 
 

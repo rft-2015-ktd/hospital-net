@@ -2,11 +2,9 @@ package hu.unideb.hospitalnet.service.impl;
 
 import hu.unideb.hospitalnet.core.dao.BnoDao;
 import hu.unideb.hospitalnet.core.entity.Bno;
-import hu.unideb.hospitalnet.core.entity.Patient;
 import hu.unideb.hospitalnet.service.BnoManager;
 import hu.unideb.hospitalnet.service.converter.impl.BnoConverter;
 import hu.unideb.hospitalnet.vo.BnoVo;
-import hu.unideb.hospitalnet.vo.PatientVo;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,22 +1,24 @@
 package hu.unideb.hospitalnet.web.patient;
 
+import hu.unideb.hospitalnet.service.BnoManager;
+import hu.unideb.hospitalnet.vo.BnoVo;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.bean.ManagedProperty;
 
-import hu.unideb.hospitalnet.service.BnoManager;
-import hu.unideb.hospitalnet.service.PatientManager;
-import hu.unideb.hospitalnet.vo.BnoVo;
-import hu.unideb.hospitalnet.vo.PatientVo;
-
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 
-public class BnoLazyDataModel extends LazyDataModel<BnoVo>{
+public class BnoLazyDataModel extends LazyDataModel<BnoVo> implements Serializable{
 
-	private static final long serialVersionUID = 1764477134673884411L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<BnoVo> datasource;
 	@ManagedProperty("#{bnoManager}")
 	private BnoManager service;

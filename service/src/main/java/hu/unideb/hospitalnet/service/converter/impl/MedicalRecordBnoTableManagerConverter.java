@@ -1,17 +1,15 @@
 package hu.unideb.hospitalnet.service.converter.impl;
 
+import hu.unideb.hospitalnet.core.entity.MedicalRecordBnoTable;
+import hu.unideb.hospitalnet.service.converter.Converter;
+import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
-
-import hu.unideb.hospitalnet.core.entity.MedicalRecordBnoTable;
-import hu.unideb.hospitalnet.core.entity.Patient;
-import hu.unideb.hospitalnet.service.converter.Converter;
-import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
-import hu.unideb.hospitalnet.vo.PatientVo;
 
 public class MedicalRecordBnoTableManagerConverter implements
 		Converter<MedicalRecordBnoTable, MedicalRecordBnoTableVo>,Serializable {
