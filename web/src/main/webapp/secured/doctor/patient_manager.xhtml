@@ -45,7 +45,9 @@
 					</p:column>
 
 					<p:column headerText="Születési dátum ">
-						<h:outputText value="#{patient.dateOfBirth}" />
+						<h:outputText value="#{patient.dateOfBirth}">
+							<f:convertDateTime pattern="yyyy.MM.dd " timeZone="GMT+1" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Státusz" sortBy="#{patient.status}"
@@ -134,7 +136,9 @@
 									<h:outputText value="#{mcr.name}" />
 								</p:column>
 								<p:column headerText="Dátum" sortBy="#{mcr.date}">
-									<h:outputText value="#{mcr.date}" />
+									<h:outputText value="#{mcr.date}">
+										<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+									</h:outputText>
 								</p:column>
 							</p:dataTable>
 						</p:panelGrid>
@@ -192,14 +196,13 @@
 
 						<p:column selectionMode="single"
 							style="width:16px;text-align:center" />
-						<p:column headerText="Azonosító">
-							<h:outputText value="#{item.id}" />
-						</p:column>
 						<p:column headerText="Jelenlegi Méret">
 							<h:outputText value="#{item.numberOfUnitNow}" />
 						</p:column>
 						<p:column headerText="Szavatosság">
-							<h:outputText value="#{item.warranty}" />
+							<h:outputText value="#{item.warranty}">
+								<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+							</h:outputText>
 						</p:column>
 
 					</p:dataTable>

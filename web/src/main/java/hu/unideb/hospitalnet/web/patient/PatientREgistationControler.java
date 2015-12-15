@@ -68,7 +68,7 @@ public class PatientREgistationControler implements Serializable {
 			mcr.setDiag(diagnostic);
 			mcr.setPatient(patientVo);
 			mcr.setDate(new Date());
-			mcr.setName(patientVo.getName()+ " " + mcr.getDate());
+			mcr.setName(patientVo.getName());
 			mcrService.save(mcr);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
