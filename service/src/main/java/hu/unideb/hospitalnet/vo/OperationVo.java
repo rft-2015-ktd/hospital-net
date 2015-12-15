@@ -3,8 +3,6 @@ package hu.unideb.hospitalnet.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-
 public class OperationVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -17,9 +15,9 @@ public class OperationVo implements Serializable {
 
 	private String operationName;
 
-	Date fromDate;
+	private Date fromDate;
 
-	Date toDate;
+	private Date toDate;
 
 	public Long getId() {
 		return id;

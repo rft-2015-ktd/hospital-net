@@ -27,7 +27,7 @@
 
 
 					<p:ajax event="rowSelect" listener="#{patienmanager.onRowSelect}"
-						update="ptManager:McrDialog,ptManager:update,ptManager:dissmiss" />
+						update="ptManager:McrDialog,ptManager:update,ptManager:dissmiss,ptManager:med" />
 
 					<p:column headerText="Név" sortBy="#{patient.name}"
 						filterBy="#{patient.name}">
@@ -45,7 +45,9 @@
 					</p:column>
 
 					<p:column headerText="Születési dátum ">
-						<h:outputText value="#{patient.dateOfBirth}" />
+						<h:outputText value="#{patient.dateOfBirth}">
+							<f:convertDateTime pattern="yyyy.MM.dd " timeZone="GMT+1" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Státusz" sortBy="#{patient.status}"
@@ -66,6 +68,41 @@
 				patienmanager.selectedPatient.status == 'elbocsajtva'}"
 					update="patientTable">
 				</p:commandButton>
+
+
+
+
+				<p:dialog id="medDialog" widgetVar="med" modal="true"
+					showEffect="fade" hideEffect="fade" resizable="false" header="">
+					<p:dataTable var="product"
+						value="#{patienmanager.lazyProductModel}" paginator="true"
+						rows="10" emptyMessage="Nincs termék regisztrálva a rendeszerben."
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						rowsPerPageTemplate="5,10,15" selectionMode="single"
+						selection="#{patienmanager.selectedProduct}" id="productTable"
+						lazy="true">
+						<p:ajax event="rowSelect"
+							listener="#{patienmanager.onRowSelectProduct}"
+							update="ptManager:checkboxDT"
+							oncomplete="PF('workerDialog').show()" />
+
+						<p:column headerText="Név" sortBy="#{product.name}"
+							filterBy="#{product.name}">
+							<h:outputText value="#{product.name}" />
+						</p:column>
+						<p:column headerText="Gyártó" sortBy="#{product.producer}"
+							filterBy="#{product.producer}">
+							<h:outputText value="#{product.producer}" />
+						</p:column>
+						<p:column headerText="ID" sortBy="#{product.unitName}">
+							<h:outputText value="#{product.unitName}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:dialog>
+
+
+
 
 
 
@@ -99,7 +136,9 @@
 									<h:outputText value="#{mcr.name}" />
 								</p:column>
 								<p:column headerText="Dátum" sortBy="#{mcr.date}">
-									<h:outputText value="#{mcr.date}" />
+									<h:outputText value="#{mcr.date}">
+										<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+									</h:outputText>
 								</p:column>
 							</p:dataTable>
 						</p:panelGrid>
@@ -130,8 +169,12 @@
 
 
 						<p:commandButton id="addBnoTable" value="Bno hozzáadás"
-							onclick="PF('bnoOpen').show()" icon="ui-icon-check"
-							update="editor" />
+							onclick="PF('bnoOpen').show()" update="editor" />
+
+						<p:commandButton id="med" value="Gyógyszer kiírása" title="med"
+							type="button" onclick="PF('med').show()" update="editor"
+							disabled="#{patienmanager.selectedPatient == null}">
+						</p:commandButton>
 					</p:panelGrid>
 
 					<p:commandButton id="updateMcr" value="Mentés"
@@ -139,6 +182,43 @@
 						oncomplete="PF('mcrOpen').hide();" />
 
 				</p:dialog>
+
+
+				<p:dialog header="Termék adatai" widgetVar="workerDialog"
+					id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
+					resizable="false" style="width:40%;margin-right:25%">
+
+					<p:dataTable id="checkboxDT" var="item"
+						value="#{patienmanager.selectedProduct.items}" rowKey="#{item.id}"
+						selection="#{patienmanager.selectedItem}">
+
+
+
+						<p:column selectionMode="single"
+							style="width:16px;text-align:center" />
+						<p:column headerText="Jelenlegi Méret">
+							<h:outputText value="#{item.numberOfUnitNow}" />
+						</p:column>
+						<p:column headerText="Szavatosság">
+							<h:outputText value="#{item.warranty}">
+								<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+
+					<div align="center" style="margin-top: 10px;">
+						<h:outputLabel for="minMax" value="Mennyiság " />
+						<p:spinner id="minMax" value="#{patienmanager.unit}" min="0" />
+					</div>
+
+					<div align="center" style="margin-top: 10px;">
+						<p:commandButton id="addMed" value="Kiírás"
+							update="ptManager:editor" action="#{patienmanager.addMedicine()}"
+							oncomplete="PF('workerDialog').hide()" />
+					</div>
+				</p:dialog>
+
 
 				<p:dialog id="BnoDialogOpen" widgetVar="bnoOpen" modal="true"
 					showEffect="fade" hideEffect="fade" header="" styleClass="center">

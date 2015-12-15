@@ -6,11 +6,11 @@ public class MedicalRecordBnoTableVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	Long id;
+	private Long id;
 	
-	MedicalRecordVo mcr;
+	private MedicalRecordVo mcr;
 	
-	BnoVo bno;
+	private BnoVo bno;
 
 	public Long getId() {
 		return id;

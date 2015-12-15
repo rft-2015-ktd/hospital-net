@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface OperationDao extends JpaRepository<Operation, Long> {
 	
-	Page<Operation>findByWorkerUsername(String username,Pageable pageable);
 	
 	Page<Operation>findByWorker(Worker worker,Pageable pageable);
 	
-	List<Operation>findByWorker(Worker worke);
+	Page<Operation>findByWorkerAndFromDateGreaterThanEqual(Worker worke,Date date,Pageable pageable);
 	
-	List<Operation>findByWorkerAndFromDateGreaterThanEqual(Worker worke,Date date);
+	Page<Operation>findByWorkerAndFromDateGreaterThanEqualAndFromDateContaining(Worker worke,Date date,Pageable pageable,Date data1);
 	
-
+	
+	
 }

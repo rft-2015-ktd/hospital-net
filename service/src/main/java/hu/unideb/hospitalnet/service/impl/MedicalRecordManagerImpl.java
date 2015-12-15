@@ -1,16 +1,16 @@
 package hu.unideb.hospitalnet.service.impl;
 
+import hu.unideb.hospitalnet.core.dao.MedicalRecordDao;
+import hu.unideb.hospitalnet.service.MedicalRecordManager;
+import hu.unideb.hospitalnet.service.converter.impl.MedicalRecordConverter;
+import hu.unideb.hospitalnet.vo.MedicalRecordVo;
+
 import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import hu.unideb.hospitalnet.core.dao.MedicalRecordDao;
-import hu.unideb.hospitalnet.service.MedicalRecordManager;
-import hu.unideb.hospitalnet.service.converter.impl.MedicalRecordConverter;
-import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 
 
 @Service("medicalRecordManager")

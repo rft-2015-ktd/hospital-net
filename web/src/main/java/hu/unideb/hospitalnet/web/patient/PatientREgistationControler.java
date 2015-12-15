@@ -15,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -69,7 +68,7 @@ public class PatientREgistationControler implements Serializable {
 			mcr.setDiag(diagnostic);
 			mcr.setPatient(patientVo);
 			mcr.setDate(new Date());
-			mcr.setName(patientVo.getName()+ " " + mcr.getDate());
+			mcr.setName(patientVo.getName());
 			mcrService.save(mcr);
 			FacesContext.getCurrentInstance().addMessage(
 					null,

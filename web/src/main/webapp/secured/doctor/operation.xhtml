@@ -15,10 +15,10 @@
 			<p:panel id="operationPanel" header="Műtéteim">
 
 				<p:dataTable id="operationTable" var="operation"
-					value="#{operationmanager.operations}" emptyMessage="Nincs műtét"
+					value="#{operationmanager.opLazyModel}" emptyMessage="Nincs műtét"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 					rowsPerPageTemplate="5,10,15" paginator="true" rows="5"
-					rowKey="#{operation.id}" sortBy="#{operation.fromDate}">
+					rowKey="#{operation.id}" lazy="true">
 
 					<f:facet name="header">
 						<h:outputText value="Műtétek" />
@@ -42,7 +42,7 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Páciens neve">
+					<p:column headerText="Páciens neve" sortBy="#{operation.patient.name}" >
 						<h:outputText value="#{operation.patient.name}" />
 					</p:column>
 				</p:dataTable>

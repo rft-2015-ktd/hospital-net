@@ -1,18 +1,21 @@
 package hu.unideb.hospitalnet.web.patient;
 
 import hu.unideb.hospitalnet.service.BnoManager;
+import hu.unideb.hospitalnet.service.ItemManager;
 import hu.unideb.hospitalnet.service.MedicalRecordBnoTableManager;
 import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.PatientManager;
+import hu.unideb.hospitalnet.service.ProductManager;
 import hu.unideb.hospitalnet.vo.BnoVo;
+import hu.unideb.hospitalnet.vo.ItemVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
-import hu.unideb.hospitalnet.vo.WorkerVo;
+import hu.unideb.hospitalnet.vo.ProductVo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +25,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -42,6 +44,7 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	private List<BnoVo> selectedBnos;
 	private Collection<String> bnosNames;
+	private List<ItemVo> selectedItems;
 
 
 	private String name;
@@ -51,10 +54,12 @@ public class PatieentManagerContrler implements Serializable  {
 	private String diagnostic;
 	private Long id;
 	
-	List<MedicalRecordVo> medicalRecords;
+	private List<MedicalRecordVo> medicalRecords;
 	
-
-
+	private ProductVo selectedProduct;
+	private ItemVo selectedItem;
+	
+	private int unit;
 
 	@ManagedProperty("#{patientManager}")
 	private PatientManager service;
@@ -69,10 +74,20 @@ public class PatieentManagerContrler implements Serializable  {
 	@ManagedProperty("#{medicalRecordBnoTableManager}")
 	private MedicalRecordBnoTableManager medicalRecordBnoTableManager;
 	
+	
+	@ManagedProperty("#{productManager}")
+	private ProductManager productManager;
+	
+	@ManagedProperty("#{itemManager}")
+	private ItemManager itemManager;
+	
+	@ManagedProperty("#{lazyProductModel}")
+	private LazyDataModel<ProductVo> lazyProductModel;
+	
 	@PostConstruct
 	public void init() {
 		diagnostic = " ";
-
+		selectedItems = new ArrayList<ItemVo>();
 		setLazyModel(new LazyPatientDataModel(service));
 		setLazyBnoModel(new BnoLazyDataModel(bnoManager));
 	}
@@ -91,6 +106,10 @@ public class PatieentManagerContrler implements Serializable  {
 			mcbt.setMcr(selectedMcr);
 			medicalRecordBnoTableManager.save(mcbt);
 		}
+		
+		for (ItemVo item : selectedItems) {
+			itemManager.saveItem(item);
+		}
 	
 		
 	}
@@ -102,6 +121,24 @@ public class PatieentManagerContrler implements Serializable  {
 		medicalRecords.size();
 		
 	}
+	
+	
+	
+	public void onRowSelectProduct(SelectEvent e) {
+		ProductVo pvo = (ProductVo) e.getObject();
+		List<ItemVo> activeItems = new ArrayList<>();
+		
+		if(!pvo.getItems().isEmpty()){
+			for(ItemVo item : pvo.getItems()){
+				if(item.getStatus().equals("aktív"))
+					activeItems.add(item);
+			}
+			
+			pvo.setItems(activeItems);
+		}
+		selectedProduct = pvo;
+	}
+
 	
 	public void addBnoToMcr() {
 		for (BnoVo string : selectedBnos) {
@@ -129,7 +166,76 @@ public class PatieentManagerContrler implements Serializable  {
 	}
 	
 	
+	public void addMedicine() {
+		int a = itemManager.getItemById(selectedItem.getId()).getNumberOfUnitNow();
+		if (unit < a) {
+			diagnostic += selectedProduct.getName() + " " + unit + " " + selectedProduct.getUnitName();
+			selectedItem.setNumberOfUnitNow(a - unit);
+			selectedItems.add(selectedItem);
+		}
 	
+	}
+	
+	
+	
+	
+	
+
+	public int getUnit() {
+		return unit;
+	}
+
+	public void setUnit(int unit) {
+		this.unit = unit;
+	}
+
+	public ItemVo getSelectedItem() {
+		return selectedItem;
+	}
+
+	public void setSelectedItem(ItemVo selectedItem) {
+		this.selectedItem = selectedItem;
+	}
+
+	public ItemManager getItemManager() {
+		return itemManager;
+	}
+
+	public void setItemManager(ItemManager itemManager) {
+		this.itemManager = itemManager;
+	}
+
+	public ItemVo getSelectedItems() {
+		return selectedItem;
+	}
+
+	public void setSelectedItems(ItemVo selectedItem) {
+		this.selectedItem= selectedItem;
+	}
+
+	public ProductVo getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(ProductVo selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
+
+	public ProductManager getProductManager() {
+		return productManager;
+	}
+
+	public void setProductManager(ProductManager productManager) {
+		this.productManager = productManager;
+	}
+
+	public LazyDataModel<ProductVo> getLazyProductModel() {
+		return lazyProductModel;
+	}
+
+	public void setLazyProductModel(LazyDataModel<ProductVo> lazyProductModel) {
+		this.lazyProductModel = lazyProductModel;
+	}
 
 	public MedicalRecordBnoTableManager getMedicalRecordBnoTableManager() {
 		return medicalRecordBnoTableManager;

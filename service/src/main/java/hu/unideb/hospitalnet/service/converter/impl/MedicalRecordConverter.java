@@ -1,10 +1,8 @@
 package hu.unideb.hospitalnet.service.converter.impl;
 
 import hu.unideb.hospitalnet.core.entity.MedicalRecord;
-import hu.unideb.hospitalnet.core.entity.Patient;
 import hu.unideb.hospitalnet.service.converter.Converter;
 import hu.unideb.hospitalnet.vo.MedicalRecordVo;
-import hu.unideb.hospitalnet.vo.PatientVo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

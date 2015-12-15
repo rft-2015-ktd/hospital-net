@@ -1,19 +1,13 @@
 package hu.unideb.hospitalnet.vo;
 
-import hu.unideb.hospitalnet.core.entity.Bno;
-import hu.unideb.hospitalnet.core.entity.Patient;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
 
 public class MedicalRecordVo implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	Long id;
+	private Long id;
 
 	private PatientVo patient;
 

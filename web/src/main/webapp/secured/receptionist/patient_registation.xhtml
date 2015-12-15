@@ -45,7 +45,9 @@
 					</p:column>
 
 					<p:column headerText="Születési dátum ">
-						<h:outputText value="#{patient.dateOfBirth}" />
+						<h:outputText value="#{patient.dateOfBirth}" >
+							<f:convertDateTime pattern="yyyy.MM.dd" timeZone="GMT+1" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Státusz" sortBy="#{patient.status}"
