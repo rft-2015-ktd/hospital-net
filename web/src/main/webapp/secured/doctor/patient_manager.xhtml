@@ -27,7 +27,7 @@
 
 
 					<p:ajax event="rowSelect" listener="#{patienmanager.onRowSelect}"
-						update="ptManager:McrDialog,ptManager:update,ptManager:dissmiss" />
+						update="ptManager:McrDialog,ptManager:update,ptManager:dissmiss,ptManager:med" />
 
 					<p:column headerText="Név" sortBy="#{patient.name}"
 						filterBy="#{patient.name}">
@@ -66,6 +66,70 @@
 				patienmanager.selectedPatient.status == 'elbocsajtva'}"
 					update="patientTable">
 				</p:commandButton>
+
+
+				<p:commandButton id="med" value="Gyógyszer kiírása" title="med"
+					type="button" onclick="PF('med').show()"
+					disabled="#{patienmanager.selectedPatient == null}">
+				</p:commandButton>
+
+				<p:dialog id="medDialog" widgetVar="med" modal="true"
+					showEffect="fade" hideEffect="fade" resizable="false" header="">
+					<p:dataTable var="product"
+						value="#{patienmanager.lazyProductModel}" paginator="true"
+						rows="10" emptyMessage="Nincs termék regisztrálva a rendeszerben."
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						rowsPerPageTemplate="5,10,15" selectionMode="single"
+						selection="#{patienmanager.selectedProduct}" id="productTable"
+						lazy="true">
+						<p:ajax event="rowSelect"
+							listener="#{patienmanager.onRowSelectProduct}"
+							update="ptManager:checkboxDT"
+							oncomplete="PF('workerDialog').show()" />
+						<p:column headerText="ID" sortBy="#{product.id}">
+							<h:outputText value="#{product.id}" />
+						</p:column>
+						<p:column headerText="Név" sortBy="#{product.name}"
+							filterBy="#{product.name}">
+							<h:outputText value="#{product.name}" />
+						</p:column>
+						<p:column headerText="Gyártó" sortBy="#{product.producer}"
+							filterBy="#{product.producer}">
+							<h:outputText value="#{product.producer}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:dialog>
+
+
+
+				<p:dialog header="Termék adatai" widgetVar="workerDialog"
+					id="workerDialog" modal="true" showEffect="fade" hideEffect="fade"
+					resizable="false" style="width:40%;margin-right:25%">
+
+					<p:dataTable id="checkboxDT" var="item"
+						value="#{patienmanager.selectedProduct.items}" rowKey="#{item.id}">
+
+						<p:column selectionMode="multiple"
+							style="width:16px;text-align:center" />
+						<p:column headerText="Azonosító">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="Jelenlegi Méret">
+							<h:outputText value="#{item.numberOfUnitNow}" />
+						</p:column>
+						<p:column headerText="Tétel Mérert">
+							<h:outputText
+								value="#{item.numberOfUnit} #{selectedProduct.unitName}" />
+						</p:column>
+						<p:column headerText="Szavatosság">
+							<h:outputText value="#{item.warranty}" />
+						</p:column>
+
+					</p:dataTable>
+
+
+				</p:dialog>
 
 
 

@@ -4,12 +4,16 @@ import hu.unideb.hospitalnet.service.BnoManager;
 import hu.unideb.hospitalnet.service.MedicalRecordBnoTableManager;
 import hu.unideb.hospitalnet.service.MedicalRecordManager;
 import hu.unideb.hospitalnet.service.PatientManager;
+import hu.unideb.hospitalnet.service.ProductManager;
 import hu.unideb.hospitalnet.vo.BnoVo;
+import hu.unideb.hospitalnet.vo.ItemVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordBnoTableVo;
 import hu.unideb.hospitalnet.vo.MedicalRecordVo;
 import hu.unideb.hospitalnet.vo.PatientVo;
+import hu.unideb.hospitalnet.vo.ProductVo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +54,8 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	private List<MedicalRecordVo> medicalRecords;
 	
-
+	private ProductVo selectedProduct;
+	
 
 
 	@ManagedProperty("#{patientManager}")
@@ -65,6 +70,13 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	@ManagedProperty("#{medicalRecordBnoTableManager}")
 	private MedicalRecordBnoTableManager medicalRecordBnoTableManager;
+	
+	
+	@ManagedProperty("#{productManager}")
+	private ProductManager productManager;
+	
+	@ManagedProperty("#{lazyProductModel}")
+	private LazyDataModel<ProductVo> lazyProductModel;
 	
 	@PostConstruct
 	public void init() {
@@ -100,6 +112,24 @@ public class PatieentManagerContrler implements Serializable  {
 		
 	}
 	
+	
+	
+	public void onRowSelectProduct(SelectEvent e) {
+		ProductVo pvo = (ProductVo) e.getObject();
+		List<ItemVo> activeItems = new ArrayList<>();
+		
+		if(!pvo.getItems().isEmpty()){
+			for(ItemVo item : pvo.getItems()){
+				if(item.getStatus().equals("aktív"))
+					activeItems.add(item);
+			}
+			
+			pvo.setItems(activeItems);
+		}
+		selectedProduct = pvo;
+	}
+
+	
 	public void addBnoToMcr() {
 		for (BnoVo string : selectedBnos) {
 			diagnostic += " " + string.getKod10();
@@ -127,6 +157,30 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	
 	
+
+	public ProductVo getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(ProductVo selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
+
+	public ProductManager getProductManager() {
+		return productManager;
+	}
+
+	public void setProductManager(ProductManager productManager) {
+		this.productManager = productManager;
+	}
+
+	public LazyDataModel<ProductVo> getLazyProductModel() {
+		return lazyProductModel;
+	}
+
+	public void setLazyProductModel(LazyDataModel<ProductVo> lazyProductModel) {
+		this.lazyProductModel = lazyProductModel;
+	}
 
 	public MedicalRecordBnoTableManager getMedicalRecordBnoTableManager() {
 		return medicalRecordBnoTableManager;
