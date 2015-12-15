@@ -192,7 +192,7 @@
 					        </p:column>
 					        <f:facet name="footer">
 					            <p:commandButton process="checkboxDT" value="Leselejtez" 
-					            actionListener="#{itemView.setItems}" oncomplete="PF('productItemsDialog').hide()" />
+					            actionListener="#{itemView.setItems}" update="messages" oncomplete="PF('productItemsDialog').hide()" />
 					        </f:facet>
 					    </p:dataTable>
 					    
