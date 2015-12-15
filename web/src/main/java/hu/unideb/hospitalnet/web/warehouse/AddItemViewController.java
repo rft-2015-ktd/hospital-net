@@ -87,11 +87,12 @@ public class AddItemViewController implements Serializable {
 				addSelectedProduct();
 				productManager.saveProduct(product);
 				saveStat(Integer.parseInt(unit));
+				String message = unit + " "+ product.getUnitName()+ " ("+product.getName()+ ")";
 				product = null;
 				unit = "";
 				warranty = null;
 				context.addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Tétel sikeresen hozzáadva!", ""));
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Tétel sikeresen hozzáadva!", message));
 			}
 		} catch (Exception e) {
 			e.getMessage();
