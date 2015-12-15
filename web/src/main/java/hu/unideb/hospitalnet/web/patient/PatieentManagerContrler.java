@@ -44,6 +44,7 @@ public class PatieentManagerContrler implements Serializable  {
 	
 	private List<BnoVo> selectedBnos;
 	private Collection<String> bnosNames;
+	private List<ItemVo> selectedItems;
 
 
 	private String name;
@@ -86,7 +87,7 @@ public class PatieentManagerContrler implements Serializable  {
 	@PostConstruct
 	public void init() {
 		diagnostic = " ";
-
+		selectedItems = new ArrayList<ItemVo>();
 		setLazyModel(new LazyPatientDataModel(service));
 		setLazyBnoModel(new BnoLazyDataModel(bnoManager));
 	}
@@ -104,6 +105,10 @@ public class PatieentManagerContrler implements Serializable  {
 			mcbt.setBno(bno);
 			mcbt.setMcr(selectedMcr);
 			medicalRecordBnoTableManager.save(mcbt);
+		}
+		
+		for (ItemVo item : selectedItems) {
+			itemManager.saveItem(item);
 		}
 	
 		
@@ -165,8 +170,8 @@ public class PatieentManagerContrler implements Serializable  {
 		int a = itemManager.getItemById(selectedItem.getId()).getNumberOfUnitNow();
 		if (unit < a) {
 			diagnostic += selectedProduct.getName() + " " + unit + " " + selectedProduct.getUnitName();
- 			int b = a - unit;
-			System.out.println(b);
+			selectedItem.setNumberOfUnitNow(a - unit);
+			selectedItems.add(selectedItem);
 		}
 	
 	}
