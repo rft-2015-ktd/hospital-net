@@ -17,6 +17,7 @@
 		<class>hu.unideb.hospitalnet.core.entity.Role</class>
 		<class>hu.unideb.hospitalnet.core.entity.TimeTable</class>
 		<class>hu.unideb.hospitalnet.core.entity.Worker</class>
+		<class>hu.unideb.hospitalnet.core.entity.WarehouseStat</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.show_sql" value="false" />

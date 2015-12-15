@@ -6,12 +6,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import hu.unideb.hospitalnet.core.dao.BnoDao;
 import hu.unideb.hospitalnet.service.StatsManager;
 import hu.unideb.hospitalnet.service.stats.vo.DiseaseCountVo;
 
 @Service("statsManager")
+@Transactional(propagation = Propagation.REQUIRED)
 public class StatsManagerImpl implements StatsManager {
 
 	@Autowired

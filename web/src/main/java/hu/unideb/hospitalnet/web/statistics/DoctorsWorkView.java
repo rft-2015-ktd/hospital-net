@@ -1,7 +1,6 @@
 package hu.unideb.hospitalnet.web.statistics;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import org.primefaces.model.chart.PieChartModel;
 
 import hu.unideb.hospitalnet.service.RoleManager;
 import hu.unideb.hospitalnet.service.WorkerManager;
+import hu.unideb.hospitalnet.service.util.DateUtil;
 import hu.unideb.hospitalnet.vo.WorkerVo;
 
 @ViewScoped
@@ -45,7 +45,8 @@ public class DoctorsWorkView implements Serializable {
 		}
 
 		int doctorCount = workerManager.getWorkerCountByRole(roleManager.getRoleByName("ROLE_DOCTOR"));
-		workingWorkers = workerManager.getWorkersByWorkingDates(getStartOfDay(startDate), getEndOfDay(endDate));
+		workingWorkers = workerManager.getWorkersByWorkingDates(DateUtil.getStartOfDay(startDate),
+				DateUtil.getEndOfDay(endDate));
 
 		chartModel = new PieChartModel();
 		chartModel.set("Nem dolgozik", doctorCount - workingWorkers.size());
@@ -57,26 +58,6 @@ public class DoctorsWorkView implements Serializable {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Siker!", "Sikeres lekérés!");
 		context.addMessage(null, message);
 
-	}
-
-	public Date getEndOfDay(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
-		calendar.set(Calendar.MILLISECOND, 999);
-		return calendar.getTime();
-	}
-
-	public Date getStartOfDay(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar.getTime();
 	}
 
 	public WorkerManager getWorkerManager() {
