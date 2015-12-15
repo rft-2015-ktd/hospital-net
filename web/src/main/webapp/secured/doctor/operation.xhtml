@@ -13,7 +13,15 @@
 	<ui:define name="content">
 		<h:form id="tables">
 			<p:panel id="operationPanel" header="Műtéteim">
-
+			
+				<h:outputText value="Kezdés" />
+				<p:calendar id="fromOp" value="#{operationmanager.fromOpDate}"
+					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true" >
+					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
+					<p:ajax event="dateSelect" listener="#{operationmanager.init}"
+						update="operationTable" />
+				</p:calendar>
+				
 				<p:dataTable id="operationTable" var="operation"
 					value="#{operationmanager.opLazyModel}" emptyMessage="Nincs műtét"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -42,7 +50,8 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Páciens neve" sortBy="#{operation.patient.name}" >
+					<p:column headerText="Páciens neve"
+						sortBy="#{operation.patient.name}">
 						<h:outputText value="#{operation.patient.name}" />
 					</p:column>
 				</p:dataTable>
@@ -102,7 +111,7 @@
 
 				<h:outputText value="Kezdés" />
 				<p:calendar id="start" value="#{operationmanager.startOp}"
-					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true"  >
+					showOn="button" pattern="yyyy.MM.dd HH:mm" mask="true">
 					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
 				</p:calendar>
 
@@ -112,8 +121,8 @@
 					<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="GMT+1" />
 				</p:calendar>
 
-				<p:commandButton id="saveOperation" value="Mentés" title="Save" type="button"
-					onclick="PF('save').show()"
+				<p:commandButton id="saveOperation" value="Mentés" title="Save"
+					type="button" onclick="PF('save').show()"
 					disabled="#{operationmanager.selectedpatient == null}">
 				</p:commandButton>
 			</p:panel>
@@ -123,7 +132,8 @@
 				<p:inputText value="#{operationmanager.opName}" />
 				<p:commandButton id="save" value="Mentés"
 					action="#{operationmanager.saveOperation()}"
-					oncomplete="PF('save').hide()" update="tables:operationTable,:growl" />
+					oncomplete="PF('save').hide()"
+					update="tables:operationTable,:growl" />
 
 			</p:dialog>
 
@@ -141,7 +151,8 @@
 					<f:facet name="header">
 						<h:outputText value="Kórlapok" />
 					</f:facet>
-					<p:ajax event="rowSelectRadio" update=":tables:saveMcr,:tables:updateMcr" />
+					<p:ajax event="rowSelectRadio"
+						update=":tables:saveMcr,:tables:updateMcr" />
 					<p:column selectionMode="single"
 						style="width:16px;text-align:center" />
 					<p:column headerText="Név">
@@ -155,8 +166,7 @@
 				<div align="center" style="margin-top: 10px;">
 					<p:commandButton id="updateMcr" value="Megnyitás"
 						disabled="#{operationmanager.selectedMcr == null}"
-						action="#{operationmanager.mcrUpdate()}"
-						update=":tables:editor"
+						action="#{operationmanager.mcrUpdate()}" update=":tables:editor"
 						onclick="PF('mcrOpen').show()" />
 				</div>
 			</p:dialog>

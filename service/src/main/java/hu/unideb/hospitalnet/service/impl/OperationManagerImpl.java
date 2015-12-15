@@ -33,6 +33,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 
 	@Autowired
 	private WorkerDao workerDao;
+	
 
 	private OperationConverter converter = new OperationConverter();
 	private WorkerConverter workerConvert = new WorkerConverter();
@@ -49,7 +50,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 	@Override
 	public List<OperationVo> getOperations(int page, int size,
 			String sortField, int sortOrder, String filter,
-			String filterColumnName) {
+			String filterColumnName, Date fromOpDate) {
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
 				: Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(
@@ -59,7 +60,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 				.toVo(workerDao.findByUsername(username));
 
 		entities = operationDao.findByWorkerAndFromDateGreaterThanEqual(
-				workerConvert.toEntity(worker), new Date(), pageRequest);
+				workerConvert.toEntity(worker), fromOpDate, pageRequest);
 
 		List<OperationVo> ret = converter.toVo(entities.getContent());
 
@@ -70,6 +71,9 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 	public int getRowNumber() {
 		return (int) operationDao.count();
 	}
+	
+
+
 
 	@Override
 	public String getUsername() {
@@ -80,5 +84,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+
 
 }

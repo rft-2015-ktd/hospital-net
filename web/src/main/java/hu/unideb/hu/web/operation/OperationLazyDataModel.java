@@ -4,6 +4,7 @@ import hu.unideb.hospitalnet.service.OperationManager;
 import hu.unideb.hospitalnet.vo.OperationVo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +23,12 @@ public class OperationLazyDataModel extends LazyDataModel<OperationVo>
 	private List<OperationVo> datasource;
 	@ManagedProperty("#{operationmanager}")
 	private OperationManager service;
+	
+	private Date fromOpDate;
 
-	public OperationLazyDataModel(OperationManager service) {
+	public OperationLazyDataModel(OperationManager service, Date fromOpDate) {
 		this.service = service;
-		// this.datasource = service.getAll();
+		this.fromOpDate = fromOpDate;
 	}
 
 	@Override
@@ -57,15 +60,25 @@ public class OperationLazyDataModel extends LazyDataModel<OperationVo>
 		}
 
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
-
+		
 		datasource = service.getOperations(first / pageSize, pageSize,
-				sortField, dir, filter, filterColumnName);
+				sortField, dir, filter, filterColumnName, fromOpDate);
 
 		int dataSize = service.getRowNumber();
 
 		this.setRowCount(dataSize);
 
 		return datasource;
+	}
+	
+	
+
+	public Date getFromOpDate() {
+		return fromOpDate;
+	}
+
+	public void setFromOpDate(Date fromOpDate) {
+		this.fromOpDate = fromOpDate;
 	}
 
 	public List<OperationVo> getDatasource() {

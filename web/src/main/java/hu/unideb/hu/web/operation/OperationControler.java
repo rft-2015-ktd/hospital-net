@@ -56,11 +56,13 @@ public class OperationControler implements Serializable {
 	private List<MedicalRecordVo> medicalRecords;
 
 	private String diagnostic;
+	
+	private Date fromOpDate = new Date();
 
 	@PostConstruct
 	public void init() {
 		setPatientLazyModel(new LazyPatientDataModel(patientService));
-		setOpLazyModel(new OperationLazyDataModel(opService));
+		setOpLazyModel(new OperationLazyDataModel(opService, fromOpDate));
 		startOp = null;
 		endOp = null;
 		opService.setUsername(SecurityContextHolder.getContext()
@@ -107,6 +109,17 @@ public class OperationControler implements Serializable {
 	public void updateMcr() {
 		selectedMcr.setDiag(diagnostic);
 		mcrService.save(selectedMcr);
+	}
+	
+	
+	
+
+	public Date getFromOpDate() {
+		return fromOpDate;
+	}
+
+	public void setFromOpDate(Date fromOpDate) {
+		this.fromOpDate = fromOpDate;
 	}
 
 	public LazyDataModel<OperationVo> getOpLazyModel() {
