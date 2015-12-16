@@ -45,13 +45,30 @@ public class ProductViewController implements Serializable {
 		try {
 			ProductVo productVo = validateProduct();
 			if(productVo != null){
-				productManager.saveProduct(productVo);
-				name = "";
-				producer = "";
-				description = "";
-				type = "";
-				context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Termék sikeresen hozzáadva!",
+				
+				List<ProductVo> oldProduct = productManager.getProductByName(productVo.getName());
+				boolean isExist = false;
+				for(ProductVo pvo : oldProduct){
+					if(pvo.getUnitName().equals(productVo.getUnitName())){
+						isExist = true;
+						break;
+					}
+					
+				}
+				if(isExist){
+					context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "A termék már szerepel a rendzserben!",
+							"Termék neve: " + productVo.getName()));
+				}
+				else{
+					productManager.saveProduct(productVo);
+					context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Termék sikeresen hozzáadva!",
 						"Termék neve: " + productVo.getName()));
+				
+					name = "";
+					producer = "";
+					description = "";
+					type = "";
+				}
 			}
 		} catch (Exception e) {
 			e.getMessage();
